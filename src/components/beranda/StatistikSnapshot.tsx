@@ -1,6 +1,6 @@
 import { Users, Home, Map, Building2 } from "lucide-react";
 import { StatCard } from "@/components/shared/StatCard";
-import { statistikMock } from "@/lib/data/statistik";
+import { getStatistik } from "@/lib/queries/statistik";
 
 const snapshotKeys = [
   { key: "total_penduduk", label: "Total Penduduk", icon: Users },
@@ -9,12 +9,17 @@ const snapshotKeys = [
   { key: "jumlah_dusun", label: "Jumlah Dusun", icon: Building2 },
 ];
 
-export function StatistikSnapshot() {
+export async function StatistikSnapshot() {
+  const statistik = await getStatistik();
+
   return (
-    <section id="statistik-snapshot" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <section
+      id="statistik-snapshot"
+      className="relative z-10 mx-auto -mt-24 max-w-6xl scroll-mt-20 px-4 pb-4 sm:px-6"
+    >
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
         {snapshotKeys.map(({ key, label, icon }) => {
-          const stat = statistikMock.find(
+          const stat = statistik.find(
             (item) => item.category === "kependudukan" && item.key === key,
           );
           return (

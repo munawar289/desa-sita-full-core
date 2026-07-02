@@ -7,5 +7,12 @@ export type BpdAnggota = {
   urutan: number;
 };
 
-// TODO: menunggu data riil dari Desa Sita sebelum diisi.
-export const bpdMock: BpdAnggota[] = [];
+// Placeholder struktur BPD Desa Sita — nama anggota menunggu data riil dari
+// kantor desa, jangan dianggap nama sungguhan.
+export const bpdMock: BpdAnggota[] = [
+  { id: "bpd-1", nama: "(Menunggu data)", jabatan: "Ketua", pendidikan: null, urutan: 1 },
+  { id: "bpd-2", nama: "(Menunggu data)", jabatan: "Wakil Ketua", pendidikan: null, urutan: 2 },
+  { id: "bpd-3", nama: "(Menunggu data)", jabatan: "Sekretaris", pendidikan: null, urutan: 3 },
+  { id: "bpd-4", nama: "(Menunggu data)", jabatan: "Anggota", pendidikan: null, urutan: 4 },
+  { id: "bpd-5", nama: "(Menunggu data)", jabatan: "Anggota", pendidikan: null, urutan: 5 },
+];

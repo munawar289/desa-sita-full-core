@@ -2,13 +2,11 @@ import Link from "next/link";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Button } from "@/components/ui/button";
 import { BeritaGrid } from "@/components/berita/BeritaGrid";
-import { beritaMock } from "@/lib/data/berita";
+import { getBerita } from "@/lib/queries/berita";
 
-export function BeritaTeaser() {
-  const terbaru = beritaMock
-    .filter((item) => item.status === "published")
-    .sort((a, b) => (b.published_at ?? "").localeCompare(a.published_at ?? ""))
-    .slice(0, 3);
+export async function BeritaTeaser() {
+  const berita = await getBerita();
+  const terbaru = berita.slice(0, 3);
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">

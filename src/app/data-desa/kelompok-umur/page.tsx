@@ -4,15 +4,18 @@ import { StatCardGrid } from "@/components/statistik/StatCardGrid";
 import { StatTable } from "@/components/statistik/StatTable";
 import { BarChartKelompokUmur } from "@/components/statistik/charts/BarChartKelompokUmur";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
-import { statistikKelompokUmurMock } from "@/lib/data/statistik-kelompok-umur";
+import { getStatistikKelompokUmur } from "@/lib/queries/statistik-kelompok-umur";
 
 export const metadata: Metadata = {
   title: "Kelompok Umur — Data Desa Sita",
   description: "Sebaran penduduk Desa Sita menurut kelompok usia.",
 };
 
-export default function KelompokUmurPage() {
-  const data = [...statistikKelompokUmurMock].sort((a, b) => a.urutan - b.urutan);
+export const revalidate = 300;
+
+export default async function KelompokUmurPage() {
+  const statistikKelompokUmur = await getStatistikKelompokUmur();
+  const data = [...statistikKelompokUmur].sort((a, b) => a.urutan - b.urutan);
   const totalPenduduk = data.reduce((sum, item) => sum + item.jumlah, 0);
   const kelompokTerbanyak = data.reduce<(typeof data)[number] | null>(
     (max, item) => (!max || item.jumlah > max.jumlah ? item : max),

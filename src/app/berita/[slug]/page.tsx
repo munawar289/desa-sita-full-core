@@ -5,7 +5,9 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { BadgeKategori } from "@/components/shared/BadgeKategori";
 import { BeritaGrid } from "@/components/berita/BeritaGrid";
 import { SectionHeader } from "@/components/shared/SectionHeader";
-import { beritaMock } from "@/lib/data/berita";
+import { getBerita, getBeritaBySlug } from "@/lib/queries/berita";
+
+export const revalidate = 300;
 
 function formatTanggal(iso: string | null) {
   if (!iso) return "—";
@@ -27,7 +29,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const berita = beritaMock.find((item) => item.slug === slug);
+  const berita = await getBeritaBySlug(slug);
   if (!berita) return { title: "Berita — Desa Sita" };
   return {
     title: `${berita.judul} — Desa Sita`,
@@ -41,15 +43,15 @@ export default async function BeritaDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const berita = beritaMock.find((item) => item.slug === slug && item.status === "published");
+  const berita = await getBeritaBySlug(slug);
 
   if (!berita) {
     notFound();
   }
 
-  const beritaLainnya = beritaMock
-    .filter((item) => item.status === "published" && item.slug !== berita.slug)
-    .sort((a, b) => (b.published_at ?? "").localeCompare(a.published_at ?? ""))
+  const semuaBerita = await getBerita();
+  const beritaLainnya = semuaBerita
+    .filter((item) => item.slug !== berita.slug)
     .slice(0, 3);
 
   return (

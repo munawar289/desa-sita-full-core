@@ -4,15 +4,18 @@ import { StatCardGrid } from "@/components/statistik/StatCardGrid";
 import { StatTable } from "@/components/statistik/StatTable";
 import { BarChartPendidikan } from "@/components/statistik/charts/BarChartPendidikan";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
-import { statistikPendidikanMock } from "@/lib/data/statistik-pendidikan";
+import { getStatistikPendidikan } from "@/lib/queries/statistik-pendidikan";
 
 export const metadata: Metadata = {
   title: "Pendidikan — Data Desa Sita",
   description: "Tingkat pendidikan penduduk Desa Sita.",
 };
 
-export default function PendidikanPage() {
-  const data = [...statistikPendidikanMock].sort((a, b) => a.urutan - b.urutan);
+export const revalidate = 300;
+
+export default async function PendidikanPage() {
+  const statistikPendidikan = await getStatistikPendidikan();
+  const data = [...statistikPendidikan].sort((a, b) => a.urutan - b.urutan);
   const totalPenduduk = data.reduce((sum, item) => sum + item.jumlah, 0);
   const tingkatTerbanyak = data.reduce<(typeof data)[number] | null>(
     (max, item) => (!max || item.jumlah > max.jumlah ? item : max),

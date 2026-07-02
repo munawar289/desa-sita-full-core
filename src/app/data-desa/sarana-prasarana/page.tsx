@@ -4,14 +4,18 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { CardSaranaPrasarana } from "@/components/statistik/charts/CardSaranaPrasarana";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { saranaPrasaranaMock } from "@/lib/data/sarana-prasarana";
+import { getSaranaPrasarana } from "@/lib/queries/sarana-prasarana";
 
 export const metadata: Metadata = {
   title: "Sarana & Prasarana — Data Desa Sita",
   description: "Fasilitas umum yang tersedia di Desa Sita.",
 };
 
-export default function SaranaPrasaranaPage() {
+export const revalidate = 300;
+
+export default async function SaranaPrasaranaPage() {
+  const saranaPrasarana = await getSaranaPrasarana();
+
   return (
     <>
       <PageHeader
@@ -24,8 +28,8 @@ export default function SaranaPrasaranaPage() {
       />
 
       <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
-        {saranaPrasaranaMock.length > 0 ? (
-          <CardSaranaPrasarana data={saranaPrasaranaMock} />
+        {saranaPrasarana.length > 0 ? (
+          <CardSaranaPrasarana data={saranaPrasarana} />
         ) : (
           <EmptyState icon={<FileQuestion />} message="Belum ada data tersedia" />
         )}

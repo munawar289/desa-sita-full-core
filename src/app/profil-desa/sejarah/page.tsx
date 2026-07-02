@@ -3,15 +3,18 @@ import { FileQuestion } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { kepalaDesaRiwayatMock } from "@/lib/data/kepala-desa-riwayat";
+import { getKepalaDesaRiwayat } from "@/lib/queries/kepala-desa-riwayat";
 
 export const metadata: Metadata = {
   title: "Sejarah — Desa Sita",
   description: "Riwayat berdirinya Desa Sita dan daftar kepala desa dari masa ke masa.",
 };
 
-export default function SejarahPage() {
-  const riwayat = [...kepalaDesaRiwayatMock].sort((a, b) => a.urutan - b.urutan);
+export const revalidate = 300;
+
+export default async function SejarahPage() {
+  const kepalaDesaRiwayat = await getKepalaDesaRiwayat();
+  const riwayat = [...kepalaDesaRiwayat].sort((a, b) => a.urutan - b.urutan);
 
   return (
     <>

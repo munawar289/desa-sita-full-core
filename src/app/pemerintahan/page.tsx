@@ -5,16 +5,19 @@ import { SectionHeader } from "@/components/shared/SectionHeader";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { StatTable } from "@/components/statistik/StatTable";
 import { StrukturOrganisasi } from "@/components/pemerintahan/StrukturOrganisasi";
-import { aparaturMock } from "@/lib/data/aparatur";
-import { bpdMock } from "@/lib/data/bpd";
+import { getAparatur } from "@/lib/queries/aparatur";
+import { getBpd } from "@/lib/queries/bpd";
 
 export const metadata: Metadata = {
   title: "Pemerintahan — Desa Sita",
   description: "Struktur organisasi dan Badan Permusyawaratan Desa (BPD) Desa Sita.",
 };
 
-export default function PemerintahanPage() {
-  const bpd = [...bpdMock].sort((a, b) => a.urutan - b.urutan);
+export const revalidate = 300;
+
+export default async function PemerintahanPage() {
+  const [aparatur, bpdAnggota] = await Promise.all([getAparatur(), getBpd()]);
+  const bpd = [...bpdAnggota].sort((a, b) => a.urutan - b.urutan);
 
   return (
     <>
@@ -32,7 +35,7 @@ export default function PemerintahanPage() {
             className="mx-auto"
           />
           <div className="mt-10">
-            <StrukturOrganisasi data={aparaturMock} />
+            <StrukturOrganisasi data={aparatur} />
           </div>
         </section>
 

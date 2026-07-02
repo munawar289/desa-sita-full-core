@@ -4,17 +4,20 @@ import { StatCardGrid } from "@/components/statistik/StatCardGrid";
 import { StatTable } from "@/components/statistik/StatTable";
 import { PieChartGender } from "@/components/statistik/charts/PieChartGender";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
-import { statistikMock } from "@/lib/data/statistik";
+import { getStatistik } from "@/lib/queries/statistik";
 
 export const metadata: Metadata = {
   title: "Jenis Kelamin — Data Desa Sita",
   description: "Komposisi penduduk Desa Sita menurut jenis kelamin.",
 };
 
+export const revalidate = 300;
+
 type BarisGender = { id: string; label: string; jumlah: number };
 
-export default function JenisKelaminPage() {
-  const gender = statistikMock.filter(
+export default async function JenisKelaminPage() {
+  const statistik = await getStatistik();
+  const gender = statistik.filter(
     (item) => item.category === "kependudukan" && ["laki_laki", "perempuan"].includes(item.key),
   );
 

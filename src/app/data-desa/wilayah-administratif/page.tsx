@@ -3,12 +3,14 @@ import { Map, LandPlot, Users, Home } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { StatCardGrid } from "@/components/statistik/StatCardGrid";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
-import { statistikMock } from "@/lib/data/statistik";
+import { getStatistik } from "@/lib/queries/statistik";
 
 export const metadata: Metadata = {
   title: "Wilayah Administratif — Data Desa Sita",
   description: "Data administratif dan kepadatan penduduk Desa Sita.",
 };
+
+export const revalidate = 300;
 
 const keys = [
   { key: "luas_wilayah", label: "Luas Wilayah", icon: LandPlot },
@@ -17,15 +19,17 @@ const keys = [
   { key: "kepadatan_penduduk", label: "Kepadatan Penduduk", icon: Users },
 ];
 
-export default function WilayahAdministratifPage() {
+export default async function WilayahAdministratifPage() {
+  const statistik = await getStatistik();
+
   const items = keys.map(({ key, label, icon }) => {
-    const stat = statistikMock.find(
+    const stat = statistik.find(
       (item) => item.category === "wilayah" && item.key === key,
     );
     return { label: stat?.label ?? label, value: stat?.value ?? "—", icon };
   });
 
-  const latestUpdate = statistikMock
+  const latestUpdate = statistik
     .filter((item) => item.category === "wilayah")
     .sort((a, b) => b.updated_at.localeCompare(a.updated_at))[0]?.updated_at;
 

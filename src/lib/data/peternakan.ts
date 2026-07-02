@@ -7,5 +7,10 @@ export type Peternakan = {
   urutan: number;
 };
 
-// TODO: menunggu data riil dari Desa Sita sebelum diisi.
-export const peternakanMock: Peternakan[] = [];
+// Data awal Desa Sita — fallback saat Supabase belum terhubung, basis seed.sql.
+export const peternakanMock: Peternakan[] = [
+  { id: "ternak-babi", jenis_ternak: "Babi", populasi: 612, jumlah_pemilik: 287, urutan: 1 },
+  { id: "ternak-ayam", jenis_ternak: "Ayam Kampung", populasi: 1840, jumlah_pemilik: 401, urutan: 2 },
+  { id: "ternak-sapi", jenis_ternak: "Sapi", populasi: 214, jumlah_pemilik: 96, urutan: 3 },
+  { id: "ternak-kerbau", jenis_ternak: "Kerbau", populasi: 58, jumlah_pemilik: 22, urutan: 4 },
+];

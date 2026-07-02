@@ -4,20 +4,28 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { StatTable } from "@/components/statistik/StatTable";
-import { wilayahInfoMock } from "@/lib/data/wilayah-info";
-import { komoditasMock } from "@/lib/data/komoditas";
-import { peternakanMock } from "@/lib/data/peternakan";
+import { getWilayahInfo } from "@/lib/queries/wilayah-info";
+import { getKomoditas } from "@/lib/queries/komoditas";
+import { getPeternakan } from "@/lib/queries/peternakan";
 
 export const metadata: Metadata = {
   title: "Wilayah — Desa Sita",
   description: "Batas wilayah, iklim, komoditas, dan peternakan Desa Sita.",
 };
 
-export default function WilayahPage() {
-  const batasWilayah = wilayahInfoMock.find((item) => item.section === "batas_wilayah");
-  const iklim = wilayahInfoMock.find((item) => item.section === "iklim");
-  const komoditas = [...komoditasMock].sort((a, b) => a.urutan - b.urutan);
-  const peternakan = [...peternakanMock].sort((a, b) => a.urutan - b.urutan);
+export const revalidate = 300;
+
+export default async function WilayahPage() {
+  const [wilayahInfo, komoditasData, peternakanData] = await Promise.all([
+    getWilayahInfo(),
+    getKomoditas(),
+    getPeternakan(),
+  ]);
+
+  const batasWilayah = wilayahInfo.find((item) => item.section === "batas_wilayah");
+  const iklim = wilayahInfo.find((item) => item.section === "iklim");
+  const komoditas = [...komoditasData].sort((a, b) => a.urutan - b.urutan);
+  const peternakan = [...peternakanData].sort((a, b) => a.urutan - b.urutan);
 
   return (
     <>
