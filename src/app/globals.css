@@ -6,20 +6,22 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Desa Sita brand palette — lihat docs/superpowers/specs/2026-07-02-fe-design.md §2.1 */
-  --color-espresso-950: #1c0f07;
-  --color-espresso-800: #3d2010;
-  --color-kopi-600: #7c4a22;
-  --color-kopi-400: #b07040;
-  --color-kopi-100: #f3e8dc;
-  --color-kakao-200: #e8ceaa;
-  --color-kakao-100: #f5eddf;
-  --color-krem-50: #faf5ec;
-  --color-sawah-700: #3d6b2c;
-  --color-sawah-400: #78a85a;
-  --color-sawah-100: #e8f4e2;
-  --color-tanah-500: #c0562a;
-  --color-tanah-100: #fae8e0;
+  /* Desa Sita — palet editorial agraris (cream · terracotta · olive · gold · brown) */
+  --color-espresso-950: #2a2118; /* ink — teks utama & heading */
+  --color-espresso-800: #3d2a1d; /* brown — panel gelap (navbar/footer), teks sekunder */
+  --color-kopi-600: #c1602a; /* terracotta — primary CTA / aksen utama */
+  --color-kopi-400: #d07b3f; /* terracotta terang — hover / link */
+  --color-kopi-100: #f0eada; /* panel hangat lembut */
+  --color-kakao-200: #e2d8c3; /* border / divider */
+  --color-kakao-100: #fbf7ec; /* bg-soft / stripe tabel */
+  --color-krem-50: #f5efe2; /* background halaman */
+  --color-sawah-700: #3f5a2c; /* olive gelap — label section */
+  --color-sawah-400: #5b7a41; /* olive — aksen hijau */
+  --color-sawah-100: #e8f4e2; /* bg badge hijau */
+  --color-tanah-500: #9c4a1e; /* terracotta gelap — alert / badge soon */
+  --color-tanah-100: #fbe9dc; /* bg badge terracotta */
+  --color-gold-500: #d9a441; /* gold — eyebrow dot / avatar / aksen */
+  --color-gold-400: #e4bc6b; /* gold terang */
 }
 
 @theme inline {
@@ -27,6 +29,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-body);
   --font-heading: var(--font-heading);
+  --font-mono: var(--font-plex-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -66,30 +69,30 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --background: #f5efe2;
+  --foreground: #2a2118;
+  --card: #ffffff;
+  --card-foreground: #2a2118;
+  --popover: #ffffff;
+  --popover-foreground: #2a2118;
+  --primary: #c1602a;
+  --primary-foreground: #ffffff;
+  --secondary: #f0eada;
+  --secondary-foreground: #3d2a1d;
+  --muted: #fbf7ec;
+  --muted-foreground: #5c4f3f;
+  --accent: #f0eada;
+  --accent-foreground: #3d2a1d;
+  --destructive: #9c4a1e;
+  --border: #e2d8c3;
+  --input: #e2d8c3;
+  --ring: #c1602a;
+  --chart-1: #c1602a;
+  --chart-2: #5b7a41;
+  --chart-3: #d9a441;
+  --chart-4: #9c4a1e;
+  --chart-5: #3f5a2c;
+  --radius: 0.875rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -143,5 +146,87 @@
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  ::selection {
+    background-color: var(--color-kopi-600);
+    color: #fff;
+  }
+}
+
+/* ── Animasi & keyframes ─────────────────────────────────────────── */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 8s ease-in-out infinite;
+  }
+  .animate-float-slow {
+    animation: float 12s ease-in-out infinite;
+  }
+  .animate-pulse-glow {
+    animation: pulse-glow 6s ease-in-out infinite;
+  }
+  .animate-fade-up {
+    animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Teks dengan gradient warna brand (gold → terracotta) */
+  .text-gradient-kopi {
+    background-image: linear-gradient(
+      135deg,
+      var(--color-gold-400),
+      var(--color-kopi-600)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Pola titik halus untuk background section gelap */
+  .bg-dot-grid {
+    background-image: radial-gradient(
+      rgba(255, 255, 255, 0.12) 1px,
+      transparent 1px
+    );
+    background-size: 22px 22px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-float-slow,
+    .animate-pulse-glow,
+    .animate-fade-up {
+      animation: none;
+    }
   }
 }

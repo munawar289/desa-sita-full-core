@@ -1,20 +1,33 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Mountain } from "lucide-react";
 import { footerNavItems } from "@/lib/nav";
 
 export function Footer() {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) return null;
+
   return (
     <footer className="bg-espresso-800 text-krem-50">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
         <div>
-          <p className="font-heading text-lg font-bold">Desa Sita</p>
-          <p className="mt-3 text-sm leading-relaxed text-krem-50/70">
+          <div className="flex items-center gap-2.5">
+            <span className="flex size-9 items-center justify-center rounded-[10px] bg-linear-to-br from-gold-500 to-kopi-600 text-espresso-950">
+              <Mountain className="size-5" />
+            </span>
+            <p className="font-heading text-lg font-semibold">Desa Sita</p>
+          </div>
+          <p className="mt-4 text-sm leading-relaxed text-krem-50/70">
             Kecamatan Rana Mese, Kabupaten Manggarai Timur,
             Nusa Tenggara Timur
           </p>
         </div>
 
         <div>
-          <p className="font-heading text-sm font-semibold uppercase tracking-wide text-krem-50/80">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-gold-400">
             Navigasi
           </p>
           <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
@@ -32,7 +45,7 @@ export function Footer() {
         </div>
 
         <div>
-          <p className="font-heading text-sm font-semibold uppercase tracking-wide text-krem-50/80">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-gold-400">
             Kontak
           </p>
           <ul className="mt-3 space-y-2 text-sm text-krem-50/70">

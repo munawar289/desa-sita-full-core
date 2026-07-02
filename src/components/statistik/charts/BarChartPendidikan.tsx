@@ -20,16 +20,16 @@ export function BarChartPendidikan({ data }: { data: StatistikPendidikan[] }) {
         <BarChart data={sorted}>
           <defs>
             <linearGradient id="gradientKopi" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#B07040" />
-              <stop offset="100%" stopColor="#7C4A22" />
+              <stop offset="0%" stopColor="#D07B3F" />
+              <stop offset="100%" stopColor="#C1602A" />
             </linearGradient>
           </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#E8CEAA" vertical={false} />
-          <XAxis dataKey="tingkat" stroke="#3D2010" fontSize={12} />
-          <YAxis stroke="#3D2010" fontSize={12} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#E2D8C3" vertical={false} />
+          <XAxis dataKey="tingkat" stroke="#5C4F3F" fontSize={12} />
+          <YAxis stroke="#5C4F3F" fontSize={12} />
           <Tooltip
-            contentStyle={{ borderColor: "#E8CEAA", borderRadius: 8 }}
-            cursor={{ fill: "#F3E8DC" }}
+            contentStyle={{ borderColor: "#E2D8C3", borderRadius: 8 }}
+            cursor={{ fill: "#F0EADA" }}
           />
           <Bar dataKey="jumlah" fill="url(#gradientKopi)" radius={[6, 6, 0, 0]} />
         </BarChart>

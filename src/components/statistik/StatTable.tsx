@@ -37,13 +37,13 @@ export function StatTable<T extends { id: string }>({
 
   return (
     <Table className="overflow-hidden rounded-xl border border-kakao-200">
-      <TableHeader className="bg-espresso-800/10">
+      <TableHeader className="bg-kakao-100">
         <TableRow className="hover:bg-transparent">
           {columns.map((column) => (
             <TableHead
               key={String(column.key)}
               className={cn(
-                "font-heading text-espresso-950",
+                "font-mono text-xs uppercase tracking-wider text-sawah-700",
                 column.align === "right" && "text-right",
               )}
             >
@@ -56,12 +56,15 @@ export function StatTable<T extends { id: string }>({
         {rows.map((row, index) => (
           <TableRow
             key={row.id}
-            className={cn(index % 2 === 1 && "bg-kakao-100", "hover:bg-kopi-100/50")}
+            className={cn(index % 2 === 1 && "bg-kakao-100/60", "hover:bg-kopi-100/50")}
           >
             {columns.map((column) => (
               <TableCell
                 key={String(column.key)}
-                className={cn(column.align === "right" && "text-right")}
+                className={cn(
+                  "text-espresso-800",
+                  column.align === "right" && "text-right font-mono text-espresso-950",
+                )}
               >
                 {String(row[column.key] ?? "—")}
                 {highlightKey === column.key && row.id === maxRowId && (

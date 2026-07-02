@@ -16,7 +16,7 @@ export function BeritaCard({ berita }: { berita: Berita }) {
   return (
     <Link
       href={`/berita/${berita.slug}`}
-      className="group block overflow-hidden rounded-xl border border-kakao-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md"
+      className="group block overflow-hidden rounded-2xl border border-kakao-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-kopi-400/50 hover:shadow-xl hover:shadow-kopi-600/10"
     >
       <div className="relative aspect-video w-full overflow-hidden bg-kakao-100">
         {berita.cover_image_url ? (
@@ -24,15 +24,16 @@ export function BeritaCard({ berita }: { berita: Berita }) {
             src={berita.cover_image_url}
             alt={berita.judul}
             fill
-            className="object-cover transition-all duration-200 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-kopi-100 to-kakao-100 text-sm text-espresso-800/40">
+          <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-kopi-100 to-kakao-100 font-heading text-sm font-semibold text-espresso-800/40">
             Desa Sita
           </div>
         )}
+        <div className="absolute inset-0 bg-linear-to-t from-espresso-950/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       </div>
-      <div className="p-4">
+      <div className="p-5">
         {berita.kategori && (
           <BadgeKategori
             label={berita.kategori}

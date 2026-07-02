@@ -2,7 +2,7 @@
 
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-const COLORS = ["#7C4A22", "#3D6B2C"]; // kopi-600, sawah-700
+const COLORS = ["#C1602A", "#5B7A41"]; // terracotta (kopi-600), olive (sawah-400)
 
 export function PieChartGender({
   data,
@@ -25,7 +25,7 @@ export function PieChartGender({
               <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
-          <Tooltip contentStyle={{ borderColor: "#E8CEAA", borderRadius: 8 }} />
+          <Tooltip contentStyle={{ borderColor: "#E2D8C3", borderRadius: 8 }} />
           <Legend />
         </PieChart>
       </ResponsiveContainer>
