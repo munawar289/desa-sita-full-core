@@ -10,6 +10,8 @@ export type Berita = {
   status: "draft" | "published";
   published_at: string | null;
   created_at: string;
+  // Denormalized dari join `profiles` (author_id) — dipakai untuk meta "penulis".
+  author_nama: string | null;
 };
 
 // TODO: menunggu data riil dari Desa Sita sebelum diisi.
