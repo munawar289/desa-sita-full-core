@@ -10,23 +10,25 @@ export function PieChartGender({
   data: { name: string; value: number }[];
 }) {
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <PieChart>
-        <Pie
-          data={data}
-          dataKey="value"
-          nameKey="name"
-          innerRadius={70}
-          outerRadius={110}
-          paddingAngle={2}
-        >
-          {data.map((entry, index) => (
-            <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-        <Tooltip contentStyle={{ borderColor: "#E8CEAA", borderRadius: 8 }} />
-        <Legend />
-      </PieChart>
-    </ResponsiveContainer>
+    <div className="h-55 sm:h-65 lg:h-75">
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart>
+          <Pie
+            data={data}
+            dataKey="value"
+            nameKey="name"
+            innerRadius={70}
+            outerRadius={110}
+            paddingAngle={2}
+          >
+            {data.map((entry, index) => (
+              <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip contentStyle={{ borderColor: "#E8CEAA", borderRadius: 8 }} />
+          <Legend />
+        </PieChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
