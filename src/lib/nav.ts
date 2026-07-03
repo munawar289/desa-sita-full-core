@@ -40,7 +40,6 @@ export const navItems: NavItem[] = [
   },
   { label: "Pemerintahan", href: "/pemerintahan" },
   { label: "Lembaga Desa", href: "/lembaga-desa" },
-  { label: "Berita", href: "/berita" },
   { label: "Layanan", href: "/layanan" },
 ];
 
@@ -50,7 +49,6 @@ export const footerNavItems: NavLink[] = [
   { label: "Data Desa", href: "/data-desa" },
   { label: "Pemerintahan", href: "/pemerintahan" },
   { label: "Lembaga Desa", href: "/lembaga-desa" },
-  { label: "Berita", href: "/berita" },
   { label: "Layanan", href: "/layanan" },
   { label: "Rencana Pengembangan", href: "/rencana-pengembangan" },
 ];
