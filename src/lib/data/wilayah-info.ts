@@ -1,13 +1,23 @@
 // Struktur identik tabel `wilayah_info` — PRD §9.1
+// `section` bertipe text bebas di database (tanpa CHECK constraint) — admin
+// bisa menambah section baru lewat /admin/wilayah, tidak dibatasi ke 3 nilai
+// awal ini.
 export type WilayahInfo = {
   id: string;
-  section: "batas_wilayah" | "iklim" | "orbitasi";
+  section: string;
   konten: string; // boleh markdown sederhana
   updated_at: string;
 };
 
 // Data awal Desa Sita — fallback saat Supabase belum terhubung, basis seed.sql.
 export const wilayahInfoMock: WilayahInfo[] = [
+  {
+    id: "wil-sejarah",
+    section: "sejarah",
+    konten:
+      "Narasi sejarah berdirinya Desa Sita akan ditampilkan di sini setelah dokumen profil desa tersedia.",
+    updated_at: "2026-06-01",
+  },
   {
     id: "wil-batas",
     section: "batas_wilayah",

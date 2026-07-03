@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { AddStatistikForm } from "@/components/admin/AddStatistikForm";
-import { StatistikRow } from "@/components/admin/StatistikRow";
+import Link from "next/link";
+import { StatistikGroupedList } from "@/components/admin/StatistikGroupedList";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Statistik } from "@/lib/data/statistik";
 
@@ -8,16 +8,6 @@ export const metadata: Metadata = {
   title: "Statistik — Admin Desa Sita",
   robots: { index: false, follow: false },
 };
-
-function groupByCategory(rows: Statistik[]) {
-  const groups = new Map<string, Statistik[]>();
-  for (const row of rows) {
-    const list = groups.get(row.category) ?? [];
-    list.push(row);
-    groups.set(row.category, list);
-  }
-  return groups;
-}
 
 export default async function AdminStatistikPage() {
   const supabase = await createSupabaseServerClient();
@@ -27,8 +17,7 @@ export default async function AdminStatistikPage() {
     .order("category")
     .order("key");
 
-  const rows = error ? [] : data;
-  const grouped = groupByCategory(rows);
+  const rows: Statistik[] = error ? [] : data;
 
   return (
     <div className="space-y-8">
@@ -39,6 +28,20 @@ export default async function AdminStatistikPage() {
             Perubahan langsung tampil di situs publik (revalidasi otomatis).
           </p>
         </div>
+        <div className="flex gap-2 text-sm">
+          <Link
+            href="/admin/statistik/per-rt"
+            className="rounded-full border border-kakao-200 px-4 py-2 font-medium text-kopi-600 transition-colors duration-200 hover:bg-kopi-100/50"
+          >
+            Statistik per-RT
+          </Link>
+          <Link
+            href="/admin/statistik/sektor-usaha"
+            className="rounded-full border border-kakao-200 px-4 py-2 font-medium text-kopi-600 transition-colors duration-200 hover:bg-kopi-100/50"
+          >
+            Sektor Usaha
+          </Link>
+        </div>
       </div>
 
       {error && (
@@ -47,45 +50,11 @@ export default async function AdminStatistikPage() {
         </p>
       )}
 
-      {grouped.size === 0 && !error && (
+      {!error && rows.length === 0 && (
         <p className="text-sm text-espresso-800/60">Belum ada data statistik.</p>
       )}
 
-      {[...grouped.entries()].map(([category, items]) => (
-        <section key={category} className="space-y-3">
-          <h2 className="font-mono text-xs uppercase tracking-wider text-sawah-700">
-            {category}
-          </h2>
-          <div className="overflow-hidden rounded-xl border border-kakao-200 bg-white">
-            <table className="w-full text-left">
-              <thead className="bg-kakao-100">
-                <tr>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
-                    Label
-                  </th>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
-                    Key
-                  </th>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
-                    Nilai
-                  </th>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
-                    Diperbarui
-                  </th>
-                  <th className="px-3 py-2" />
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item) => (
-                  <StatistikRow key={`${item.id}:${item.updated_at}`} item={item} />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-      ))}
-
-      <AddStatistikForm defaultCategory={[...grouped.keys()][0]} />
+      {!error && rows.length > 0 && <StatistikGroupedList rows={rows} />}
     </div>
   );
 }

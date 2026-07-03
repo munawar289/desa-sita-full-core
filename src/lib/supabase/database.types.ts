@@ -81,6 +81,60 @@ export interface Database {
         >;
         Relationships: [];
       };
+      wilayah_rt: {
+        Row: { id: string; nomor: string; nama: string; urutan: number };
+        Insert: { id?: string; nomor: string; nama: string; urutan: number };
+        Update: Partial<Database["public"]["Tables"]["wilayah_rt"]["Insert"]>;
+        Relationships: [];
+      };
+      statistik_rt: {
+        Row: {
+          id: string;
+          category: string;
+          rt_id: string;
+          value: number | null;
+          detail: Json | null;
+          updated_by: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          category: string;
+          rt_id: string;
+          value?: number | null;
+          detail?: Json | null;
+          updated_by?: string | null;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["statistik_rt"]["Insert"]>;
+        Relationships: [];
+      };
+      statistik_sektor_usaha: {
+        Row: {
+          id: string;
+          jenis: "pdb" | "pendapatan_riil";
+          kode: string;
+          nama: string;
+          nilai_ribu_rupiah: number | null;
+          updated_by: string | null;
+          updated_at: string;
+          urutan: number;
+        };
+        Insert: {
+          id?: string;
+          jenis: "pdb" | "pendapatan_riil";
+          kode: string;
+          nama: string;
+          nilai_ribu_rupiah?: number | null;
+          updated_by?: string | null;
+          updated_at?: string;
+          urutan: number;
+        };
+        Update: Partial<
+          Database["public"]["Tables"]["statistik_sektor_usaha"]["Insert"]
+        >;
+        Relationships: [];
+      };
       kepala_desa_riwayat: {
         Row: {
           id: string;

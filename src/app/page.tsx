@@ -3,7 +3,7 @@ import { ArrowRight, MessageSquareHeart } from "lucide-react";
 import { HeroSection } from "@/components/beranda/HeroSection";
 import { StatistikSnapshot } from "@/components/beranda/StatistikSnapshot";
 import { PotensSection } from "@/components/beranda/PotensSection";
-import { BeritaTeaser } from "@/components/beranda/BeritaTeaser";
+import { StatistikOverview } from "@/components/beranda/StatistikOverview";
 import { Button } from "@/components/ui/button";
 
 export const revalidate = 300;
@@ -14,7 +14,7 @@ export default function Home() {
       <HeroSection />
       <StatistikSnapshot />
       <PotensSection />
-      <BeritaTeaser />
+      <StatistikOverview />
 
       <section className="px-4 pb-20 pt-4 sm:px-6">
         <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-linear-to-br from-sawah-700 to-espresso-800 px-6 py-14 text-center shadow-xl shadow-sawah-700/20">

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Map, LandPlot, Users, Home } from "lucide-react";
+import { Map, LandPlot, Users, Home, Building2 } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { StatCardGrid } from "@/components/statistik/StatCardGrid";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
@@ -15,7 +15,8 @@ export const revalidate = 300;
 const keys = [
   { key: "luas_wilayah", label: "Luas Wilayah", icon: LandPlot },
   { key: "jumlah_dusun", label: "Jumlah Dusun", icon: Map },
-  { key: "jumlah_rt_rw", label: "Jumlah RT/RW", icon: Home },
+  { key: "jumlah_rt", label: "Jumlah RT", icon: Home },
+  { key: "jumlah_rw", label: "Jumlah RW", icon: Building2 },
   { key: "kepadatan_penduduk", label: "Kepadatan Penduduk", icon: Users },
 ];
 

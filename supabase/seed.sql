@@ -5,39 +5,146 @@
 -- lewat dashboard admin begitu tersedia.
 
 -- ── Statistik ────────────────────────────────────────────────────────────
+-- Sumber angka kependudukan & domain lanjutan: `Template Ragam Data dan
+-- Template Tabel daesa Sita.xlsx` (Prodeskel, PRD statistik-lanjutan §2, §3.4).
 insert into statistik (category, key, label, value, updated_at) values
-  ('kependudukan', 'total_penduduk', 'Total Penduduk', '3.192', '2026-06-01'),
-  ('kependudukan', 'jumlah_kk', 'Jumlah KK', '859', '2026-06-01'),
-  ('kependudukan', 'laki_laki', 'Laki-laki', '1605', '2026-06-01'),
-  ('kependudukan', 'perempuan', 'Perempuan', '1587', '2026-06-01'),
+  ('kependudukan', 'total_penduduk', 'Total Penduduk', '3.259', '2026-06-01'),
+  ('kependudukan', 'jumlah_kk', 'Jumlah KK', '873', '2026-06-01'),
+  ('kependudukan', 'laki_laki', 'Laki-laki', '1627', '2026-06-01'),
+  ('kependudukan', 'perempuan', 'Perempuan', '1632', '2026-06-01'),
   ('kependudukan', 'luas_wilayah', 'Luas Wilayah', '1.400 ha', '2026-06-01'),
   ('kependudukan', 'jumlah_dusun', 'Jumlah Dusun', '4', '2026-06-01'),
   ('wilayah', 'luas_wilayah', 'Luas Wilayah', '1.400 ha', '2026-06-01'),
   ('wilayah', 'jumlah_dusun', 'Jumlah Dusun', '4', '2026-06-01'),
-  ('wilayah', 'jumlah_rt_rw', 'Jumlah RT/RW', '8 RT / 4 RW', '2026-06-01'),
-  ('wilayah', 'kepadatan_penduduk', 'Kepadatan Penduduk', '228 jiwa/km²', '2026-06-01');
+  ('wilayah', 'jumlah_rt', 'Jumlah RT', '16', '2026-06-01'),
+  ('wilayah', 'jumlah_rw', 'Jumlah RW', '8', '2026-06-01'),
+  ('wilayah', 'jumlah_rt_rw', 'Jumlah RT/RW', '16 RT / 8 RW', '2026-06-01'),
+  ('wilayah', 'kepadatan_penduduk', 'Kepadatan Penduduk', '228 jiwa/km²', '2026-06-01'),
+  ('mata_pencaharian', 'belum_kerja', 'Belum Bekerja', '1278', '2026-06-01'),
+  ('mata_pencaharian', 'petani', 'Petani', '1683', '2026-06-01'),
+  ('mata_pencaharian', 'honorer', 'Honorer', '168', '2026-06-01'),
+  ('mata_pencaharian', 'pns', 'PNS', '99', '2026-06-01'),
+  ('mata_pencaharian', 'pensiunan', 'Pensiunan', '23', '2026-06-01'),
+  ('aset_tanah', 'tanah_desa', 'Tanah Desa', '633 m²', '2026-06-01'),
+  ('aset_perumahan', 'jumlah_rumah', 'Aset Perumahan', '672 Rumah', '2026-06-01'),
+  ('aset_transportasi', 'total', 'Kepemilikan Aset Transportasi Umum (Desa Sita)', '12', '2026-06-01'),
+  ('aset_sarana_produksi', 'total', 'Kepemilikan Aset Sarana Produksi (Desa Sita)', '12', '2026-06-01'),
+  ('rasio_guru_murid', 'guru', 'Guru', '120', '2026-06-01'),
+  ('lembaga_pendidikan_negeri', 'sd', 'SD Negeri', '1', '2026-06-01'),
+  ('lembaga_pendidikan_swasta', 'paud', 'PAUD Swasta', '3', '2026-06-01'),
+  ('lembaga_pendidikan_swasta', 'sd', 'SD Swasta', '2', '2026-06-01'),
+  ('lembaga_pendidikan_swasta', 'smp', 'SMP Swasta', '2', '2026-06-01'),
+  ('lembaga_pendidikan_swasta', 'sma', 'SMA Swasta', '2', '2026-06-01'),
+  ('sarana_kesehatan', 'posyandu', 'Posyandu', '9 Titik', '2026-06-01'),
+  ('sarana_kesehatan', 'puskesmas', 'Puskesmas', '1', '2026-06-01'),
+  ('sarana_kesehatan', 'poskesdes', 'Poskesdes', '1', '2026-06-01'),
+  ('sarana_kesehatan', 'polindes', 'Polindes', '1', '2026-06-01'),
+  ('sarana_kesehatan', 'toko_obat', 'Toko Obat', '2', '2026-06-01'),
+  ('keamanan', 'linmas', 'Linmas Desa Sita', '7 Orang', '2026-06-01'),
+  ('lembaga_kemasyarakatan', 'rt', 'Rukun Tetangga (RT)', '16', '2026-06-01'),
+  ('lembaga_kemasyarakatan', 'rw', 'Rukun Warga (RW)', '8', '2026-06-01'),
+  ('lembaga_kemasyarakatan', 'pkk', 'PKK', '6', '2026-06-01'),
+  ('lembaga_kemasyarakatan', 'posyandu', 'Posyandu', '9', '2026-06-01'),
+  ('lembaga_kemasyarakatan', 'lembaga_adat', 'Lembaga Adat Desa', '5', '2026-06-01'),
+  ('lembaga_kemasyarakatan', 'dusun', 'Dusun', '4', '2026-06-01');
+-- kesejahteraan_keluarga, PDB, Pendapatan Riil, dan sebagian besar kategori
+-- Kesehatan (kualitas bayi/ibu hamil/persalinan, wabah penyakit, gizi
+-- balita, imunisasi, KB) sengaja tidak diseed di sini (kosong total di
+-- source) — publik menampilkan EmptyState.
 
--- ── Kelompok umur ────────────────────────────────────────────────────────
+-- ── Kelompok umur (rentang 10 tahunan, sesuai source Prodeskel) ──────────
 insert into statistik_kelompok_umur (kelompok_usia, jumlah, urutan) values
-  ('0-4 tahun', 312, 1),
-  ('5-9 tahun', 341, 2),
-  ('10-14 tahun', 328, 3),
-  ('15-19 tahun', 289, 4),
-  ('20-24 tahun', 264, 5),
-  ('25-29 tahun', 251, 6),
-  ('30-39 tahun', 412, 7),
-  ('40-49 tahun', 386, 8),
-  ('50-59 tahun', 297, 9),
-  ('60 tahun ke atas', 312, 10);
+  ('0-10 tahun', 548, 1),
+  ('11-20 tahun', 624, 2),
+  ('21-30 tahun', 718, 3),
+  ('31-40 tahun', 469, 4),
+  ('41-50 tahun', 354, 5),
+  ('51-60 tahun', 296, 6),
+  ('61-70 tahun', 177, 7),
+  ('71-80 tahun', 52, 8),
+  ('81-90 tahun', 14, 9);
 
--- ── Pendidikan ───────────────────────────────────────────────────────────
+-- ── Pendidikan (label & angka riil source Prodeskel) ──────────────────────
 insert into statistik_pendidikan (tingkat, jumlah, urutan) values
-  ('Belum/Tidak Sekolah', 402, 1),
-  ('Tidak Tamat SD', 318, 2),
-  ('SD/Sederajat', 894, 3),
-  ('SMP/Sederajat', 671, 4),
-  ('SMA/Sederajat', 583, 5),
-  ('Diploma/Sarjana', 324, 6);
+  ('BLM SEKOLAH', 277, 1),
+  ('PAUD', 125, 2),
+  ('SD', 1250, 3),
+  ('SMP', 397, 4),
+  ('SMA', 895, 5),
+  ('DIII/DIV', 24, 6),
+  ('S1/S2', 289, 7);
+
+-- ── Wilayah RT (16 baris) ──────────────────────────────────────────────
+insert into wilayah_rt (nomor, nama, urutan) values
+  ('001', 'RT 001', 1), ('002', 'RT 002', 2), ('003', 'RT 003', 3), ('004', 'RT 004', 4),
+  ('005', 'RT 005', 5), ('006', 'RT 006', 6), ('007', 'RT 007', 7), ('008', 'RT 008', 8),
+  ('009', 'RT 009', 9), ('010', 'RT 010', 10), ('011', 'RT 011', 11), ('012', 'RT 012', 12),
+  ('013', 'RT 013', 13), ('014', 'RT 014', 14), ('015', 'RT 015', 15), ('016', 'RT 016', 16);
+
+-- ── Statistik per-RT — kategori dalam scope Kelompok 1 ───────────────────
+insert into statistik_rt (category, rt_id, value)
+select 'penduduk', wr.id, v.jumlah
+from (values
+  ('001', 157), ('002', 154), ('003', 220), ('004', 159),
+  ('005', 195), ('006', 243), ('007', 212), ('008', 168),
+  ('009', 176), ('010', 215), ('011', 147), ('012', 287),
+  ('013', 159), ('014', 334), ('015', 191), ('016', 242)
+) as v(nomor, jumlah)
+join wilayah_rt wr on wr.nomor = v.nomor;
+
+insert into statistik_rt (category, rt_id, value)
+select 'keluarga', wr.id, v.jumlah
+from (values
+  ('001', 44), ('002', 44), ('003', 61), ('004', 41),
+  ('005', 51), ('006', 65), ('007', 55), ('008', 46),
+  ('009', 50), ('010', 59), ('011', 42), ('012', 72),
+  ('013', 42), ('014', 86), ('015', 51), ('016', 64)
+) as v(nomor, jumlah)
+join wilayah_rt wr on wr.nomor = v.nomor;
+
+-- pengangguran & aset_tanaman per RT: kosong total di source, baris tetap
+-- dibuat (nilai null) supaya admin punya kerangka 16-baris siap isi.
+insert into statistik_rt (category, rt_id, value)
+select 'pengangguran', wr.id, null from wilayah_rt wr;
+
+insert into statistik_rt (category, rt_id, detail)
+select 'aset_tanaman', wr.id, null from wilayah_rt wr;
+
+-- Cakupan air bersih per RT — lihat catatan asumsi PDAM/Air Ledeng di
+-- seed_lanjutan_kelompok2.sql.
+insert into statistik_rt (category, rt_id, detail)
+select 'air_bersih', wr.id, jsonb_build_object('pdam', v.pdam, 'ledeng', v.ledeng)
+from (values
+  ('001', 44, 0), ('002', 44, 0), ('003', 61, 0), ('004', 41, 0),
+  ('005', 51, 0), ('006', 65, 0), ('007', 55, 0), ('008', 46, 0),
+  ('009', 50, 0), ('010', 59, 0), ('011', 42, 0), ('012', 72, 0),
+  ('013', 42, 0), ('014', 0, 86), ('015', 0, 51), ('016', 0, 64)
+) as v(nomor, pdam, ledeng)
+join wilayah_rt wr on wr.nomor = v.nomor;
+
+-- ── Sektor usaha — PDB & Pendapatan Riil (kosong total di source) ────────
+insert into statistik_sektor_usaha (jenis, kode, nama, nilai_ribu_rupiah, urutan)
+select j.jenis, s.kode, s.nama, null, s.urutan
+from (values ('pdb'), ('pendapatan_riil')) as j(jenis)
+cross join (values
+  ('A', 'Pertanian, Kehutanan, dan Perikanan', 1),
+  ('B', 'Pertambangan dan Penggalian', 2),
+  ('C', 'Industri Pengolahan', 3),
+  ('D', 'Pengadaan Listrik dan Gas', 4),
+  ('E', 'Pengadaan Air, Pengelolaan Sampah, Limbah dan Daur Ulang', 5),
+  ('F', 'Konstruksi', 6),
+  ('G', 'Perdagangan Besar dan Eceran; Reparasi Mobil dan Sepeda Motor', 7),
+  ('H', 'Transportasi dan Pergudangan', 8),
+  ('I', 'Penyediaan Akomodasi dan Makan Minum', 9),
+  ('J', 'Informasi dan Komunikasi', 10),
+  ('K', 'Jasa Keuangan dan Asuransi', 11),
+  ('L', 'Real Estate', 12),
+  ('M,N', 'Jasa Perusahaan', 13),
+  ('O', 'Administrasi Pemerintahan, Pertahanan dan Jaminan Sosial Wajib', 14),
+  ('P', 'Jasa Pendidikan', 15),
+  ('Q', 'Jasa Kesehatan dan Kegiatan Sosial', 16),
+  ('R,S,T,U', 'Jasa lainnya', 17)
+) as s(kode, nama, urutan);
 
 -- ── Komoditas ────────────────────────────────────────────────────────────
 insert into komoditas (nama, luas_ha, hasil_panen, urutan) values
@@ -67,6 +174,7 @@ insert into sarana_prasarana (kategori, nama, jumlah, urutan) values
 
 -- ── Info wilayah naratif ─────────────────────────────────────────────────
 insert into wilayah_info (section, konten, updated_at) values
+  ('sejarah', 'Narasi sejarah berdirinya Desa Sita akan ditampilkan di sini setelah dokumen profil desa tersedia.', '2026-06-01'),
   ('batas_wilayah', 'Desa Sita berada di kaki pegunungan Rana Mese, Kecamatan Rana Mese, Kabupaten Manggarai Timur, Nusa Tenggara Timur. Sebelah utara berbatasan dengan kawasan hutan lindung, sebelah selatan dengan desa tetangga, sebelah timur dan barat dengan wilayah perkebunan dan persawahan warga.', '2026-06-01'),
   ('iklim', 'Desa Sita beriklim tropis pegunungan dengan curah hujan tinggi pada musim hujan (November–April) dan suhu udara sejuk sepanjang tahun, cocok untuk komoditas kopi dan kakao.', '2026-06-01'),
   ('orbitasi', 'Jarak ke ibu kota kecamatan sekitar 6 km, ke ibu kota kabupaten sekitar 45 km, ditempuh dengan kendaraan roda dua maupun roda empat.', '2026-06-01');

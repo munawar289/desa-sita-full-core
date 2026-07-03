@@ -3,37 +3,24 @@
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { statistikFormSchema } from "@/lib/validation/statistik";
+import { logAudit } from "./audit";
 
 export type StatistikActionState = { error: string | null; success?: boolean };
 
-type SupabaseServerClient = Awaited<ReturnType<typeof createSupabaseServerClient>>;
-
-async function logAudit(
-  supabase: SupabaseServerClient,
-  params: {
-    userId: string | undefined;
-    recordId: string | null;
-    action: "insert" | "update" | "delete";
-    oldValue: unknown;
-    newValue: unknown;
-  },
-) {
-  await supabase.from("audit_log").insert({
-    user_id: params.userId ?? null,
-    table_name: "statistik",
-    record_id: params.recordId,
-    action: params.action,
-    old_value: params.oldValue as never,
-    new_value: params.newValue as never,
-  });
-}
-
 function revalidatePublicPaths() {
-  // Halaman publik yang menampilkan tabel `statistik` (PRD §7) — supaya
-  // badge "terakhir diperbarui" tidak menunggu jendela ISR 5 menit.
+  // Halaman publik yang menampilkan tabel `statistik` (PRD §7, statistik
+  // lanjutan §5) — supaya badge "terakhir diperbarui" tidak menunggu jendela
+  // ISR 5 menit.
   revalidatePath("/");
+  revalidatePath("/data-desa");
   revalidatePath("/data-desa/wilayah-administratif");
-  revalidatePath("/data-desa/jenis-kelamin");
+  revalidatePath("/data-desa/kependudukan/penduduk");
+  revalidatePath("/data-desa/ekonomi/kesejahteraan-keluarga");
+  revalidatePath("/data-desa/ekonomi/mata-pencaharian");
+  revalidatePath("/data-desa/ekonomi/aset-ekonomi");
+  revalidatePath("/data-desa/pendidikan");
+  revalidatePath("/data-desa/kesehatan");
+  revalidatePath("/data-desa/keamanan-kelembagaan");
 }
 
 export async function createStatistikAction(
@@ -72,6 +59,7 @@ export async function createStatistikAction(
 
   await logAudit(supabase, {
     userId: user?.id,
+    tableName: "statistik",
     recordId: data.id,
     action: "insert",
     oldValue: null,
@@ -126,6 +114,7 @@ export async function updateStatistikAction(
 
   await logAudit(supabase, {
     userId: user?.id,
+    tableName: "statistik",
     recordId: id,
     action: "update",
     oldValue: oldRow,
@@ -156,6 +145,7 @@ export async function deleteStatistikAction(id: string): Promise<{ error: string
 
   await logAudit(supabase, {
     userId: user?.id,
+    tableName: "statistik",
     recordId: id,
     action: "delete",
     oldValue: oldRow,

@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { getKepalaDesaRiwayat } from "@/lib/queries/kepala-desa-riwayat";
+import { getWilayahInfo } from "@/lib/queries/wilayah-info";
 
 export const metadata: Metadata = {
   title: "Sejarah — Desa Sita",
@@ -13,8 +14,12 @@ export const metadata: Metadata = {
 export const revalidate = 300;
 
 export default async function SejarahPage() {
-  const kepalaDesaRiwayat = await getKepalaDesaRiwayat();
+  const [kepalaDesaRiwayat, wilayahInfo] = await Promise.all([
+    getKepalaDesaRiwayat(),
+    getWilayahInfo(),
+  ]);
   const riwayat = [...kepalaDesaRiwayat].sort((a, b) => a.urutan - b.urutan);
+  const sejarah = wilayahInfo.find((item) => item.section === "sejarah");
 
   return (
     <>
@@ -32,8 +37,8 @@ export default async function SejarahPage() {
           <SectionHeader eyebrow="Narasi" title="Sejarah Desa Sita" />
           <div className="prose prose-stone mt-6 max-w-none text-espresso-800">
             <p>
-              Narasi sejarah berdirinya Desa Sita akan ditampilkan di sini setelah
-              dokumen profil desa tersedia.
+              {sejarah?.konten ??
+                "Narasi sejarah berdirinya Desa Sita akan ditampilkan di sini setelah dokumen profil desa tersedia."}
             </p>
           </div>
         </section>
