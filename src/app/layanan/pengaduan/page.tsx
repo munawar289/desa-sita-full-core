@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { FormPengaduan } from "@/components/pengaduan/FormPengaduan";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Form Pengaduan — Desa Sita",
-  description: "Sampaikan pengaduan atau masukan Anda untuk Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Form Pengaduan",
+    description: (profil) => `Sampaikan pengaduan atau masukan Anda untuk Desa ${profil.nama_desa}.`,
+  });
+}
 
 export default function PengaduanPage() {
   return (

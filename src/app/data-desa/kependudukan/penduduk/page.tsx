@@ -9,11 +9,15 @@ import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { getStatistik } from "@/lib/queries/statistik";
 import { getStatistikKelompokUmur } from "@/lib/queries/statistik-kelompok-umur";
 import { getStatistikRt } from "@/lib/queries/statistik-rt";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Penduduk — Data Desa Sita",
-  description: "Komposisi penduduk Desa Sita menurut jenis kelamin, kelompok umur, dan RT.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Penduduk",
+    description: (profil) =>
+      `Komposisi penduduk Desa ${profil.nama_desa} menurut jenis kelamin, kelompok umur, dan RT.`,
+  });
+}
 
 export const revalidate = 300;
 

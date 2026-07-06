@@ -8,6 +8,7 @@ export type AdminNavItem = {
 
 export const adminNavItems: AdminNavItem[] = [
   { label: "Ringkasan", href: "/admin", active: true },
+  { label: "Identitas Desa", href: "/admin/profil-desa", active: true, minRole: "admin" },
   { label: "Statistik", href: "/admin/statistik", active: true },
   { label: "Statistik per-RT", href: "/admin/statistik/per-rt", active: true },
   { label: "Sektor Usaha", href: "/admin/statistik/sektor-usaha", active: true },

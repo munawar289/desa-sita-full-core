@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { LembagaExplorer } from "@/components/lembaga/LembagaExplorer";
 import { getLembaga } from "@/lib/queries/lembaga";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Lembaga Desa — Desa Sita",
-  description: "Daftar lembaga kemasyarakatan, ekonomi, pendidikan, dan keamanan Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Lembaga Desa",
+    description: (profil) =>
+      `Daftar lembaga kemasyarakatan, ekonomi, pendidikan, dan keamanan Desa ${profil.nama_desa}.`,
+  });
+}
 
 export const revalidate = 300;
 

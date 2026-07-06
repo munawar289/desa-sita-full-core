@@ -7,11 +7,15 @@ import { BarChartRt } from "@/components/statistik/charts/BarChartRt";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { getStatistikSektorUsaha } from "@/lib/queries/statistik-sektor-usaha";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Produk Domestik Bruto — Data Desa Sita",
-  description: "Produk Domestik Bruto Desa Sita menurut sektor lapangan usaha.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Produk Domestik Bruto",
+    description: (profil) =>
+      `Produk Domestik Bruto Desa ${profil.nama_desa} menurut sektor lapangan usaha.`,
+  });
+}
 
 export const revalidate = 300;
 

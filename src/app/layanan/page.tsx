@@ -4,11 +4,14 @@ import { Clock, ClipboardList, MessageSquareWarning } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { SectionHeader } from "@/components/shared/SectionHeader";
 import { Button } from "@/components/ui/button";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Layanan — Desa Sita",
-  description: "Informasi layanan operasional dan pengaduan Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Layanan",
+    description: (profil) => `Informasi layanan operasional dan pengaduan Desa ${profil.nama_desa}.`,
+  });
+}
 
 export default function LayananPage() {
   return (

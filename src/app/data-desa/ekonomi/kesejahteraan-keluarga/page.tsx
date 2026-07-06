@@ -7,11 +7,15 @@ import { BarChartStatistik } from "@/components/statistik/charts/BarChartStatist
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { getStatistik } from "@/lib/queries/statistik";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Kesejahteraan Keluarga — Data Desa Sita",
-  description: "Jumlah keluarga Desa Sita menurut tingkat kesejahteraan (BKKBN).",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Kesejahteraan Keluarga",
+    description: (profil) =>
+      `Jumlah keluarga Desa ${profil.nama_desa} menurut tingkat kesejahteraan (BKKBN).`,
+  });
+}
 
 export const revalidate = 300;
 

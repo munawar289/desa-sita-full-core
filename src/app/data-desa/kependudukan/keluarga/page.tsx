@@ -5,11 +5,14 @@ import { StatTable } from "@/components/statistik/StatTable";
 import { BarChartRt } from "@/components/statistik/charts/BarChartRt";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { getStatistikRt } from "@/lib/queries/statistik-rt";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Keluarga — Data Desa Sita",
-  description: "Jumlah keluarga Desa Sita menurut RT.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Keluarga",
+    description: (profil) => `Jumlah keluarga Desa ${profil.nama_desa} menurut RT.`,
+  });
+}
 
 export const revalidate = 300;
 

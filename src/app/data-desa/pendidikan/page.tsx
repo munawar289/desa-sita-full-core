@@ -8,11 +8,15 @@ import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { getStatistikPendidikan } from "@/lib/queries/statistik-pendidikan";
 import { getStatistik } from "@/lib/queries/statistik";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Pendidikan — Data Desa Sita",
-  description: "Tingkat pendidikan, rasio guru-murid, dan lembaga pendidikan Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Pendidikan",
+    description: (profil) =>
+      `Tingkat pendidikan, rasio guru-murid, dan lembaga pendidikan Desa ${profil.nama_desa}.`,
+  });
+}
 
 export const revalidate = 300;
 

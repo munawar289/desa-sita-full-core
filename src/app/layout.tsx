@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { getDesaProfil } from "@/lib/queries/desa-profil";
+import { buildMetadata } from "@/lib/metadata";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -21,26 +23,38 @@ const plexMono = IBM_Plex_Mono({
   weight: ["500", "600"],
 });
 
-export const metadata: Metadata = {
-  title: "Desa Sita — Kec. Rana Mese, Kab. Manggarai Timur",
-  description:
-    "Situs resmi Desa Sita, Kecamatan Rana Mese, Kabupaten Manggarai Timur, NTT.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata();
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const profil = await getDesaProfil();
+
+  // Inline style di elemen ini punya spesifisitas lebih tinggi dari :root/.dark
+  // untuk elemen yang sama, jadi override tema warna berlaku di light & dark
+  // mode tanpa menyentuh token struktural (--background, --foreground, dst).
+  const temaWarna = {
+    "--warna-primer": profil.warna_primer,
+    "--warna-sekunder": profil.warna_sekunder,
+    "--warna-aksen": profil.warna_aksen,
+    "--warna-latar-gelap": profil.warna_latar_gelap,
+    "--warna-latar": profil.warna_latar,
+  } as React.CSSProperties;
+
   return (
     <html
       lang="id"
       className={`${fraunces.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
+      style={temaWarna}
     >
-      <body className="min-h-full flex flex-col font-body bg-krem-50 text-espresso-800">
-        <Navbar />
+      <body className="min-h-full flex flex-col font-body bg-background text-espresso-800">
+        <Navbar profil={profil} />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <Footer profil={profil} />
       </body>
     </html>
   );

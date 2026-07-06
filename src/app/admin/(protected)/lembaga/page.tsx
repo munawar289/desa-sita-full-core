@@ -3,11 +3,15 @@ import { AddLembagaForm } from "@/components/admin/AddLembagaForm";
 import { LembagaRow } from "@/components/admin/LembagaRow";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Lembaga } from "@/lib/data/lembaga";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Lembaga Desa — Admin Desa Sita",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Lembaga Desa",
+    area: "admin",
+    robots: { index: false, follow: false },
+  });
+}
 
 function groupByKategori(rows: Lembaga[]) {
   const groups = new Map<string, Lembaga[]>();

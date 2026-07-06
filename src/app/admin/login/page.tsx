@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import { Mountain, TriangleAlert } from "lucide-react";
 import { LoginForm } from "@/components/admin/LoginForm";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Masuk — Admin Desa Sita",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Masuk",
+    area: "admin",
+    robots: { index: false, follow: false },
+  });
+}
 
 export default function AdminLoginPage() {
   return (

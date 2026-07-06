@@ -3,11 +3,15 @@ import Link from "next/link";
 import { StatistikGroupedList } from "@/components/admin/StatistikGroupedList";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Statistik } from "@/lib/data/statistik";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Statistik — Admin Desa Sita",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Statistik",
+    area: "admin",
+    robots: { index: false, follow: false },
+  });
+}
 
 export default async function AdminStatistikPage() {
   const supabase = await createSupabaseServerClient();

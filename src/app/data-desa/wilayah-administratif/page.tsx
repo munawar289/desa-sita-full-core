@@ -4,11 +4,14 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { StatCardGrid } from "@/components/statistik/StatCardGrid";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { getStatistik } from "@/lib/queries/statistik";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Wilayah Administratif — Data Desa Sita",
-  description: "Data administratif dan kepadatan penduduk Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Wilayah Administratif",
+    description: (profil) => `Data administratif dan kepadatan penduduk Desa ${profil.nama_desa}.`,
+  });
+}
 
 export const revalidate = 300;
 

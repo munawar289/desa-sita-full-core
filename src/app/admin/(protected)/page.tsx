@@ -2,11 +2,15 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { AlertTriangle, FileText, MessageSquareWarning } from "lucide-react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Ringkasan — Admin Desa Sita",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Ringkasan",
+    area: "admin",
+    robots: { index: false, follow: false },
+  });
+}
 
 const USANG_HARI = 90;
 

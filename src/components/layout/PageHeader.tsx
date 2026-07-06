@@ -8,10 +8,10 @@ export function PageHeader({
   breadcrumbItems: BreadcrumbNavItem[];
 }) {
   return (
-    <div className="relative overflow-hidden bg-linear-to-br from-kopi-600 to-espresso-800 px-4 py-12 sm:px-6">
+    <div className="relative overflow-hidden bg-linear-to-br from-kopi-600 to-panel-800 px-4 py-12 sm:px-6">
       {/* Glow + pola titik dekoratif */}
       <div className="absolute -right-16 -top-20 size-72 rounded-full bg-kopi-400/25 blur-3xl" />
-      <div className="absolute -bottom-24 left-1/4 size-64 rounded-full bg-espresso-950/40 blur-3xl" />
+      <div className="absolute -bottom-24 left-1/4 size-64 rounded-full bg-panel-950/40 blur-3xl" />
       <div className="bg-dot-grid absolute inset-0 opacity-40" />
 
       <div className="relative mx-auto max-w-6xl">

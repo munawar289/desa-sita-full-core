@@ -7,11 +7,14 @@ import { BarChartRt } from "@/components/statistik/charts/BarChartRt";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { getStatistikSektorUsaha } from "@/lib/queries/statistik-sektor-usaha";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Pendapatan Riil Keluarga — Data Desa Sita",
-  description: "Pendapatan riil keluarga Desa Sita menurut sektor usaha.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Pendapatan Riil Keluarga",
+    description: (profil) => `Pendapatan riil keluarga Desa ${profil.nama_desa} menurut sektor usaha.`,
+  });
+}
 
 export const revalidate = 300;
 

@@ -4,25 +4,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Mountain } from "lucide-react";
 import { footerNavItems } from "@/lib/nav";
+import type { DesaProfil } from "@/lib/data/desa-profil";
 
-export function Footer() {
+export function Footer({ profil }: { profil: DesaProfil }) {
   const pathname = usePathname();
 
   if (pathname.startsWith("/admin")) return null;
 
+  const jamLayanan = [profil.jam_layanan, profil.zona_waktu].filter(Boolean).join(" ");
+
   return (
-    <footer className="bg-espresso-800 text-krem-50">
+    <footer className="bg-panel-800 text-krem-50">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
         <div>
           <div className="flex items-center gap-2.5">
             <span className="flex size-9 items-center justify-center rounded-[10px] bg-linear-to-br from-gold-500 to-kopi-600 text-espresso-950">
               <Mountain className="size-5" />
             </span>
-            <p className="font-heading text-lg font-semibold">Desa Sita</p>
+            <p className="font-heading text-lg font-semibold">Desa {profil.nama_desa}</p>
           </div>
           <p className="mt-4 text-sm leading-relaxed text-krem-50/70">
-            Kecamatan Rana Mese, Kabupaten Manggarai Timur,
-            Nusa Tenggara Timur
+            Kecamatan {profil.kecamatan}, Kabupaten {profil.kabupaten},{" "}
+            {profil.provinsi}
           </p>
         </div>
 
@@ -49,14 +52,14 @@ export function Footer() {
             Kontak
           </p>
           <ul className="mt-3 space-y-2 text-sm text-krem-50/70">
-            <li>desasita@ranames.manggaraitimurkab.go.id</li>
-            <li>Senin&ndash;Jumat, 08.00&ndash;16.00 WITA</li>
+            {profil.email && <li>{profil.email}</li>}
+            {jamLayanan && <li>{jamLayanan}</li>}
           </ul>
         </div>
       </div>
 
       <div className="border-t border-krem-50/10 px-4 py-4 text-center text-xs text-krem-50/50 sm:px-6">
-        &copy; {new Date().getFullYear()} Pemerintah Desa Sita. Seluruh hak cipta dilindungi.
+        &copy; {new Date().getFullYear()} Pemerintah Desa {profil.nama_desa}. Seluruh hak cipta dilindungi.
       </div>
     </footer>
   );

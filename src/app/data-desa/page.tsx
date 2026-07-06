@@ -23,11 +23,14 @@ import { getStatistikRt } from "@/lib/queries/statistik-rt";
 import { getStatistikSektorUsaha } from "@/lib/queries/statistik-sektor-usaha";
 import { getStatistikKelompokUmur } from "@/lib/queries/statistik-kelompok-umur";
 import { getStatistikPendidikan } from "@/lib/queries/statistik-pendidikan";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Data Desa — Desa Sita",
-  description: "Statistik dan data terbuka Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Data Desa",
+    description: (profil) => `Statistik dan data terbuka Desa ${profil.nama_desa}.`,
+  });
+}
 
 export const revalidate = 300;
 

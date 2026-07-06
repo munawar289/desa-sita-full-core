@@ -9,11 +9,15 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { Aparatur } from "@/lib/data/aparatur";
 import type { BpdAnggota } from "@/lib/data/bpd";
 import type { KepalaDesaRiwayat } from "@/lib/data/kepala-desa-riwayat";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Pemerintahan — Admin Desa Sita",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Pemerintahan",
+    area: "admin",
+    robots: { index: false, follow: false },
+  });
+}
 
 export default async function AdminPemerintahanPage() {
   const supabase = await createSupabaseServerClient();

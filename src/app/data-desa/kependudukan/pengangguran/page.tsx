@@ -6,11 +6,14 @@ import { BarChartRt } from "@/components/statistik/charts/BarChartRt";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { getStatistikRt } from "@/lib/queries/statistik-rt";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Pengangguran — Data Desa Sita",
-  description: "Jumlah penduduk menganggur Desa Sita menurut RT.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Pengangguran",
+    description: (profil) => `Jumlah penduduk menganggur Desa ${profil.nama_desa} menurut RT.`,
+  });
+}
 
 export const revalidate = 300;
 

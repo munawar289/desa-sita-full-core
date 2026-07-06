@@ -7,11 +7,15 @@ import { StatTable } from "@/components/statistik/StatTable";
 import { StrukturOrganisasi } from "@/components/pemerintahan/StrukturOrganisasi";
 import { getAparatur } from "@/lib/queries/aparatur";
 import { getBpd } from "@/lib/queries/bpd";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Pemerintahan — Desa Sita",
-  description: "Struktur organisasi dan Badan Permusyawaratan Desa (BPD) Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Pemerintahan",
+    description: (profil) =>
+      `Struktur organisasi dan Badan Permusyawaratan Desa (BPD) Desa ${profil.nama_desa}.`,
+  });
+}
 
 export const revalidate = 300;
 

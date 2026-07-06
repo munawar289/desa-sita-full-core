@@ -4,11 +4,15 @@ import { StatistikRtRow } from "@/components/admin/StatistikRtRow";
 import { DETAIL_FIELDS } from "@/lib/validation/statistik-rt";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { StatistikRt } from "@/lib/data/statistik-rt";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Statistik per-RT — Admin Desa Sita",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Statistik per-RT",
+    area: "admin",
+    robots: { index: false, follow: false },
+  });
+}
 
 const CATEGORY_LABELS: Record<string, string> = {
   penduduk: "Penduduk",

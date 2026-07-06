@@ -7,11 +7,15 @@ import { StatTable } from "@/components/statistik/StatTable";
 import { getWilayahInfo } from "@/lib/queries/wilayah-info";
 import { getKomoditas } from "@/lib/queries/komoditas";
 import { getPeternakan } from "@/lib/queries/peternakan";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Wilayah — Desa Sita",
-  description: "Batas wilayah, iklim, komoditas, dan peternakan Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Wilayah",
+    description: (profil) =>
+      `Batas wilayah, iklim, komoditas, dan peternakan Desa ${profil.nama_desa}.`,
+  });
+}
 
 export const revalidate = 300;
 

@@ -5,11 +5,15 @@ import { SectionHeader } from "@/components/shared/SectionHeader";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { getKepalaDesaRiwayat } from "@/lib/queries/kepala-desa-riwayat";
 import { getWilayahInfo } from "@/lib/queries/wilayah-info";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Sejarah — Desa Sita",
-  description: "Riwayat berdirinya Desa Sita dan daftar kepala desa dari masa ke masa.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Sejarah",
+    description: (profil) =>
+      `Riwayat berdirinya Desa ${profil.nama_desa} dan daftar kepala desa dari masa ke masa.`,
+  });
+}
 
 export const revalidate = 300;
 

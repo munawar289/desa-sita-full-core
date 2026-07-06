@@ -5,11 +5,14 @@ import { CardSaranaPrasarana } from "@/components/statistik/charts/CardSaranaPra
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { getSaranaPrasarana } from "@/lib/queries/sarana-prasarana";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Sarana & Prasarana — Data Desa Sita",
-  description: "Fasilitas umum yang tersedia di Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Sarana & Prasarana",
+    description: (profil) => `Fasilitas umum yang tersedia di Desa ${profil.nama_desa}.`,
+  });
+}
 
 export const revalidate = 300;
 

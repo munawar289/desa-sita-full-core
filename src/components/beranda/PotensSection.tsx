@@ -1,31 +1,33 @@
 import Link from "next/link";
 import { ArrowRight, Sprout, Trees, Beef } from "lucide-react";
 import { SectionHeader } from "@/components/shared/SectionHeader";
+import { getDesaProfil } from "@/lib/queries/desa-profil";
 
-const potensi = [
-  {
-    icon: Sprout,
-    judul: "Pertanian",
-    deskripsi: "Lahan pertanian warga menghasilkan berbagai komoditas pangan unggulan desa.",
-  },
-  {
-    icon: Trees,
-    judul: "Perkebunan",
-    deskripsi: "Komoditas perkebunan menjadi salah satu sumber penghidupan utama masyarakat.",
-  },
-  {
-    icon: Beef,
-    judul: "Peternakan",
-    deskripsi: "Peternakan warga turut menopang ekonomi rumah tangga di Desa Sita.",
-  },
-];
+export async function PotensSection() {
+  const profil = await getDesaProfil();
+  const potensi = [
+    {
+      icon: Sprout,
+      judul: "Pertanian",
+      deskripsi: "Lahan pertanian warga menghasilkan berbagai komoditas pangan unggulan desa.",
+    },
+    {
+      icon: Trees,
+      judul: "Perkebunan",
+      deskripsi: "Komoditas perkebunan menjadi salah satu sumber penghidupan utama masyarakat.",
+    },
+    {
+      icon: Beef,
+      judul: "Peternakan",
+      deskripsi: `Peternakan warga turut menopang ekonomi rumah tangga di Desa ${profil.nama_desa}.`,
+    },
+  ];
 
-export function PotensSection() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
       <SectionHeader
         eyebrow="Potensi Desa"
-        title="Sumber Penghidupan Warga Desa Sita"
+        title={`Sumber Penghidupan Warga Desa ${profil.nama_desa}`}
         align="center"
         className="mx-auto"
       />

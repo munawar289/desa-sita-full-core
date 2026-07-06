@@ -6,20 +6,21 @@ import { useState } from "react";
 import { ChevronDown, Menu, Mountain, X } from "lucide-react";
 import { navItems } from "@/lib/nav";
 import { cn } from "@/lib/utils";
+import type { DesaProfil } from "@/lib/data/desa-profil";
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function Navbar() {
+export function Navbar({ profil }: { profil: DesaProfil }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-espresso-800/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-panel-800/95 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="group flex items-center gap-2.5">
           <span className="flex size-9 items-center justify-center rounded-[10px] bg-linear-to-br from-gold-500 to-kopi-600 text-espresso-950 shadow-sm shadow-black/20 transition-transform duration-200 group-hover:scale-105">
@@ -27,7 +28,7 @@ export function Navbar() {
           </span>
           <span className="flex flex-col leading-none">
             <span className="font-heading text-lg font-semibold tracking-wide text-krem-50">
-              Desa Sita
+              Desa {profil.nama_desa}
             </span>
             <span className="mt-0.5 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-krem-50/50">
               Situs Resmi Desa
@@ -99,7 +100,7 @@ export function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="w-full border-t border-white/10 bg-espresso-800 md:hidden">
+        <div className="w-full border-t border-white/10 bg-panel-800 md:hidden">
           <nav className="flex flex-col gap-1 px-4 py-3">
             {navItems.map((item) => (
               <div key={item.href}>

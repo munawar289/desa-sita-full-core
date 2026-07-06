@@ -11,11 +11,15 @@ import type { WilayahInfo } from "@/lib/data/wilayah-info";
 import { WILAYAH_INFO_SECTIONS } from "@/lib/data/wilayah-info-sections";
 import type { Komoditas } from "@/lib/data/komoditas";
 import type { Peternakan } from "@/lib/data/peternakan";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Profil Desa & Wilayah — Admin Desa Sita",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Profil Desa & Wilayah",
+    area: "admin",
+    robots: { index: false, follow: false },
+  });
+}
 
 export default async function AdminWilayahPage() {
   const supabase = await createSupabaseServerClient();

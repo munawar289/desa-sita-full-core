@@ -8,11 +8,14 @@ import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { getStatistik } from "@/lib/queries/statistik";
 import { getStatistikRt } from "@/lib/queries/statistik-rt";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Kesehatan — Data Desa Sita",
-  description: "Sarana kesehatan dan cakupan air bersih Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Kesehatan",
+    description: (profil) => `Sarana kesehatan dan cakupan air bersih Desa ${profil.nama_desa}.`,
+  });
+}
 
 export const revalidate = 300;
 

@@ -6,11 +6,14 @@ import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { getStatistik } from "@/lib/queries/statistik";
 import { getStatistikRt } from "@/lib/queries/statistik-rt";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Aset Ekonomi — Data Desa Sita",
-  description: "Penguasaan aset ekonomi masyarakat Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Aset Ekonomi",
+    description: (profil) => `Penguasaan aset ekonomi masyarakat Desa ${profil.nama_desa}.`,
+  });
+}
 
 export const revalidate = 300;
 

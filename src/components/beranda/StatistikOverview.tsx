@@ -9,14 +9,16 @@ import { getStatistikRt } from "@/lib/queries/statistik-rt";
 import { getStatistikSektorUsaha } from "@/lib/queries/statistik-sektor-usaha";
 import { getStatistikKelompokUmur } from "@/lib/queries/statistik-kelompok-umur";
 import { getStatistikPendidikan } from "@/lib/queries/statistik-pendidikan";
+import { getDesaProfil } from "@/lib/queries/desa-profil";
 
 function terbanyak<T extends { jumlah: number }>(items: T[]): T | null {
   return items.reduce<T | null>((max, item) => (!max || item.jumlah > max.jumlah ? item : max), null);
 }
 
 export async function StatistikOverview() {
-  const [statistik, statistikRt, statistikSektorUsaha, statistikKelompokUmur, statistikPendidikan] =
+  const [profil, statistik, statistikRt, statistikSektorUsaha, statistikKelompokUmur, statistikPendidikan] =
     await Promise.all([
+      getDesaProfil(),
       getStatistik(),
       getStatistikRt(),
       getStatistikSektorUsaha(),
@@ -38,7 +40,7 @@ export async function StatistikOverview() {
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-      <SectionHeader eyebrow="Data Desa" title="Sekilas Statistik Desa Sita" />
+      <SectionHeader eyebrow="Data Desa" title={`Sekilas Statistik Desa ${profil.nama_desa}`} />
 
       <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
         <StatCard

@@ -5,11 +5,15 @@ import { StatTable } from "@/components/statistik/StatTable";
 import { BarChartStatistik } from "@/components/statistik/charts/BarChartStatistik";
 import { DataUpdatedAt } from "@/components/shared/DataUpdatedAt";
 import { getStatistik } from "@/lib/queries/statistik";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Struktur Mata Pencaharian — Data Desa Sita",
-  description: "Struktur mata pencaharian penduduk Desa Sita menurut sektor.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Struktur Mata Pencaharian",
+    description: (profil) =>
+      `Struktur mata pencaharian penduduk Desa ${profil.nama_desa} menurut sektor.`,
+  });
+}
 
 export const revalidate = 300;
 

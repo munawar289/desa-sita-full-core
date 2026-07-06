@@ -2,11 +2,15 @@ import type { Metadata } from "next";
 import { Mail, FileBarChart, FileSpreadsheet, Gauge } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { BadgeKategori } from "@/components/shared/BadgeKategori";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Rencana Pengembangan — Desa Sita",
-  description: "Layanan dan fitur yang sedang direncanakan untuk Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Rencana Pengembangan",
+    description: (profil) =>
+      `Layanan dan fitur yang sedang direncanakan untuk Desa ${profil.nama_desa}.`,
+  });
+}
 
 const rencana = [
   {

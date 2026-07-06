@@ -2,11 +2,14 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { History, Map } from "lucide-react";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Profil Desa — Desa Sita",
-  description: "Sejarah, wilayah, dan profil umum Desa Sita.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: "Profil Desa",
+    description: (profil) => `Sejarah, wilayah, dan profil umum Desa ${profil.nama_desa}.`,
+  });
+}
 
 const subHalaman = [
   {

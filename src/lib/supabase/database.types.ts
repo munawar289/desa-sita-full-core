@@ -287,6 +287,48 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["wilayah_info"]["Insert"]>;
         Relationships: [];
       };
+      desa_profil: {
+        Row: {
+          id: string;
+          nama_desa: string;
+          kecamatan: string;
+          kabupaten: string;
+          provinsi: string;
+          hero_deskripsi: string;
+          email: string | null;
+          jam_layanan: string | null;
+          zona_waktu: string | null;
+          tahun_berdiri: number | null;
+          warna_primer: string;
+          warna_sekunder: string;
+          warna_aksen: string;
+          warna_latar_gelap: string;
+          warna_latar: string;
+          updated_by: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          nama_desa: string;
+          kecamatan: string;
+          kabupaten: string;
+          provinsi: string;
+          hero_deskripsi: string;
+          email?: string | null;
+          jam_layanan?: string | null;
+          zona_waktu?: string | null;
+          tahun_berdiri?: number | null;
+          warna_primer?: string;
+          warna_sekunder?: string;
+          warna_aksen?: string;
+          warna_latar_gelap?: string;
+          warna_latar?: string;
+          updated_by?: string | null;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["desa_profil"]["Insert"]>;
+        Relationships: [];
+      };
       berita: {
         Row: {
           id: string;

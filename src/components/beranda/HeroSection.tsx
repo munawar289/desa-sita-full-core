@@ -1,18 +1,20 @@
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getDesaProfil } from "@/lib/queries/desa-profil";
 
-const meta = [
-  "Kec. Rana Mese",
-  "Kab. Manggarai Timur",
-  "Nusa Tenggara Timur",
-];
+export async function HeroSection() {
+  const profil = await getDesaProfil();
+  const meta = [
+    `Kec. ${profil.kecamatan}`,
+    `Kab. ${profil.kabupaten}`,
+    profil.provinsi,
+  ];
 
-export function HeroSection() {
   return (
-    <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-espresso-950 px-4 text-center">
+    <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-panel-950 px-4 text-center">
       {/* Base gradient */}
-      <div className="absolute inset-0 bg-linear-to-br from-espresso-950 via-espresso-800 to-espresso-950" />
+      <div className="absolute inset-0 bg-linear-to-br from-panel-950 via-panel-800 to-panel-950" />
 
       {/* Glow blobs */}
       <div className="animate-float absolute -left-24 top-1/4 size-96 rounded-full bg-kopi-600/25 blur-3xl" />
@@ -21,7 +23,7 @@ export function HeroSection() {
 
       {/* Dot pattern + vignette */}
       <div className="bg-dot-grid absolute inset-0 opacity-60 mask-[linear-gradient(to_bottom,transparent,black_35%,black_70%,transparent)]" />
-      <div className="absolute inset-0 bg-linear-to-t from-espresso-950 via-transparent to-espresso-950/40" />
+      <div className="absolute inset-0 bg-linear-to-t from-panel-950 via-transparent to-panel-950/40" />
 
       <div className="animate-fade-up relative flex flex-col items-center">
         <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.16em] text-gold-400">
@@ -30,12 +32,12 @@ export function HeroSection() {
         </span>
 
         <h1 className="mt-6 font-heading text-6xl font-semibold tracking-wide text-krem-50 drop-shadow-sm md:text-8xl">
-          DESA <span className="text-gradient-kopi">SITA</span>
+          DESA{" "}
+          <span className="text-gradient-kopi">{profil.nama_desa.toUpperCase()}</span>
         </h1>
 
         <p className="mt-5 max-w-lg text-sm leading-relaxed text-krem-50/70 md:text-base">
-          Desa agraris di kaki pegunungan Rana Mese — hidup dari hasil kebun dan
-          sawah sejak tahun 1966.
+          {profil.hero_deskripsi}
         </p>
 
         <div className="mt-9 flex flex-col gap-3 sm:flex-row">

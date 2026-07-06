@@ -7,21 +7,30 @@
 
 @theme {
   /* Desa Sita — palet editorial agraris (cream · terracotta · olive · gold · brown) */
-  --color-espresso-950: #2a2118; /* ink — teks utama & heading */
-  --color-espresso-800: #3d2a1d; /* brown — panel gelap (navbar/footer), teks sekunder */
-  --color-kopi-600: #c1602a; /* terracotta — primary CTA / aksen utama */
-  --color-kopi-400: #d07b3f; /* terracotta terang — hover / link */
-  --color-kopi-100: #f0eada; /* panel hangat lembut */
+  --color-espresso-950: #2a2118; /* ink tetap fixed — teks utama & heading di seluruh situs (termasuk admin) */
+  --color-espresso-800: #3d2a1d; /* ink sekunder tetap fixed — teks body, dan background admin (sidebar/login) */
+  /* panel-950/800: keluarga BARU (bukan alias espresso) khusus untuk background gelap
+     publik (Navbar/Footer/Hero/PageHeader) yang dikustomisasi lewat --warna-latar-gelap.
+     Dipisah dari espresso-950/800 supaya teks ink & background admin tetap aman/fixed
+     walau admin memilih warna latar gelap yang ekstrem. */
+  --color-panel-800: var(--warna-latar-gelap);
+  --color-panel-950: color-mix(in srgb, var(--warna-latar-gelap) 75%, black);
+  /* kopi/sawah/gold: shade turunan dihitung dari --warna-primer/--warna-sekunder/--warna-aksen
+     (diinjeksi RootLayout dari desa_profil, default di :root di bawah) — profil-desa PRD §3.5.
+     Tint/shade dihitung via color-mix(), bukan hex literal, supaya admin cukup pilih 1 warna/slot. */
+  --color-kopi-600: var(--warna-primer); /* terracotta — primary CTA / aksen utama */
+  --color-kopi-400: color-mix(in srgb, var(--warna-primer) 75%, white); /* terracotta terang — hover / link */
+  --color-kopi-100: color-mix(in srgb, var(--warna-primer) 15%, white); /* panel hangat lembut */
   --color-kakao-200: #e2d8c3; /* border / divider */
   --color-kakao-100: #fbf7ec; /* bg-soft / stripe tabel */
   --color-krem-50: #f5efe2; /* background halaman */
-  --color-sawah-700: #3f5a2c; /* olive gelap — label section */
-  --color-sawah-400: #5b7a41; /* olive — aksen hijau */
-  --color-sawah-100: #e8f4e2; /* bg badge hijau */
+  --color-sawah-700: color-mix(in srgb, var(--warna-sekunder) 70%, black); /* olive gelap — label section */
+  --color-sawah-400: var(--warna-sekunder); /* olive — aksen hijau */
+  --color-sawah-100: color-mix(in srgb, var(--warna-sekunder) 15%, white); /* bg badge hijau */
   --color-tanah-500: #9c4a1e; /* terracotta gelap — alert / badge soon */
   --color-tanah-100: #fbe9dc; /* bg badge terracotta */
-  --color-gold-500: #d9a441; /* gold — eyebrow dot / avatar / aksen */
-  --color-gold-400: #e4bc6b; /* gold terang */
+  --color-gold-500: var(--warna-aksen); /* gold — eyebrow dot / avatar / aksen */
+  --color-gold-400: color-mix(in srgb, var(--warna-aksen) 75%, white); /* gold terang */
 }
 
 @theme inline {
@@ -69,13 +78,22 @@
 }
 
 :root {
-  --background: #f5efe2;
+  /* Default tema warna — identik nilai seed desa_profil (profil-desa PRD §3.2).
+     RootLayout meng-override baris ini lewat inline style di <html> dengan
+     nilai dari database; spesifisitas inline > :root berlaku di light & dark. */
+  --warna-primer: #c1602a;
+  --warna-sekunder: #5b7a41;
+  --warna-aksen: #d9a441;
+  --warna-latar-gelap: #3d2a1d;
+  --warna-latar: #f5efe2;
+
+  --background: var(--warna-latar);
   --foreground: #2a2118;
   --card: #ffffff;
   --card-foreground: #2a2118;
   --popover: #ffffff;
   --popover-foreground: #2a2118;
-  --primary: #c1602a;
+  --primary: var(--warna-primer);
   --primary-foreground: #ffffff;
   --secondary: #f0eada;
   --secondary-foreground: #3d2a1d;
@@ -86,12 +104,12 @@
   --destructive: #9c4a1e;
   --border: #e2d8c3;
   --input: #e2d8c3;
-  --ring: #c1602a;
-  --chart-1: #c1602a;
-  --chart-2: #5b7a41;
-  --chart-3: #d9a441;
+  --ring: var(--warna-primer);
+  --chart-1: var(--warna-primer);
+  --chart-2: var(--warna-sekunder);
+  --chart-3: var(--warna-aksen);
   --chart-4: #9c4a1e;
-  --chart-5: #3f5a2c;
+  --chart-5: color-mix(in srgb, var(--warna-sekunder) 70%, black);
   --radius: 0.875rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
