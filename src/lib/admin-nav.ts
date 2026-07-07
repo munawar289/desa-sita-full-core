@@ -15,6 +15,7 @@ export const adminNavItems: AdminNavItem[] = [
   { label: "Berita", href: "/admin/berita", active: false },
   { label: "Galeri", href: "/admin/galeri", active: false },
   { label: "Profil Desa & Wilayah", href: "/admin/wilayah", active: true },
+  { label: "Potensi Desa", href: "/admin/potensi", active: true },
   { label: "Lembaga Desa", href: "/admin/lembaga", active: true },
   { label: "Pemerintahan", href: "/admin/pemerintahan", active: true, minRole: "admin" },
   { label: "Pengaduan", href: "/admin/layanan/pengaduan", active: false },
