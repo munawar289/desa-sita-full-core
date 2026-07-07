@@ -11,6 +11,10 @@ function parseForm(formData: FormData) {
   return wilayahInfoFormSchema.safeParse({
     section: formData.get("section"),
     konten: formData.get("konten"),
+    page: formData.get("page"),
+    judul: formData.get("judul"),
+    eyebrow: formData.get("eyebrow"),
+    urutan: formData.get("urutan"),
   });
 }
 

@@ -5,11 +5,11 @@ export async function getWilayahInfo(): Promise<WilayahInfo[]> {
   return withSupabaseFallback("wilayah_info", wilayahInfoMock, async (client) => {
     const { data, error } = await client
       .from("wilayah_info")
-      .select("id, section, konten, updated_at");
+      .select("id, section, konten, page, judul, eyebrow, urutan, updated_at");
     if (error) throw error;
     return data.map((row) => ({
       ...row,
-      section: row.section as WilayahInfo["section"],
+      page: row.page as WilayahInfo["page"],
     }));
   });
 }

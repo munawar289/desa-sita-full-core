@@ -8,7 +8,7 @@ import { AddPeternakanForm } from "@/components/admin/AddPeternakanForm";
 import { PeternakanRow } from "@/components/admin/PeternakanRow";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { WilayahInfo } from "@/lib/data/wilayah-info";
-import { WILAYAH_INFO_SECTIONS } from "@/lib/data/wilayah-info-sections";
+import { WILAYAH_INFO_PRESETS } from "@/lib/data/wilayah-info-sections";
 import type { Komoditas } from "@/lib/data/komoditas";
 import type { Peternakan } from "@/lib/data/peternakan";
 import { buildMetadata } from "@/lib/metadata";
@@ -24,7 +24,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function AdminWilayahPage() {
   const supabase = await createSupabaseServerClient();
   const [wilayahInfoResult, komoditasResult, peternakanResult] = await Promise.all([
-    supabase.from("wilayah_info").select("id, section, konten, updated_at").order("section"),
+    supabase
+      .from("wilayah_info")
+      .select("id, section, konten, page, judul, eyebrow, urutan, updated_at")
+      .order("section"),
     supabase.from("komoditas").select("id, nama, luas_ha, hasil_panen, urutan").order("urutan"),
     supabase
       .from("peternakan")
@@ -32,7 +35,9 @@ export default async function AdminWilayahPage() {
       .order("urutan"),
   ]);
 
-  const wilayahInfo: WilayahInfo[] = wilayahInfoResult.error ? [] : wilayahInfoResult.data;
+  const wilayahInfo: WilayahInfo[] = wilayahInfoResult.error
+    ? []
+    : wilayahInfoResult.data.map((row) => ({ ...row, page: row.page as WilayahInfo["page"] }));
   const komoditas: Komoditas[] = komoditasResult.error ? [] : komoditasResult.data;
   const peternakan: Peternakan[] = peternakanResult.error ? [] : peternakanResult.data;
 
@@ -57,16 +62,16 @@ export default async function AdminWilayahPage() {
           </p>
         ) : (
           <div className="space-y-3">
-            {WILAYAH_INFO_SECTIONS.map(({ key, label }) => {
-              const item = wilayahInfo.find((row) => row.section === key);
+            {WILAYAH_INFO_PRESETS.map((preset) => {
+              const item = wilayahInfo.find((row) => row.section === preset.key);
               return item ? (
-                <WilayahInfoCard key={key} item={item} />
+                <WilayahInfoCard key={preset.key} item={item} />
               ) : (
-                <EmptyWilayahInfoCard key={key} sectionKey={key} label={label} />
+                <EmptyWilayahInfoCard key={preset.key} preset={preset} />
               );
             })}
             {wilayahInfo
-              .filter((row) => !WILAYAH_INFO_SECTIONS.some((s) => s.key === row.section))
+              .filter((row) => !WILAYAH_INFO_PRESETS.some((s) => s.key === row.section))
               .map((item) => (
                 <WilayahInfoCard key={item.id} item={item} />
               ))}

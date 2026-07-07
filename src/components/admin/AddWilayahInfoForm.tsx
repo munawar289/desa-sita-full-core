@@ -10,6 +10,9 @@ import { createWilayahInfoAction, type WilayahInfoActionState } from "@/lib/acti
 
 const initialState: WilayahInfoActionState = { error: null };
 
+const selectClassName =
+  "h-9 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50";
+
 export function AddWilayahInfoForm() {
   const [open, setOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(createWilayahInfoAction, initialState);
@@ -38,6 +41,35 @@ export function AddWilayahInfoForm() {
           Section (key, huruf kecil & underscore)
         </Label>
         <Input id="new-wilinfo-section" name="section" placeholder="potensi_wisata" required />
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="space-y-1">
+          <Label htmlFor="new-wilinfo-page" className="text-xs">
+            Tampil di Halaman
+          </Label>
+          <select id="new-wilinfo-page" name="page" defaultValue="wilayah" className={selectClassName}>
+            <option value="wilayah">Wilayah</option>
+            <option value="sejarah">Sejarah</option>
+          </select>
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="new-wilinfo-urutan" className="text-xs">
+            Urutan
+          </Label>
+          <Input id="new-wilinfo-urutan" name="urutan" type="number" defaultValue={99} required min={0} />
+        </div>
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="new-wilinfo-eyebrow" className="text-xs">
+          Label Kecil (eyebrow)
+        </Label>
+        <Input id="new-wilinfo-eyebrow" name="eyebrow" placeholder="Pariwisata" required maxLength={40} />
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="new-wilinfo-judul" className="text-xs">
+          Judul
+        </Label>
+        <Input id="new-wilinfo-judul" name="judul" placeholder="Potensi Wisata" required maxLength={80} />
       </div>
       <div className="space-y-1">
         <Label htmlFor="new-wilinfo-konten" className="text-xs">

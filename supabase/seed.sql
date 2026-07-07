@@ -46,7 +46,8 @@ insert into statistik (category, key, label, value, updated_at) values
   ('lembaga_kemasyarakatan', 'pkk', 'PKK', '6', '2026-06-01'),
   ('lembaga_kemasyarakatan', 'posyandu', 'Posyandu', '9', '2026-06-01'),
   ('lembaga_kemasyarakatan', 'lembaga_adat', 'Lembaga Adat Desa', '5', '2026-06-01'),
-  ('lembaga_kemasyarakatan', 'dusun', 'Dusun', '4', '2026-06-01');
+  ('lembaga_kemasyarakatan', 'dusun', 'Dusun', '4', '2026-06-01')
+on conflict (category, key) do nothing;
 -- kesejahteraan_keluarga, PDB, Pendapatan Riil, dan sebagian besar kategori
 -- Kesehatan (kualitas bayi/ibu hamil/persalinan, wabah penyakit, gizi
 -- balita, imunisasi, KB) sengaja tidak diseed di sini (kosong total di
@@ -79,7 +80,8 @@ insert into wilayah_rt (nomor, nama, urutan) values
   ('001', 'RT 001', 1), ('002', 'RT 002', 2), ('003', 'RT 003', 3), ('004', 'RT 004', 4),
   ('005', 'RT 005', 5), ('006', 'RT 006', 6), ('007', 'RT 007', 7), ('008', 'RT 008', 8),
   ('009', 'RT 009', 9), ('010', 'RT 010', 10), ('011', 'RT 011', 11), ('012', 'RT 012', 12),
-  ('013', 'RT 013', 13), ('014', 'RT 014', 14), ('015', 'RT 015', 15), ('016', 'RT 016', 16);
+  ('013', 'RT 013', 13), ('014', 'RT 014', 14), ('015', 'RT 015', 15), ('016', 'RT 016', 16)
+on conflict (nomor) do nothing;
 
 -- ── Statistik per-RT — kategori dalam scope Kelompok 1 ───────────────────
 insert into statistik_rt (category, rt_id, value)
@@ -90,7 +92,8 @@ from (values
   ('009', 176), ('010', 215), ('011', 147), ('012', 287),
   ('013', 159), ('014', 334), ('015', 191), ('016', 242)
 ) as v(nomor, jumlah)
-join wilayah_rt wr on wr.nomor = v.nomor;
+join wilayah_rt wr on wr.nomor = v.nomor
+on conflict (category, rt_id) do nothing;
 
 insert into statistik_rt (category, rt_id, value)
 select 'keluarga', wr.id, v.jumlah
@@ -100,15 +103,18 @@ from (values
   ('009', 50), ('010', 59), ('011', 42), ('012', 72),
   ('013', 42), ('014', 86), ('015', 51), ('016', 64)
 ) as v(nomor, jumlah)
-join wilayah_rt wr on wr.nomor = v.nomor;
+join wilayah_rt wr on wr.nomor = v.nomor
+on conflict (category, rt_id) do nothing;
 
 -- pengangguran & aset_tanaman per RT: kosong total di source, baris tetap
 -- dibuat (nilai null) supaya admin punya kerangka 16-baris siap isi.
 insert into statistik_rt (category, rt_id, value)
-select 'pengangguran', wr.id, null from wilayah_rt wr;
+select 'pengangguran', wr.id, null from wilayah_rt wr
+on conflict (category, rt_id) do nothing;
 
 insert into statistik_rt (category, rt_id, detail)
-select 'aset_tanaman', wr.id, null from wilayah_rt wr;
+select 'aset_tanaman', wr.id, null from wilayah_rt wr
+on conflict (category, rt_id) do nothing;
 
 -- Cakupan air bersih per RT — lihat catatan asumsi PDAM/Air Ledeng di
 -- seed_lanjutan_kelompok2.sql.
@@ -120,7 +126,8 @@ from (values
   ('009', 50, 0), ('010', 59, 0), ('011', 42, 0), ('012', 72, 0),
   ('013', 42, 0), ('014', 0, 86), ('015', 0, 51), ('016', 0, 64)
 ) as v(nomor, pdam, ledeng)
-join wilayah_rt wr on wr.nomor = v.nomor;
+join wilayah_rt wr on wr.nomor = v.nomor
+on conflict (category, rt_id) do nothing;
 
 -- ── Sektor usaha — PDB & Pendapatan Riil (kosong total di source) ────────
 insert into statistik_sektor_usaha (jenis, kode, nama, nilai_ribu_rupiah, urutan)
@@ -144,7 +151,8 @@ cross join (values
   ('P', 'Jasa Pendidikan', 15),
   ('Q', 'Jasa Kesehatan dan Kegiatan Sosial', 16),
   ('R,S,T,U', 'Jasa lainnya', 17)
-) as s(kode, nama, urutan);
+) as s(kode, nama, urutan)
+on conflict (jenis, kode) do nothing;
 
 -- ── Komoditas ────────────────────────────────────────────────────────────
 insert into komoditas (nama, luas_ha, hasil_panen, urutan) values
@@ -160,6 +168,12 @@ insert into peternakan (jenis_ternak, populasi, jumlah_pemilik, urutan) values
   ('Sapi', 214, 96, 3),
   ('Kerbau', 58, 22, 4);
 
+-- ── Potensi desa (kartu beranda) ─────────────────────────────────────────
+insert into potensi_desa (judul, deskripsi, icon, urutan) values
+  ('Pertanian', 'Lahan pertanian warga menghasilkan berbagai komoditas pangan unggulan desa.', 'Sprout', 1),
+  ('Perkebunan', 'Komoditas perkebunan menjadi salah satu sumber penghidupan utama masyarakat.', 'Trees', 2),
+  ('Peternakan', 'Peternakan warga turut menopang ekonomi rumah tangga di desa.', 'Beef', 3);
+
 -- ── Sarana & prasarana ───────────────────────────────────────────────────
 insert into sarana_prasarana (kategori, nama, jumlah, urutan) values
   ('Pendidikan', 'PAUD/TK', '2 unit', 1),
@@ -173,11 +187,12 @@ insert into sarana_prasarana (kategori, nama, jumlah, urutan) values
   ('Umum', 'Sumber Air Bersih', '6 titik', 9);
 
 -- ── Info wilayah naratif ─────────────────────────────────────────────────
-insert into wilayah_info (section, konten, updated_at) values
-  ('sejarah', 'Narasi sejarah berdirinya Desa Sita akan ditampilkan di sini setelah dokumen profil desa tersedia.', '2026-06-01'),
-  ('batas_wilayah', 'Desa Sita berada di kaki pegunungan Rana Mese, Kecamatan Rana Mese, Kabupaten Manggarai Timur, Nusa Tenggara Timur. Sebelah utara berbatasan dengan kawasan hutan lindung, sebelah selatan dengan desa tetangga, sebelah timur dan barat dengan wilayah perkebunan dan persawahan warga.', '2026-06-01'),
-  ('iklim', 'Desa Sita beriklim tropis pegunungan dengan curah hujan tinggi pada musim hujan (November–April) dan suhu udara sejuk sepanjang tahun, cocok untuk komoditas kopi dan kakao.', '2026-06-01'),
-  ('orbitasi', 'Jarak ke ibu kota kecamatan sekitar 6 km, ke ibu kota kabupaten sekitar 45 km, ditempuh dengan kendaraan roda dua maupun roda empat.', '2026-06-01');
+insert into wilayah_info (section, konten, page, judul, eyebrow, urutan, updated_at) values
+  ('sejarah', 'Narasi sejarah berdirinya Desa Sita akan ditampilkan di sini setelah dokumen profil desa tersedia.', 'sejarah', 'Sejarah Desa Sita', 'Narasi', 0, '2026-06-01'),
+  ('batas_wilayah', 'Desa Sita berada di kaki pegunungan Rana Mese, Kecamatan Rana Mese, Kabupaten Manggarai Timur, Nusa Tenggara Timur. Sebelah utara berbatasan dengan kawasan hutan lindung, sebelah selatan dengan desa tetangga, sebelah timur dan barat dengan wilayah perkebunan dan persawahan warga.', 'wilayah', 'Batas Wilayah', 'Geografi', 0, '2026-06-01'),
+  ('iklim', 'Desa Sita beriklim tropis pegunungan dengan curah hujan tinggi pada musim hujan (November–April) dan suhu udara sejuk sepanjang tahun, cocok untuk komoditas kopi dan kakao.', 'wilayah', 'Iklim', 'Cuaca', 1, '2026-06-01'),
+  ('orbitasi', 'Jarak ke ibu kota kecamatan sekitar 6 km, ke ibu kota kabupaten sekitar 45 km, ditempuh dengan kendaraan roda dua maupun roda empat.', 'wilayah', 'Orbitasi', 'Jarak Tempuh', 2, '2026-06-01')
+on conflict (section) do nothing;
 
 -- ── Aparatur (nama menunggu data riil, jabatan sudah representatif) ─────
 insert into aparatur (nama, jabatan, pendidikan, urutan) values
@@ -243,4 +258,5 @@ insert into berita (judul, slug, kategori, ringkasan, konten, status, published_
     'Petani di Desa Sita bersiap menyambut musim panen kopi dan kakao, dua komoditas unggulan desa yang menopang ekonomi rumah tangga warga. Kelompok tani setempat terus mendampingi proses pemeliharaan hingga pascapanen agar hasil kebun tetap terjaga kualitasnya.',
     'published',
     '2026-06-05T08:00:00+08:00'
-  );
+  )
+on conflict (slug) do nothing;

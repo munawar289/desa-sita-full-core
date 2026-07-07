@@ -5,17 +5,13 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { createWilayahInfoAction, type WilayahInfoActionState } from "@/lib/actions/wilayah-info";
+import type { WilayahInfoPreset } from "@/lib/data/wilayah-info-sections";
 
 const initialState: WilayahInfoActionState = { error: null };
 
-/** Kartu untuk section baku (lihat WILAYAH_INFO_SECTIONS) yang belum punya baris di DB. */
-export function EmptyWilayahInfoCard({
-  sectionKey,
-  label,
-}: {
-  sectionKey: string;
-  label: string;
-}) {
+/** Kartu untuk section baku (lihat WILAYAH_INFO_PRESETS) yang belum punya baris di DB. */
+export function EmptyWilayahInfoCard({ preset }: { preset: WilayahInfoPreset }) {
+  const { key: sectionKey, label, page, eyebrow, judul, urutan } = preset;
   const [open, setOpen] = useState(false);
   const [state, formAction, isPending] = useActionState(createWilayahInfoAction, initialState);
 
@@ -42,6 +38,10 @@ export function EmptyWilayahInfoCard({
     <div className="rounded-xl border border-kakao-200 bg-kopi-100/40 p-4">
       <form action={formAction} className="space-y-3">
         <input type="hidden" name="section" value={sectionKey} />
+        <input type="hidden" name="page" value={page} />
+        <input type="hidden" name="eyebrow" value={eyebrow} />
+        <input type="hidden" name="judul" value={judul} />
+        <input type="hidden" name="urutan" value={urutan} />
         <p className="font-mono text-xs uppercase tracking-wider text-sawah-700">{label}</p>
         <Textarea name="konten" required rows={4} placeholder={`Tulis ${label.toLowerCase()}…`} />
         <div className="flex gap-2">

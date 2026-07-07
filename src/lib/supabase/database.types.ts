@@ -251,6 +251,24 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["peternakan"]["Insert"]>;
         Relationships: [];
       };
+      potensi_desa: {
+        Row: {
+          id: string;
+          judul: string;
+          deskripsi: string;
+          icon: string;
+          urutan: number;
+        };
+        Insert: {
+          id?: string;
+          judul: string;
+          deskripsi: string;
+          icon: string;
+          urutan: number;
+        };
+        Update: Partial<Database["public"]["Tables"]["potensi_desa"]["Insert"]>;
+        Relationships: [];
+      };
       sarana_prasarana: {
         Row: {
           id: string;
@@ -276,12 +294,20 @@ export interface Database {
           id: string;
           section: string;
           konten: string;
+          page: string;
+          judul: string;
+          eyebrow: string;
+          urutan: number;
           updated_at: string;
         };
         Insert: {
           id?: string;
           section: string;
           konten: string;
+          page?: string;
+          judul: string;
+          eyebrow: string;
+          urutan?: number;
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["wilayah_info"]["Insert"]>;

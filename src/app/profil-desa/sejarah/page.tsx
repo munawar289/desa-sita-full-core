@@ -23,7 +23,9 @@ export default async function SejarahPage() {
     getWilayahInfo(),
   ]);
   const riwayat = [...kepalaDesaRiwayat].sort((a, b) => a.urutan - b.urutan);
-  const sejarah = wilayahInfo.find((item) => item.section === "sejarah");
+  const narrativeSections = wilayahInfo
+    .filter((item) => item.page === "sejarah")
+    .sort((a, b) => a.urutan - b.urutan);
 
   return (
     <>
@@ -37,15 +39,14 @@ export default async function SejarahPage() {
       />
 
       <div className="mx-auto max-w-4xl space-y-16 px-4 py-12 sm:px-6">
-        <section>
-          <SectionHeader eyebrow="Narasi" title="Sejarah Desa Sita" />
-          <div className="prose prose-stone mt-6 max-w-none text-espresso-800">
-            <p>
-              {sejarah?.konten ??
-                "Narasi sejarah berdirinya Desa Sita akan ditampilkan di sini setelah dokumen profil desa tersedia."}
-            </p>
-          </div>
-        </section>
+        {narrativeSections.map((item) => (
+          <section key={item.id}>
+            <SectionHeader eyebrow={item.eyebrow} title={item.judul} />
+            <div className="prose prose-stone mt-6 max-w-none text-espresso-800">
+              <p>{item.konten}</p>
+            </div>
+          </section>
+        ))}
 
         <section>
           <SectionHeader eyebrow="Kepemimpinan" title="Daftar Kepala Desa" />

@@ -26,8 +26,9 @@ export default async function WilayahPage() {
     getPeternakan(),
   ]);
 
-  const batasWilayah = wilayahInfo.find((item) => item.section === "batas_wilayah");
-  const iklim = wilayahInfo.find((item) => item.section === "iklim");
+  const narrativeSections = wilayahInfo
+    .filter((item) => item.page === "wilayah")
+    .sort((a, b) => a.urutan - b.urutan);
   const komoditas = [...komoditasData].sort((a, b) => a.urutan - b.urutan);
   const peternakan = [...peternakanData].sort((a, b) => a.urutan - b.urutan);
 
@@ -43,25 +44,14 @@ export default async function WilayahPage() {
       />
 
       <div className="mx-auto max-w-4xl space-y-16 px-4 py-12 sm:px-6">
-        <section>
-          <SectionHeader eyebrow="Geografi" title="Batas Wilayah" />
-          <div className="prose prose-stone mt-6 max-w-none text-espresso-800">
-            <p>
-              {batasWilayah?.konten ??
-                "Informasi batas wilayah akan ditampilkan di sini setelah data tersedia."}
-            </p>
-          </div>
-        </section>
-
-        <section>
-          <SectionHeader eyebrow="Cuaca" title="Iklim" />
-          <div className="prose prose-stone mt-6 max-w-none text-espresso-800">
-            <p>
-              {iklim?.konten ??
-                "Informasi iklim akan ditampilkan di sini setelah data tersedia."}
-            </p>
-          </div>
-        </section>
+        {narrativeSections.map((item) => (
+          <section key={item.id}>
+            <SectionHeader eyebrow={item.eyebrow} title={item.judul} />
+            <div className="prose prose-stone mt-6 max-w-none text-espresso-800">
+              <p>{item.konten}</p>
+            </div>
+          </section>
+        ))}
 
         <section>
           <SectionHeader eyebrow="Pertanian & Perkebunan" title="Komoditas" />
