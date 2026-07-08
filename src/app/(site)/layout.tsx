@@ -4,7 +4,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { getDesaProfil } from "@/lib/queries/desa-profil";
 import { buildMetadata } from "@/lib/metadata";
-import "./globals.css";
+import "../globals.css";
 
 const fraunces = Fraunces({
   variable: "--font-heading",
