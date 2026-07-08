@@ -69,5 +69,9 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon\\.ico).*)"],
+  // File statis (mis. /images/logo.webp) SENGAJA dikecualikan lewat pola
+  // ".*\\..*" — kalau tidak, request-nya ikut kena redirect landlord-only
+  // host di atas dan bikin Next.js Image Optimization di Vercel gagal
+  // (optimizer fetch source lewat HTTP, dapat HTML redirect, bukan gambar).
+  matcher: ["/((?!_next/static|_next/image|favicon\\.ico|.*\\..*).*)"],
 };
