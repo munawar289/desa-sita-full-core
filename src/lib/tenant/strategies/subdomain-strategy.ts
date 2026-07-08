@@ -48,6 +48,9 @@ function extractSubdomain(host: string): string | null {
     return null;
   }
   const slug = host.slice(0, -(`.${TENANT_BASE_DOMAIN}`.length));
+  // "www" adalah konvensi alias domain utama, bukan nama tenant — perlakukan
+  // sebagai "tidak ada subdomain" (root), bukan slug tenant yang harus dicari.
+  if (slug === "www") return null;
   return slug.length > 0 && !slug.includes(".") ? slug : null;
 }
 

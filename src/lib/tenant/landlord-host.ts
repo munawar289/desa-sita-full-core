@@ -15,5 +15,9 @@ import { normalizeHost } from "./normalize";
 export function isLandlordOnlyHost(rawHost: string): boolean {
   if (process.env.NODE_ENV !== "production" && TENANT_DEV_FORCE_SLUG) return false;
   if (TENANT_STRATEGY !== "subdomain" || !TENANT_BASE_DOMAIN) return false;
-  return normalizeHost(rawHost) === normalizeHost(TENANT_BASE_DOMAIN);
+  const host = normalizeHost(rawHost);
+  const base = normalizeHost(TENANT_BASE_DOMAIN);
+  // `www.<base>` diperlakukan sama seperti root — konvensi umum domain
+  // custom, bukan "tenant bernama www".
+  return host === base || host === `www.${base}`;
 }
