@@ -33,6 +33,60 @@
   --color-gold-400: color-mix(in srgb, var(--warna-aksen) 75%, white); /* gold terang */
 }
 
+@theme {
+  /* Palet "plat-*" — Material 3 biru BPS, khusus landing page /platform (landlord).
+     Fixed hex literal (bukan var(--warna-primer) dkk) karena /platform TIDAK memanggil
+     getDesaProfil()/tema tenant — lihat catatan di src/app/platform/layout.tsx.
+     Nilai persis mengikuti tailwind.config referensi desain yang diberikan user. */
+  --color-plat-primary: #002454;
+  --color-plat-on-primary: #ffffff;
+  --color-plat-primary-container: #1d3a6c;
+  --color-plat-on-primary-container: #8ba5de;
+  --color-plat-primary-fixed: #d8e2ff;
+  --color-plat-primary-fixed-dim: #adc6ff;
+  --color-plat-on-primary-fixed: #001a41;
+  --color-plat-on-primary-fixed-variant: #2a4679;
+  --color-plat-inverse-primary: #adc6ff;
+  --color-plat-secondary: #00658d;
+  --color-plat-on-secondary: #ffffff;
+  --color-plat-secondary-container: #2dbcfe;
+  --color-plat-on-secondary-container: #004866;
+  --color-plat-secondary-fixed: #c6e7ff;
+  --color-plat-secondary-fixed-dim: #82cfff;
+  --color-plat-on-secondary-fixed: #001e2d;
+  --color-plat-on-secondary-fixed-variant: #004c6b;
+  --color-plat-tertiary: #3b1e00;
+  --color-plat-on-tertiary: #ffffff;
+  --color-plat-tertiary-container: #5a3100;
+  --color-plat-on-tertiary-container: #ef8e16;
+  --color-plat-tertiary-fixed: #ffdcbf;
+  --color-plat-tertiary-fixed-dim: #ffb874;
+  --color-plat-on-tertiary-fixed: #2d1600;
+  --color-plat-on-tertiary-fixed-variant: #6b3b00;
+  --color-plat-error: #ba1a1a;
+  --color-plat-on-error: #ffffff;
+  --color-plat-error-container: #ffdad6;
+  --color-plat-on-error-container: #93000a;
+  --color-plat-background: #faf9fe;
+  --color-plat-on-background: #1a1b1f;
+  --color-plat-surface: #faf9fe;
+  --color-plat-on-surface: #1a1b1f;
+  --color-plat-on-surface-variant: #44474f;
+  --color-plat-surface-variant: #e3e2e7;
+  --color-plat-surface-tint: #435e92;
+  --color-plat-surface-bright: #faf9fe;
+  --color-plat-surface-dim: #dad9de;
+  --color-plat-surface-container-lowest: #ffffff;
+  --color-plat-surface-container-low: #f4f3f8;
+  --color-plat-surface-container: #eeedf2;
+  --color-plat-surface-container-high: #e9e7ec;
+  --color-plat-surface-container-highest: #e3e2e7;
+  --color-plat-outline: #747780;
+  --color-plat-outline-variant: #c4c6d0;
+  --color-plat-inverse-surface: #2f3034;
+  --color-plat-inverse-on-surface: #f1f0f5;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

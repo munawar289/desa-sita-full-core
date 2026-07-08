@@ -35,7 +35,11 @@ export class SubdomainTenantResolver implements TenantResolverStrategy {
     if (slugError) throw slugError;
     if (bySlug) return { tenant: bySlug as Tenant, source: "slug" };
 
-    return { tenant: null, source: "unresolved" };
+    // Host SECARA BENTUK adalah subdomain tenant (mis. desaxx.lvh.me) tapi
+    // slug-nya tidak terdaftar — jangan fallback ke tenant default, supaya
+    // subdomain yang salah ketik/tidak ada tidak diam-diam menampilkan situs
+    // desa lain.
+    return { tenant: null, source: "unknown-subdomain" };
   }
 }
 

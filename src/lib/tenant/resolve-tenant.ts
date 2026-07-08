@@ -40,6 +40,10 @@ export async function resolveTenantForHost(
     const strategy = getTenantResolverStrategy();
     const result = await strategy.resolve({ host, pathname: "" });
     if (result.tenant) return result;
+    // Subdomain terdeteksi tapi tenant-nya tidak ada — TIDAK fallback ke
+    // default (beda dari host yang memang tidak punya struktur subdomain
+    // sama sekali). Middleware merespons 403 untuk kasus ini.
+    if (result.source === "unknown-subdomain") return result;
   } catch (error) {
     console.error("[tenant] Gagal resolve tenant, fallback ke default.", error);
   }

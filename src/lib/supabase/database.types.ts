@@ -75,6 +75,20 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["memberships"]["Insert"]>;
         Relationships: [];
       };
+      platform_admins: {
+        Row: {
+          id: string;
+          profile_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          profile_id: string;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["platform_admins"]["Insert"]>;
+        Relationships: [];
+      };
       statistik: {
         Row: {
           id: string;

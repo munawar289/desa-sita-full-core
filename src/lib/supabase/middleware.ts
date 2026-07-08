@@ -3,18 +3,27 @@ import { NextResponse, type NextRequest } from "next/server";
 import { isSupabaseConfigured, SUPABASE_ANON_KEY, SUPABASE_URL } from "./config";
 
 /**
- * Menyegarkan sesi Supabase Auth di setiap request ke `/admin/*` dan menjaga
- * gerbang login — PRD §10: "Middleware Next.js mengecek sesi di setiap
- * request ke /admin/*, redirect ke /admin/login kalau belum login."
+ * Menyegarkan sesi Supabase Auth di setiap request ke `/admin/*` (dan sejak
+ * PRD landlord, `/platform/*`) dan menjaga gerbang login — PRD §10:
+ * "Middleware Next.js mengecek sesi di setiap request ke /admin/*, redirect
+ * ke /admin/login kalau belum login."
  *
  * `requestHeaders` diteruskan dari src/middleware.ts (berisi header tenant
  * x-tenant-id/x-tenant-slug) supaya tetap terbawa ke Server Component setelah
  * refresh cookie session — tanpa ini, header tenant hilang begitu Supabase
  * membangun response barunya sendiri lewat NextResponse.next({ request }).
+ *
+ * `routes` diparameterkan supaya `/platform/*` (landlord, total terpisah
+ * dari tenant/admin) redirect ke gerbang login/home miliknya sendiri, bukan
+ * hardcode ke `/admin/login`.
  */
 export async function updateSession(
   request: NextRequest,
   requestHeaders: Headers,
+  routes: { loginPath: string; homePath: string } = {
+    loginPath: "/admin/login",
+    homePath: "/admin",
+  },
 ) {
   let response = NextResponse.next({ request: { headers: requestHeaders } });
 
@@ -44,17 +53,17 @@ export async function updateSession(
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isLoginRoute = pathname === "/admin/login";
+  const isLoginRoute = pathname === routes.loginPath;
 
   if (!user && !isLoginRoute) {
     const url = request.nextUrl.clone();
-    url.pathname = "/admin/login";
+    url.pathname = routes.loginPath;
     return NextResponse.redirect(url);
   }
 
   if (user && isLoginRoute) {
     const url = request.nextUrl.clone();
-    url.pathname = "/admin";
+    url.pathname = routes.homePath;
     return NextResponse.redirect(url);
   }
 

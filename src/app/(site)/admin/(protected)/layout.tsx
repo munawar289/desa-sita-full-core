@@ -37,11 +37,16 @@ export default async function AdminProtectedLayout({
   // tenant yang dimaksud subdomain/domain yang diakses). Admin bisa membaca/
   // menulis data tenant default tanpa sadar. Jangan pernah lanjut ke
   // dashboard selama sumber resolusi tidak pasti, apa pun status membership-nya.
-  if (tenant.source === "unresolved" || !profile.role) {
+  // Suspend dari /platform (landlord) — cek terlepas dari role/membership,
+  // situs publik tenant ini tetap tampil normal (PRD landlord §8), hanya
+  // dashboard admin yang diblokir.
+  if (tenant.source === "unresolved" || tenant.status === "suspended" || !profile.role) {
     const message =
       tenant.source === "unresolved"
         ? "Gagal memuat informasi desa untuk domain ini. Coba muat ulang halaman beberapa saat lagi."
-        : "Akun ini belum terdaftar sebagai anggota pengelola situs desa ini.";
+        : tenant.status === "suspended"
+          ? "Situs ini sedang dinonaktifkan platform."
+          : "Akun ini belum terdaftar sebagai anggota pengelola situs desa ini.";
 
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-krem-50 px-4">

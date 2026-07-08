@@ -9,12 +9,13 @@ import type { Tenant, TenantResolutionSource } from "./types";
 // Phase 4 Modul 2 (getDesaProfil()), dimitigasi via unstable_cache per tenant
 // (lihat src/lib/queries/helpers.ts).
 export const getCurrentTenant = cache(async function getCurrentTenant(): Promise<
-  Pick<Tenant, "id" | "slug"> & { source: TenantResolutionSource }
+  Pick<Tenant, "id" | "slug" | "status"> & { source: TenantResolutionSource }
 > {
   const headerList = await headers();
   return {
     id: headerList.get("x-tenant-id") ?? DEFAULT_TENANT_ID,
     slug: headerList.get("x-tenant-slug") ?? DEFAULT_TENANT_SLUG,
+    status: (headerList.get("x-tenant-status") as Tenant["status"] | null) ?? "active",
     source:
       (headerList.get("x-tenant-source") as TenantResolutionSource | null) ??
       "default-fast-path",
