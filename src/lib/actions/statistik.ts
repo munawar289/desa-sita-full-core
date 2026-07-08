@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { statistikFormSchema } from "@/lib/validation/statistik";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import { logAudit } from "./audit";
 
 export type StatistikActionState = { error: string | null; success?: boolean };
@@ -37,6 +38,7 @@ export async function createStatistikAction(
     return { error: parsed.error.issues[0]?.message ?? "Data tidak valid." };
   }
 
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -44,7 +46,7 @@ export async function createStatistikAction(
 
   const { data, error } = await supabase
     .from("statistik")
-    .insert({ ...parsed.data, updated_by: user?.id ?? null })
+    .insert({ ...parsed.data, tenant_id: tenant.id, updated_by: user?.id ?? null })
     .select("id")
     .single();
 
@@ -58,6 +60,7 @@ export async function createStatistikAction(
   }
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "statistik",
     recordId: data.id,
@@ -68,6 +71,7 @@ export async function createStatistikAction(
 
   revalidatePath("/admin/statistik");
   revalidatePublicPaths();
+  revalidateTag(`tenant:${tenant.id}:statistik`);
   return { error: null, success: true };
 }
 
@@ -87,6 +91,7 @@ export async function updateStatistikAction(
     return { error: parsed.error.issues[0]?.message ?? "Data tidak valid." };
   }
 
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -96,12 +101,14 @@ export async function updateStatistikAction(
     .from("statistik")
     .select("*")
     .eq("id", id)
+    .eq("tenant_id", tenant.id)
     .single();
 
   const { error } = await supabase
     .from("statistik")
     .update({ ...parsed.data, updated_by: user?.id ?? null })
-    .eq("id", id);
+    .eq("id", id)
+    .eq("tenant_id", tenant.id);
 
   if (error) {
     return {
@@ -113,6 +120,7 @@ export async function updateStatistikAction(
   }
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "statistik",
     recordId: id,
@@ -123,10 +131,12 @@ export async function updateStatistikAction(
 
   revalidatePath("/admin/statistik");
   revalidatePublicPaths();
+  revalidateTag(`tenant:${tenant.id}:statistik`);
   return { error: null, success: true };
 }
 
 export async function deleteStatistikAction(id: string): Promise<{ error: string | null }> {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -136,14 +146,20 @@ export async function deleteStatistikAction(id: string): Promise<{ error: string
     .from("statistik")
     .select("*")
     .eq("id", id)
+    .eq("tenant_id", tenant.id)
     .single();
 
-  const { error } = await supabase.from("statistik").delete().eq("id", id);
+  const { error } = await supabase
+    .from("statistik")
+    .delete()
+    .eq("id", id)
+    .eq("tenant_id", tenant.id);
   if (error) {
     return { error: "Gagal menghapus data." };
   }
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "statistik",
     recordId: id,
@@ -154,5 +170,6 @@ export async function deleteStatistikAction(id: string): Promise<{ error: string
 
   revalidatePath("/admin/statistik");
   revalidatePublicPaths();
+  revalidateTag(`tenant:${tenant.id}:statistik`);
   return { error: null };
 }

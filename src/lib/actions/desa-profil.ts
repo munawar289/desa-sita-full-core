@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { desaProfilFormSchema } from "@/lib/validation/desa-profil";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import { logAudit } from "./audit";
 
 export type DesaProfilActionState = { error: string | null; success?: boolean };
@@ -33,6 +34,7 @@ export async function updateDesaProfilAction(
     return { error: parsed.error.issues[0]?.message ?? "Data tidak valid." };
   }
 
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -42,18 +44,24 @@ export async function updateDesaProfilAction(
     .from("desa_profil")
     .select("*")
     .eq("id", id)
+    .eq("tenant_id", tenant.id)
     .single();
 
+  // Defense-in-depth: filter tenant_id di update, bukan cuma id — RLS
+  // (is_tenant_admin) sudah menggerbangi ini, tapi mustahilkan juga secara
+  // aplikasi kalau id ditebak/leak dari tenant lain.
   const { error } = await supabase
     .from("desa_profil")
     .update({ ...parsed.data, updated_by: user?.id ?? null })
-    .eq("id", id);
+    .eq("id", id)
+    .eq("tenant_id", tenant.id);
 
   if (error) {
     return { error: "Gagal menyimpan perubahan." };
   }
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "desa_profil",
     recordId: id,
@@ -65,5 +73,6 @@ export async function updateDesaProfilAction(
   // Identitas desa muncul di hampir semua route (navbar/footer/metadata) —
   // revalidasi seluruh layout, bukan daftar path satu-satu.
   revalidatePath("/", "layout");
+  revalidateTag(`tenant:${tenant.id}:desa_profil`);
   return { error: null, success: true };
 }

@@ -33,9 +33,52 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["profiles"]["Insert"]>;
         Relationships: [];
       };
+      tenants: {
+        Row: {
+          id: string;
+          slug: string;
+          domain: string | null;
+          nama: string;
+          status: "active" | "suspended";
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          slug: string;
+          domain?: string | null;
+          nama: string;
+          status?: "active" | "suspended";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["tenants"]["Insert"]>;
+        Relationships: [];
+      };
+      memberships: {
+        Row: {
+          id: string;
+          tenant_id: string;
+          profile_id: string;
+          role: "admin" | "operator";
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          tenant_id: string;
+          profile_id: string;
+          role?: "admin" | "operator";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["memberships"]["Insert"]>;
+        Relationships: [];
+      };
       statistik: {
         Row: {
           id: string;
+          tenant_id: string;
           category: string;
           key: string;
           label: string;
@@ -45,6 +88,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           category: string;
           key: string;
           label: string;
@@ -58,12 +102,14 @@ export interface Database {
       statistik_kelompok_umur: {
         Row: {
           id: string;
+          tenant_id: string;
           kelompok_usia: string;
           jumlah: number;
           urutan: number;
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           kelompok_usia: string;
           jumlah: number;
           urutan: number;
@@ -74,22 +120,47 @@ export interface Database {
         Relationships: [];
       };
       statistik_pendidikan: {
-        Row: { id: string; tingkat: string; jumlah: number; urutan: number };
-        Insert: { id?: string; tingkat: string; jumlah: number; urutan: number };
+        Row: {
+          id: string;
+          tenant_id: string;
+          tingkat: string;
+          jumlah: number;
+          urutan: number;
+        };
+        Insert: {
+          id?: string;
+          tenant_id?: string;
+          tingkat: string;
+          jumlah: number;
+          urutan: number;
+        };
         Update: Partial<
           Database["public"]["Tables"]["statistik_pendidikan"]["Insert"]
         >;
         Relationships: [];
       };
       wilayah_rt: {
-        Row: { id: string; nomor: string; nama: string; urutan: number };
-        Insert: { id?: string; nomor: string; nama: string; urutan: number };
+        Row: {
+          id: string;
+          tenant_id: string;
+          nomor: string;
+          nama: string;
+          urutan: number;
+        };
+        Insert: {
+          id?: string;
+          tenant_id?: string;
+          nomor: string;
+          nama: string;
+          urutan: number;
+        };
         Update: Partial<Database["public"]["Tables"]["wilayah_rt"]["Insert"]>;
         Relationships: [];
       };
       statistik_rt: {
         Row: {
           id: string;
+          tenant_id: string;
           category: string;
           rt_id: string;
           value: number | null;
@@ -99,6 +170,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           category: string;
           rt_id: string;
           value?: number | null;
@@ -112,6 +184,7 @@ export interface Database {
       statistik_sektor_usaha: {
         Row: {
           id: string;
+          tenant_id: string;
           jenis: "pdb" | "pendapatan_riil";
           kode: string;
           nama: string;
@@ -122,6 +195,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           jenis: "pdb" | "pendapatan_riil";
           kode: string;
           nama: string;
@@ -138,6 +212,7 @@ export interface Database {
       kepala_desa_riwayat: {
         Row: {
           id: string;
+          tenant_id: string;
           nama: string;
           periode_mulai: number;
           periode_selesai: number | null;
@@ -146,6 +221,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           nama: string;
           periode_mulai: number;
           periode_selesai?: number | null;
@@ -160,6 +236,7 @@ export interface Database {
       aparatur: {
         Row: {
           id: string;
+          tenant_id: string;
           nama: string | null;
           jabatan: string;
           pendidikan: string | null;
@@ -167,6 +244,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           nama?: string | null;
           jabatan: string;
           pendidikan?: string | null;
@@ -178,6 +256,7 @@ export interface Database {
       bpd_anggota: {
         Row: {
           id: string;
+          tenant_id: string;
           nama: string;
           jabatan: string;
           pendidikan: string | null;
@@ -185,6 +264,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           nama: string;
           jabatan: string;
           pendidikan?: string | null;
@@ -196,6 +276,7 @@ export interface Database {
       lembaga: {
         Row: {
           id: string;
+          tenant_id: string;
           kategori: string;
           nama: string;
           dasar_hukum: string | null;
@@ -205,6 +286,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           kategori: string;
           nama: string;
           dasar_hukum?: string | null;
@@ -218,6 +300,7 @@ export interface Database {
       komoditas: {
         Row: {
           id: string;
+          tenant_id: string;
           nama: string;
           luas_ha: number | null;
           hasil_panen: string | null;
@@ -225,6 +308,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           nama: string;
           luas_ha?: number | null;
           hasil_panen?: string | null;
@@ -236,6 +320,7 @@ export interface Database {
       peternakan: {
         Row: {
           id: string;
+          tenant_id: string;
           jenis_ternak: string;
           populasi: number | null;
           jumlah_pemilik: number | null;
@@ -243,6 +328,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           jenis_ternak: string;
           populasi?: number | null;
           jumlah_pemilik?: number | null;
@@ -254,6 +340,7 @@ export interface Database {
       potensi_desa: {
         Row: {
           id: string;
+          tenant_id: string;
           judul: string;
           deskripsi: string;
           icon: string;
@@ -261,6 +348,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           judul: string;
           deskripsi: string;
           icon: string;
@@ -272,6 +360,7 @@ export interface Database {
       sarana_prasarana: {
         Row: {
           id: string;
+          tenant_id: string;
           kategori: string;
           nama: string;
           jumlah: string | null;
@@ -279,6 +368,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           kategori: string;
           nama: string;
           jumlah?: string | null;
@@ -292,6 +382,7 @@ export interface Database {
       wilayah_info: {
         Row: {
           id: string;
+          tenant_id: string;
           section: string;
           konten: string;
           page: string;
@@ -302,6 +393,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           section: string;
           konten: string;
           page?: string;
@@ -316,6 +408,7 @@ export interface Database {
       desa_profil: {
         Row: {
           id: string;
+          tenant_id: string;
           nama_desa: string;
           kecamatan: string;
           kabupaten: string;
@@ -335,6 +428,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           nama_desa: string;
           kecamatan: string;
           kabupaten: string;
@@ -406,6 +500,7 @@ export interface Database {
       pengaduan: {
         Row: {
           id: string;
+          tenant_id: string;
           nama: string | null;
           no_kontak: string | null;
           kategori: string | null;
@@ -417,6 +512,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           nama?: string | null;
           no_kontak?: string | null;
           kategori?: string | null;
@@ -432,6 +528,7 @@ export interface Database {
       audit_log: {
         Row: {
           id: string;
+          tenant_id: string;
           user_id: string | null;
           table_name: string;
           record_id: string | null;
@@ -442,6 +539,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
+          tenant_id?: string;
           user_id?: string | null;
           table_name: string;
           record_id?: string | null;

@@ -1,18 +1,25 @@
+import { cache } from "react";
 import { saranaPrasaranaMock, type SaranaPrasarana } from "@/lib/data/sarana-prasarana";
-import { withSupabaseFallback } from "./helpers";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
+import { withTenantSupabaseFallback } from "./helpers";
 
-export async function getSaranaPrasarana(): Promise<SaranaPrasarana[]> {
-  return withSupabaseFallback(
-    "sarana_prasarana",
-    saranaPrasaranaMock,
-    async (client) => {
-      const { data, error } = await client
-        .from("sarana_prasarana")
-        .select("id, kategori, nama, jumlah, urutan")
-        .order("kategori")
-        .order("urutan");
-      if (error) throw error;
-      return data;
-    },
-  );
-}
+export const getSaranaPrasarana = cache(
+  async function getSaranaPrasarana(): Promise<SaranaPrasarana[]> {
+    const tenant = await getCurrentTenant();
+    return withTenantSupabaseFallback(
+      "sarana_prasarana",
+      tenant.id,
+      saranaPrasaranaMock,
+      async (client) => {
+        const { data, error } = await client
+          .from("sarana_prasarana")
+          .select("id, kategori, nama, jumlah, urutan")
+          .eq("tenant_id", tenant.id)
+          .order("kategori")
+          .order("urutan");
+        if (error) throw error;
+        return data;
+      },
+    );
+  },
+);

@@ -1,13 +1,22 @@
+import { cache } from "react";
 import { peternakanMock, type Peternakan } from "@/lib/data/peternakan";
-import { withSupabaseFallback } from "./helpers";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
+import { withTenantSupabaseFallback } from "./helpers";
 
-export async function getPeternakan(): Promise<Peternakan[]> {
-  return withSupabaseFallback("peternakan", peternakanMock, async (client) => {
-    const { data, error } = await client
-      .from("peternakan")
-      .select("id, jenis_ternak, populasi, jumlah_pemilik, urutan")
-      .order("urutan");
-    if (error) throw error;
-    return data;
-  });
-}
+export const getPeternakan = cache(async function getPeternakan(): Promise<Peternakan[]> {
+  const tenant = await getCurrentTenant();
+  return withTenantSupabaseFallback(
+    "peternakan",
+    tenant.id,
+    peternakanMock,
+    async (client) => {
+      const { data, error } = await client
+        .from("peternakan")
+        .select("id, jenis_ternak, populasi, jumlah_pemilik, urutan")
+        .eq("tenant_id", tenant.id)
+        .order("urutan");
+      if (error) throw error;
+      return data;
+    },
+  );
+});

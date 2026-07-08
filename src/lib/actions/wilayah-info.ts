@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { wilayahInfoFormSchema } from "@/lib/validation/wilayah-info";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import { logAudit } from "./audit";
 
 export type WilayahInfoActionState = { error: string | null; success?: boolean };
@@ -32,6 +33,7 @@ export async function createWilayahInfoAction(
     return { error: parsed.error.issues[0]?.message ?? "Data tidak valid." };
   }
 
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -39,7 +41,7 @@ export async function createWilayahInfoAction(
 
   const { data, error } = await supabase
     .from("wilayah_info")
-    .insert(parsed.data)
+    .insert({ ...parsed.data, tenant_id: tenant.id })
     .select("id")
     .single();
 
@@ -50,6 +52,7 @@ export async function createWilayahInfoAction(
   }
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "wilayah_info",
     recordId: data.id,
@@ -60,6 +63,7 @@ export async function createWilayahInfoAction(
 
   revalidatePath("/admin/wilayah");
   revalidatePublicPaths();
+  revalidateTag(`tenant:${tenant.id}:wilayah_info`);
   return { error: null, success: true };
 }
 
@@ -74,6 +78,7 @@ export async function updateWilayahInfoAction(
     return { error: parsed.error.issues[0]?.message ?? "Data tidak valid." };
   }
 
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -83,9 +88,14 @@ export async function updateWilayahInfoAction(
     .from("wilayah_info")
     .select("*")
     .eq("id", id)
+    .eq("tenant_id", tenant.id)
     .single();
 
-  const { error } = await supabase.from("wilayah_info").update(parsed.data).eq("id", id);
+  const { error } = await supabase
+    .from("wilayah_info")
+    .update(parsed.data)
+    .eq("id", id)
+    .eq("tenant_id", tenant.id);
   if (error) {
     return {
       error: error.code === "23505" ? "Section ini sudah ada." : "Gagal menyimpan perubahan.",
@@ -93,6 +103,7 @@ export async function updateWilayahInfoAction(
   }
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "wilayah_info",
     recordId: id,
@@ -103,10 +114,12 @@ export async function updateWilayahInfoAction(
 
   revalidatePath("/admin/wilayah");
   revalidatePublicPaths();
+  revalidateTag(`tenant:${tenant.id}:wilayah_info`);
   return { error: null, success: true };
 }
 
 export async function deleteWilayahInfoAction(id: string): Promise<{ error: string | null }> {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -116,12 +129,18 @@ export async function deleteWilayahInfoAction(id: string): Promise<{ error: stri
     .from("wilayah_info")
     .select("*")
     .eq("id", id)
+    .eq("tenant_id", tenant.id)
     .single();
 
-  const { error } = await supabase.from("wilayah_info").delete().eq("id", id);
+  const { error } = await supabase
+    .from("wilayah_info")
+    .delete()
+    .eq("id", id)
+    .eq("tenant_id", tenant.id);
   if (error) return { error: "Gagal menghapus data." };
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "wilayah_info",
     recordId: id,
@@ -132,5 +151,6 @@ export async function deleteWilayahInfoAction(id: string): Promise<{ error: stri
 
   revalidatePath("/admin/wilayah");
   revalidatePublicPaths();
+  revalidateTag(`tenant:${tenant.id}:wilayah_info`);
   return { error: null };
 }

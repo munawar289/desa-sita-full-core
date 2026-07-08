@@ -1,13 +1,22 @@
+import { cache } from "react";
 import { aparaturMock, type Aparatur } from "@/lib/data/aparatur";
-import { withSupabaseFallback } from "./helpers";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
+import { withTenantSupabaseFallback } from "./helpers";
 
-export async function getAparatur(): Promise<Aparatur[]> {
-  return withSupabaseFallback("aparatur", aparaturMock, async (client) => {
-    const { data, error } = await client
-      .from("aparatur")
-      .select("id, nama, jabatan, pendidikan, urutan")
-      .order("urutan");
-    if (error) throw error;
-    return data;
-  });
-}
+export const getAparatur = cache(async function getAparatur(): Promise<Aparatur[]> {
+  const tenant = await getCurrentTenant();
+  return withTenantSupabaseFallback(
+    "aparatur",
+    tenant.id,
+    aparaturMock,
+    async (client) => {
+      const { data, error } = await client
+        .from("aparatur")
+        .select("id, nama, jabatan, pendidikan, urutan")
+        .eq("tenant_id", tenant.id)
+        .order("urutan");
+      if (error) throw error;
+      return data;
+    },
+  );
+});

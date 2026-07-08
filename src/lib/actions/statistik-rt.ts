@@ -1,12 +1,13 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   DETAIL_FIELDS,
   statistikRtDetailSchema,
   statistikRtSingleValueSchema,
 } from "@/lib/validation/statistik-rt";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import { logAudit } from "./audit";
 
 export type StatistikRtActionState = { error: string | null; success?: boolean };
@@ -36,6 +37,7 @@ export async function updateStatistikRtValueAction(
     return { error: parsed.error.issues[0]?.message ?? "Data tidak valid." };
   }
 
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -45,16 +47,19 @@ export async function updateStatistikRtValueAction(
     .from("statistik_rt")
     .select("*")
     .eq("id", parsed.data.id)
+    .eq("tenant_id", tenant.id)
     .single();
 
   const { error } = await supabase
     .from("statistik_rt")
     .update({ value: toNumberOrNull(parsed.data.value), updated_by: user?.id ?? null })
-    .eq("id", parsed.data.id);
+    .eq("id", parsed.data.id)
+    .eq("tenant_id", tenant.id);
 
   if (error) return { error: "Gagal menyimpan perubahan." };
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "statistik_rt",
     recordId: parsed.data.id,
@@ -65,6 +70,7 @@ export async function updateStatistikRtValueAction(
 
   revalidatePath("/admin/statistik/per-rt");
   revalidatePublicPaths();
+  revalidateTag(`tenant:${tenant.id}:statistik_rt`);
   return { error: null, success: true };
 }
 
@@ -86,6 +92,7 @@ export async function updateStatistikRtDetailAction(
     return { error: parsed.error.issues[0]?.message ?? "Data tidak valid." };
   }
 
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -95,6 +102,7 @@ export async function updateStatistikRtDetailAction(
     .from("statistik_rt")
     .select("*")
     .eq("id", parsed.data.id)
+    .eq("tenant_id", tenant.id)
     .single();
 
   const detailValues = Object.fromEntries(
@@ -104,11 +112,13 @@ export async function updateStatistikRtDetailAction(
   const { error } = await supabase
     .from("statistik_rt")
     .update({ detail: detailValues, updated_by: user?.id ?? null })
-    .eq("id", parsed.data.id);
+    .eq("id", parsed.data.id)
+    .eq("tenant_id", tenant.id);
 
   if (error) return { error: "Gagal menyimpan perubahan." };
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "statistik_rt",
     recordId: parsed.data.id,
@@ -119,5 +129,6 @@ export async function updateStatistikRtDetailAction(
 
   revalidatePath("/admin/statistik/per-rt");
   revalidatePublicPaths();
+  revalidateTag(`tenant:${tenant.id}:statistik_rt`);
   return { error: null, success: true };
 }

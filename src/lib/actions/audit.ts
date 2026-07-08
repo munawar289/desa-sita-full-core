@@ -5,6 +5,7 @@ type SupabaseServerClient = Awaited<ReturnType<typeof createSupabaseServerClient
 export async function logAudit(
   supabase: SupabaseServerClient,
   params: {
+    tenantId: string;
     userId: string | undefined;
     tableName: string;
     recordId: string | null;
@@ -14,6 +15,7 @@ export async function logAudit(
   },
 ) {
   await supabase.from("audit_log").insert({
+    tenant_id: params.tenantId,
     user_id: params.userId ?? null,
     table_name: params.tableName,
     record_id: params.recordId,

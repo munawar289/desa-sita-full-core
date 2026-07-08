@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { potensiFormSchema } from "@/lib/validation/potensi";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import { logAudit } from "./audit";
 
 export type PotensiActionState = { error: string | null; success?: boolean };
@@ -29,6 +30,7 @@ export async function createPotensiAction(
     return { error: parsed.error.issues[0]?.message ?? "Data tidak valid." };
   }
 
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -36,13 +38,14 @@ export async function createPotensiAction(
 
   const { data, error } = await supabase
     .from("potensi_desa")
-    .insert(parsed.data)
+    .insert({ ...parsed.data, tenant_id: tenant.id })
     .select("id")
     .single();
 
   if (error) return { error: "Gagal menyimpan data." };
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "potensi_desa",
     recordId: data.id,
@@ -53,6 +56,7 @@ export async function createPotensiAction(
 
   revalidatePath("/admin/potensi");
   revalidatePublicPaths();
+  revalidateTag(`tenant:${tenant.id}:potensi_desa`);
   return { error: null, success: true };
 }
 
@@ -67,6 +71,7 @@ export async function updatePotensiAction(
     return { error: parsed.error.issues[0]?.message ?? "Data tidak valid." };
   }
 
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -76,12 +81,18 @@ export async function updatePotensiAction(
     .from("potensi_desa")
     .select("*")
     .eq("id", id)
+    .eq("tenant_id", tenant.id)
     .single();
 
-  const { error } = await supabase.from("potensi_desa").update(parsed.data).eq("id", id);
+  const { error } = await supabase
+    .from("potensi_desa")
+    .update(parsed.data)
+    .eq("id", id)
+    .eq("tenant_id", tenant.id);
   if (error) return { error: "Gagal menyimpan perubahan." };
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "potensi_desa",
     recordId: id,
@@ -92,21 +103,33 @@ export async function updatePotensiAction(
 
   revalidatePath("/admin/potensi");
   revalidatePublicPaths();
+  revalidateTag(`tenant:${tenant.id}:potensi_desa`);
   return { error: null, success: true };
 }
 
 export async function deletePotensiAction(id: string): Promise<{ error: string | null }> {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const { data: oldRow } = await supabase.from("potensi_desa").select("*").eq("id", id).single();
+  const { data: oldRow } = await supabase
+    .from("potensi_desa")
+    .select("*")
+    .eq("id", id)
+    .eq("tenant_id", tenant.id)
+    .single();
 
-  const { error } = await supabase.from("potensi_desa").delete().eq("id", id);
+  const { error } = await supabase
+    .from("potensi_desa")
+    .delete()
+    .eq("id", id)
+    .eq("tenant_id", tenant.id);
   if (error) return { error: "Gagal menghapus data." };
 
   await logAudit(supabase, {
+    tenantId: tenant.id,
     userId: user?.id,
     tableName: "potensi_desa",
     recordId: id,
@@ -117,5 +140,6 @@ export async function deletePotensiAction(id: string): Promise<{ error: string |
 
   revalidatePath("/admin/potensi");
   revalidatePublicPaths();
+  revalidateTag(`tenant:${tenant.id}:potensi_desa`);
   return { error: null };
 }
