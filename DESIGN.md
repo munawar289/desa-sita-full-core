@@ -50,7 +50,7 @@ Engine memaksakan empat guardrail. Tanpa ini, satu pilihan warna yang buruk meru
 | G1 | **Clamp chroma** | Chroma di atas `0.17` OKLCH dipangkas. Hijau neon `#00ff00` jadi hijau yang bisa dipandang lama. |
 | G2 | **Shade efektif** | Warna yang terlalu terang, terlalu tipis bedanya dari surface, atau jatuh di "zona mati" kontras, diganti shade **lebih gelap** dari scale-nya. Warna aslinya tetap hidup di `-soft` dan scale 50–400. |
 | G3 | **`on-*` dari kontras** | Teks di atas warna dipilih lewat rasio WCAG: near-white kalau ≥ 4.5:1, kalau tidak near-black. Tidak pernah diasumsikan putih. |
-| G4 | **Netral ber-tint** | Surface, border, dan teks mewarisi *hue* warna utama dengan chroma ≤ 0.012 — cukup untuk terasa menyatu, tidak cukup untuk terbaca sebagai berwarna. |
+| G4 | **Netral ber-tint** | Surface, border, dan teks mewarisi *hue* warna utama dengan chroma ≤ 0.020 — cukup untuk terasa sebagai kertas hangat, tidak cukup untuk terbaca sebagai berwarna. Bobotnya memuncak di ujung terang: pada lightness tinggi, chroma yang sama jauh lebih tidak terlihat. |
 
 **Zona mati kontras (G2)** perlu dipahami karena sering mengejutkan: warna dengan luminansi
 relatif antara ~0.18 dan ~0.24 gagal mencapai 4.5:1 baik terhadap putih maupun terhadap hitam.
@@ -74,7 +74,7 @@ Kolom terakhir memakai tema default desa Sita sebagai contoh nilai.
 | `--color-primary-hover` | State `:hover` tombol utama | `#8b3900` |
 | `--color-primary-active` | State `:active` / ditekan | `#763000` |
 | `--color-primary-soft` | Latar lembut: badge, highlight baris, panel info | `#ffe6da` |
-| `--color-on-primary` | **Selalu** untuk teks/ikon di atas `--color-primary` | `#fefbfa` |
+| `--color-on-primary` | **Selalu** untuk teks/ikon di atas `--color-primary` | `#fff7f4` |
 | `--color-on-primary-soft` | Teks/ikon di atas `--color-primary-soft` | `#9e4814` |
 | `--color-link` | Teks tautan di atas surface terang (dijamin ≥ 4.5:1) | `#9e4814` |
 | `--color-link-hover` | Tautan saat hover | `#8b3900` |
@@ -97,12 +97,12 @@ Set token yang sama persis: `--color-secondary{,-hover,-active,-soft}`, `--color
 
 | Token | Untuk apa | Contoh |
 |---|---|---|
-| `--color-surface` | Permukaan terangkat: card, panel, sheet, baris tabel | `#fefbfa` |
-| `--color-surface-alt` | Latar halaman, di belakang card | `#f9f5f3` |
-| `--color-border` | Divider & garis card. Dekoratif, kontras rendah disengaja | `#ece6e3` |
-| `--color-border-strong` | **Batas kontrol form** — input, select, checkbox. Dijamin ≥ 3:1 (WCAG 1.4.11) | `#8a827e` |
-| `--color-text` | Teks utama & heading | `#221d1b` |
-| `--color-text-muted` | Teks sekunder, caption, label. Dijamin ≥ 4.5:1 | `#6c6460` |
+| `--color-surface` | Permukaan terangkat: card, panel, sheet, baris tabel | `#fff7f4` |
+| `--color-surface-alt` | Latar halaman, di belakang card | `#fdede6` |
+| `--color-border` | Divider & garis card. Dekoratif, kontras rendah disengaja | `#efded6` |
+| `--color-border-strong` | **Batas kontrol form** — input, select, checkbox. Dijamin ≥ 3:1 (WCAG 1.4.11) | `#897f7b` |
+| `--color-text` | Teks utama & heading | `#211c1a` |
+| `--color-text-muted` | Teks sekunder, caption, label. Dijamin ≥ 4.5:1 | `#6a625e` |
 
 Membedakan `--color-border` dan `--color-border-strong` itu penting. Garis card boleh halus.
 Garis input **tidak boleh** — garis itu satu-satunya penanda bahwa kontrolnya ada.
@@ -114,11 +114,15 @@ paling menonjol di halaman tetap membawa identitas desa.
 
 | Token | Untuk apa | Contoh |
 |---|---|---|
-| `--color-panel` | Latar Navbar & Footer | `#4f1d00` |
+| `--color-panel` | Latar Navbar & Footer | `#472310` |
 | `--color-panel-strong` | Lapisan paling pekat: dasar Hero, bagian bawah Footer | `#2c0d00` |
 | `--color-panel-border` | Divider di dalam area gelap | `#5b301a` |
-| `--color-on-panel` | Teks utama di atas panel | `#fefbfa` |
-| `--color-on-panel-muted` | Teks sekunder di atas panel (≥ 4.5:1) | `#aea6a2` |
+| `--color-on-panel` | Teks utama di atas panel | `#fff7f4` |
+| `--color-on-panel-muted` | Teks sekunder di atas panel (≥ 4.5:1) | `#aea29d` |
+
+Chroma panel **diredam ke 75%** dari shade 900 warna utama. Tanpa redaman itu, desa yang
+memilih warna jenuh mendapat Navbar dan Footer yang menyala sepanjang halaman — identitas desa
+tetap terbawa, tapi tidak sampai berteriak.
 
 ### 2.4 Scale 50–900 — pakai hanya kalau perlu
 
@@ -126,13 +130,13 @@ Empat scale tersedia: `--color-primary-{50…900}`, `--color-secondary-*`, `--co
 `--color-neutral-*`. Semuanya OKLCH-uniform: jarak antar step terasa sama besar untuk hue apa pun.
 
 **Utamakan selalu semantic token.** Scale mentah hanya untuk kasus yang tidak dijangkau semantic
-token, dan tiga di antaranya sah:
+token, dan dua di antaranya sah:
 
-- **Seri chart** — `primary-600`, `secondary-600`, `accent-600`, `primary-300`, `secondary-300`…
-  Ini menggantikan hex literal yang sekarang masih ada di `src/components/statistik/charts/`.
 - **Tekstur & elemen dekoratif non-teks** — `accent-400` untuk titik emas, `primary-100` untuk
   strip.
 - **Elevasi/bayangan** — selalu dari `--color-neutral-900` dengan alpha.
+
+Untuk **seri chart, pakai `--color-chart-1…5`** — jangan menyusun sendiri dari step scale.
 
 Kalau kamu memakai step scale untuk **teks atau permukaan interaktif**, hampir pasti ada semantic
 token yang lebih tepat. Cari dulu.
@@ -143,17 +147,51 @@ Contoh scale tema default:
 primary    #fff4ef #ffe6da #ffd1bb #fcb592 #ef9569 #db7844 #bf5f28 #9e4814 #7a3203 #4f1d00
 secondary  #f3f8f0 #e6f0de #d2e3c5 #b9d1a8 #9dba86 #82a268 #6a8950 #536f3b #3c5328 #233413
 accent     #fdf5e9 #f9ead1 #f2d8ae #e6c285 #d5a755 #c08c22 #a47400 #845d00 #634500 #3f2a00
-neutral    #fefbfa #f9f5f3 #ece6e3 #dbd4d1 #aea6a2 #8a827e #6c6460 #504946 #37312e #221d1b
+neutral    #fff7f4 #fdede6 #efded6 #ddcdc6 #aea29d #897f7b #6a625e #4f4845 #35302d #211c1a
 ```
 
 ### 2.5 Warna status
 
-Sukses, peringatan, error, dan info **tidak** diturunkan dari warna tenant — maknanya universal
-dan tidak boleh berubah antar desa. Sampai token status dibuat, jangan mengarang: pakai
-`--color-text` + ikon Lucide yang jelas, dan sampaikan status lewat kata, bukan hanya warna.
+Sukses, peringatan, galat, dan info **tidak** diturunkan dari warna tenant — maknanya universal
+dan tidak boleh berubah antar desa. Desa berprimer hijau tidak boleh punya pesan galat berwarna
+hijau. **Hue-nya dipatok**, sementara lightness & chroma-nya tetap melewati guardrail G1–G3
+sehingga kontrasnya dijamin sama seperti warna brand.
 
-Aturan yang berlaku sekarang: **warna tidak pernah jadi satu-satunya pembawa informasi.**
-Selalu dampingi dengan teks atau ikon (WCAG 1.4.1).
+| Token | Hue | Permukaan | Latar lembut | Teks di atas permukaan | Teks di atas latar lembut |
+|---|---|---|---|---|---|
+| `--color-danger` | ~25° merah | `#c13c3b` | `#ffe5e2` | `#fff7f4` | `#ac3434` |
+| `--color-warning` | ~85° kuning | `#805f00` | `#faeacb` | `#fff7f4` | `#805f00` |
+| `--color-success` | ~145° hijau | `#2a7732` | `#dcf3dc` | `#fff7f4` | `#2a7732` |
+| `--color-info` | ~250° biru | `#006bb9` | `#deeeff` | `#fff7f4` | `#0067b2` |
+
+Nama tokennya: `--color-{danger,warning,success,info}`, masing-masing dengan `-soft`,
+`--color-on-*`, dan `--color-on-*-soft`. `--destructive` milik shadcn dipetakan ke
+`--color-danger`.
+
+> **Kuning tidak akan pernah jadi permukaan cerah.** Tidak ada kuning terang yang sanggup
+> memenuhi 3:1 terhadap surface putih, jadi G2 pasti memekatkan `--color-warning` jadi amber tua.
+> Itu benar, bukan bug. Kuning cerahnya hidup di `--color-warning-soft` — dan latar memang tempat
+> yang tepat untuk kuning, bukan permukaan bertulisan.
+
+Aturan yang tetap berlaku: **warna tidak pernah jadi satu-satunya pembawa informasi.**
+Selalu dampingi dengan teks atau ikon Lucide (WCAG 1.4.1).
+
+### 2.6 Seri chart
+
+Lima seri, diambil dari step scale yang **sudah ada** — bukan hue baru. Grafik karena itu tidak
+pernah memunculkan warna yang tak pernah dipilih admin desa.
+
+| Token | Sumber | Contoh |
+|---|---|---|
+| `--color-chart-1` | `primary-600` | `#bf5f28` |
+| `--color-chart-2` | `secondary-600` | `#6a8950` |
+| `--color-chart-3` | `accent-600` | `#a47400` |
+| `--color-chart-4` | `primary-300` | `#fcb592` |
+| `--color-chart-5` | `secondary-300` | `#b9d1a8` |
+
+Konsekuensinya: desa yang memilih tiga warna berdekatan (mis. tiga nuansa hijau) akan sulit
+membedakan kelima seri lewat warna saja. **Beri label langsung pada chart**, jangan andalkan
+legenda berwarna.
 
 ---
 
@@ -451,31 +489,33 @@ Yang berikut ini **tidak boleh masuk**, tanpa perlu diskusi:
 
 ## 8. Status & Roadmap Migrasi
 
-Sistem token di dokumen ini **sudah aktif dan terinjeksi**, tapi **belum dikonsumsi komponen mana
-pun**. Situs masih berjalan di atas palet lama (`kopi-*`, `espresso-*`, `sawah-*`, `kakao-*`,
-`krem-*`, `panel-*`, `gold-*`, `tanah-*`) — 94 berkas, 781 pemakaian token, 36 hex literal.
+Seluruh token di dokumen ini **sudah terdaftar sebagai utility Tailwind** (`bg-primary`,
+`text-text-muted`, `border-border-strong`) dan **sudah dikonsumsi ke-12 primitif** di
+`src/components/ui/`. Isi halaman di luar itu masih berjalan di atas palet lama (`kopi-*`,
+`espresso-*`, `sawah-*`, `kakao-*`, `krem-*`, `panel-*`, `gold-*`, `tanah-*`).
 
-**Sudah selesai (Fase 0)**
+**Sudah selesai**
 
-- [x] Color derivation engine — `src/lib/theme/` (OKLCH, guardrail G1–G4, WCAG)
-- [x] Injeksi 72 token per tenant di root layout `(site)`
-- [x] Halaman preview `/dev/tema` dengan preset warna ekstrem
-- [x] DESIGN.md
+- [x] **Fase 0** — Color derivation engine `src/lib/theme/` (OKLCH, guardrail G1–G4, WCAG),
+      injeksi per tenant di root layout `(site)`, halaman preview `/dev/tema`, DESIGN.md
+- [x] **Fase 1** — 93 token terdaftar di `@theme static`, warna status & seri chart, netral
+      dihangatkan, chroma panel diredam, jembatan shadcn dibalik arahnya, shim `body { … }`
+      dibuang
 
 **Rencana migrasi selengkapnya:**
 [docs/superpowers/specs/2026-07-22-migrasi-design-system-prd.md](docs/superpowers/specs/2026-07-22-migrasi-design-system-prd.md)
 
-PRD itu memuat sembilan fase eksekusi, blast radius per berkas, acceptance criteria, dan tujuh
-keputusan terbuka (S1–S7) yang harus dijawab sebelum Fase 1 dimulai — termasuk kehangatan netral
-(§S2), warna status (§S3), warna seri chart (§S4), dan keamanan `drop column` (§S7).
+### Tiga hal yang wajib dipahami sebelum menyentuh `globals.css`
 
-### Dua hal yang wajib dibaca sebelum menyentuh `globals.css`
-
-1. **Shim `body { … }` harus dibuang di Fase 1, bukan di akhir.** Selama shim itu ada, isi halaman
-   melihat *arti lama* dari `--color-primary`, `--color-secondary`, `--color-accent`, dan
-   `--color-border`. Komponen yang dimigrasi lebih dulu akan mendapat nilai lama tanpa gejala yang
-   kelihatan. Baca komentar di atas blok itu sebelum mengubah apa pun.
-2. **Blok `:root` shadcn adalah jalan pintas terbesar.** Ke-12 primitif di `src/components/ui/`
-   mengambil warna lewat variabel perantara (`--primary`, `--border`, `--muted`, …). Menyambungkan
-   blok `:root` ke token engine memigrasikan semuanya sekaligus, tanpa menyentuh satu berkas
-   komponen pun. Tabel pemetaannya ada di PRD §7 Fase 1.
+1. **Arah jembatannya satu arah, dan tidak boleh dibalik.** Blok `:root` memetakan nama shadcn
+   *ke* token engine (`--primary: var(--color-primary)`), bukan sebaliknya. Namespace `--color-*`
+   dimiliki engine dan nilainya di-override per tenant lewat inline style `<html>`. Membalik
+   arahnya membekukan seluruh situs di nilai default apa pun warna yang dipilih desa.
+2. **Nilai default di `@theme static` dihasilkan mesin.** Jangan diedit tangan — jalankan
+   `npm run theme:sync`. `npm run theme:check` gagal kalau ia menyimpang dari
+   `deriveTheme(DEFAULT_THEME_SLOTS)`. Blok itu ada karena `/platform` dan `/set-password`
+   sengaja tidak memanggil resolusi tenant.
+3. **Tiga nama shadcn sengaja tidak berarti seperti aslinya.** `--secondary` = warna sekunder
+   **tenant** (varian tombol sekunder §6.1), bukan permukaan redam; `--input` naik ke
+   `--color-border-strong`; dan `accent` bawaan shadcn tidak dipakai sama sekali — `bg-accent`
+   sekarang berarti warna aksen tenant, jadi permukaan hover memakai `--color-primary-soft`.

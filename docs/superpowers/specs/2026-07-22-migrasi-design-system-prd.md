@@ -1,6 +1,6 @@
 # PRD — Migrasi Design System ke Color Derivation Engine
 
-**Status:** Disetujui — S1–S7 terjawab 2026-07-22, menunggu instruksi eksekusi Fase 1
+**Status:** Eksekusi — Fase 0 & 1 selesai, Fase 2 berikutnya
 **Tanggal:** 2026-07-22
 **Terkait:** [DESIGN.md](../../../DESIGN.md) · [CLAUDE.md](../../../CLAUDE.md) · [2026-07-06-profil-desa-prd.md](2026-07-06-profil-desa-prd.md) (asal skema warna) · [2026-07-02-fe-design.md](2026-07-02-fe-design.md) (asal palet lama)
 
@@ -354,22 +354,30 @@ Legenda: `[ ]` belum · `[~]` jalan · `[x]` selesai & terverifikasi
 - [x] DESIGN.md
 - [x] Verifikasi: `tsc` bersih, `lint` bersih, `build` 42/42, 10 lolos / 0 gagal kontras pada 4 skenario warna
 
-### `[ ]` Fase 1 — Jembatan shadcn, token status & chart, buang shim → **AC1, AC2, AC7**
+### `[x]` Fase 1 — Jembatan shadcn, token status & chart, buang shim *(selesai 2026-07-22)* → **AC1, AC2, AC7**
 
-Satu PR. Perubahan visual pertama, terbatas pada primitif `ui/`.
+- [x] Hangatkan netral: knob + `NEUTRAL_RAMP` baru di `scale.ts` (K10, tabel di §4 S2)
+- [x] Redam chroma panel ke 75% (K11) — hasil `#472310`
+- [x] Tambah 4 token status dengan hue dipatok (K12)
+- [x] Tambah `--color-chart-1…5` (K13)
+- [x] Blok `@theme static` berisi default seluruh 93 token (K9)
+- [x] Petakan blok `:root` shadcn ke token engine (tabel di bawah)
+- [x] **Hapus shim `body { … }`**
+- [x] Skrip penjaga sinkronisasi `npm run theme:check` / `theme:sync` → AC2
+- [x] Perbarui DESIGN.md: nilai contoh, G4, §2.5 warna status, §2.6 seri chart, §8
+- [x] Perbarui `/dev/tema`: bagian warna status, seri chart, dan 8 baris kontras status
+- [x] Verifikasi: `theme:check` 93 token sinkron, `tsc` bersih, `lint` bersih, `build` 42/42
 
-- [ ] Hangatkan netral: knob + `NEUTRAL_RAMP` baru di `scale.ts` (K10, tabel di §4 S2)
-- [ ] Redam chroma panel ke 75% (K11)
-- [ ] Tambah 4 token status dengan hue dipatok (K12)
-- [ ] Tambah `--color-chart-1…5` (K13)
-- [ ] Blok `@theme` berisi default seluruh token (K9)
-- [ ] Petakan blok `:root` shadcn ke token engine (tabel di bawah)
-- [ ] **Hapus shim `body { … }`** — wajib di fase ini, lihat §2.3
-- [ ] Skrip penjaga sinkronisasi default vs `deriveTheme(DEFAULT_THEME_SLOTS)` → AC2
-- [ ] Perbarui nilai contoh, G4 (`chroma ≤ 0.012` → `0.020`), dan §2.5 di DESIGN.md
-- [ ] Perbarui `/dev/tema` agar menampilkan token status & chart
+#### Penyimpangan dari rencana: tabel pemetaan direvisi
 
-Pemetaan yang diusulkan:
+Tabel pemetaan versi rencana **tidak bisa dijalankan apa adanya.** Ia memetakan `--secondary` →
+`--color-surface-alt` dan `--accent` → `--color-primary-soft`, padahal engine sudah memiliki
+`--color-secondary` dan `--color-accent` di namespace `--color-*` milik Tailwind. Begitu shim
+dibuang, utility `bg-secondary`/`bg-accent` **pasti** resolve ke token engine — persis tabrakan
+yang selama ini ditutupi shim. Dua nama itu tidak bisa punya dua arti sekaligus.
+
+Diputuskan 2026-07-22: **engine yang menang**, karena DESIGN.md §2.3 sudah mendokumentasikan
+kedua nama itu sebagai warna tenant dan 94 berkas berikutnya akan memakainya.
 
 | Variabel shadcn | → token engine | Catatan |
 |---|---|---|
@@ -379,18 +387,21 @@ Pemetaan yang diusulkan:
 | `--card-foreground`, `--popover-foreground` | `--color-text` | |
 | `--primary` | `--color-primary` | |
 | `--primary-foreground` | `--color-on-primary` | |
-| `--secondary` | `--color-surface-alt` | **Bukan** warna sekunder tenant — di shadcn ini permukaan redam |
-| `--secondary-foreground` | `--color-text` | |
+| `--secondary` | `--color-secondary` | **Direvisi** — warna sekunder tenant; `Button`/`Badge` varian `secondary` jadi persis tombol sekunder DESIGN.md §6.1 |
+| `--secondary-foreground` | `--color-on-secondary` | **Direvisi** |
 | `--muted` | `--color-surface-alt` | |
 | `--muted-foreground` | `--color-text-muted` | |
-| `--accent` | `--color-primary-soft` | **Bukan** warna aksen tenant — di shadcn ini permukaan hover |
-| `--accent-foreground` | `--color-on-primary-soft` | |
-| `--destructive` | `--color-danger` | Butuh S3 |
+| ~~`--accent`~~ | — | **Dihapus.** `bg-accent` kini berarti warna aksen tenant. Satu-satunya pemakainya, `ui/select.tsx`, diubah ke `bg-primary-soft`/`text-on-primary-soft` |
+| ~~`--accent-foreground`~~ | — | **Dihapus**, ikut di atas |
+| `--destructive` | `--color-danger` | |
 | `--border` | `--color-border` | |
 | `--input` | `--color-border-strong` | Naik pekat, sesuai WCAG 1.4.11 |
 | `--ring` | `--color-focus-ring` | |
-| `--chart-1…5` | `--color-chart-1…5` | Butuh S4 |
-| `--sidebar*` | turunan `--color-neutral-*` | |
+| `--chart-1…5` | `--color-chart-1…5` | |
+| `--sidebar*` | `--color-surface`/`-text`/`-primary`/`-border` | |
+
+Konsekuensi lain: Fase 1 menyentuh **satu** berkas komponen (`ui/select.tsx`, 1 baris), bukan nol
+seperti yang direncanakan.
 
 ### `[ ]` Fase 2 — Layout & shared → **AC3, AC4, AC5**
 
