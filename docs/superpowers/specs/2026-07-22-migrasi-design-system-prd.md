@@ -515,10 +515,19 @@ Apa pun yang dipilih, fase ini juga menyentuh AC2 (nilai default `@theme` beruba
 
 Dipecah jadi 4 PR:
 
-- [ ] 5a — Layout admin (`AdminSidebar`, `AdminTopbar`, `LoginForm`)
+- [x] **5a** — Layout admin (`AdminSidebar`, `AdminTopbar`, `LoginForm`) *(selesai 2026-07-23)*
 - [ ] 5b — Form tambah (`Add*.tsx`, 9 berkas)
 - [ ] 5c — Baris tabel & aksi (`*Row.tsx`, tombol hapus, 12 berkas)
 - [ ] 5d — Halaman admin (11 berkas) + `DesaProfilForm`, `WilayahInfoCard`, dkk
+
+Keputusan yang diambil di 5a:
+
+| | Keputusan | Alasan |
+|---|---|---|
+| **E16** | Sidebar & topbar pakai token panel (`bg-panel`, `border-panel-border`, `on-panel`, `on-panel-muted`), bukan `bg-white`/`bg-espresso-800` | Panel gelap membawa identitas desa (K4); `on-panel`/`on-panel-muted` dipilih engine lewat kontras terhadap `panel`, jadi terbaca untuk warna desa apa pun |
+| **E17** | Penanda item aktif sidebar: bilah kiri `accent-400` + `font-semibold`, bukan `text-gold-400` saja | Warna tidak boleh jadi satu-satunya pembeda (WCAG 1.4.1). Meniru pola nav mobile Navbar dari Fase 2 |
+| **E18** | Tombol "Keluar" jadi netral (border → hover `border-strong`), bukan berwarna `tanah-500` | `--color-danger` hanya dijamin 3:1 terhadap surface, tidak cukup untuk teks — sama seperti E3 (ErrorState) |
+| **E19** | Tombol "Masuk" di `LoginForm` melepas override `bg-kopi-600`; pakai varian default `Button` apa adanya | Varian default sudah = tombol primer engine lengkap dengan state hover/active dari token (E4). Override manual justru melewati perbaikan itu |
 
 ### `[ ]` Fase 6 — Platform & set-password → **AC3, AC8**
 
