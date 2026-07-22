@@ -20,20 +20,20 @@ export default async function PlatformProtectedLayout({
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-krem-50">
-      <header className="flex items-center justify-between border-b border-white/10 bg-espresso-800 px-4 py-3 text-krem-50 sm:px-6">
+    <div className="flex min-h-screen flex-col bg-plat-background">
+      <header className="flex items-center justify-between border-b border-plat-outline-variant bg-plat-primary px-4 py-3 text-plat-on-primary sm:px-6">
         <Link href="/platform/dashboard" className="flex items-center gap-2.5">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-linear-to-br from-gold-500 to-kopi-600 text-espresso-950">
+          <span className="flex size-8 items-center justify-center rounded-lg bg-plat-secondary text-plat-on-secondary">
             <ShieldCheck className="size-4" />
           </span>
           <span className="font-heading text-sm font-semibold">Panel Platform</span>
         </Link>
         <div className="flex items-center gap-4 text-sm">
-          <span className="text-krem-50/70">{admin.nama_lengkap}</span>
+          <span className="text-plat-on-primary/70">{admin.nama_lengkap}</span>
           <form action={platformSignOutAction}>
             <button
               type="submit"
-              className="font-medium underline underline-offset-4 hover:text-gold-400"
+              className="font-medium underline underline-offset-4 hover:text-plat-on-primary"
             >
               Keluar
             </button>

@@ -24,12 +24,12 @@ export function CreateTenantForm() {
       <Button
         type="submit"
         disabled={isPending}
-        className="rounded-full bg-kopi-600 text-white hover:bg-kopi-600/90"
+        className="rounded-full bg-plat-primary text-plat-on-primary hover:bg-plat-primary/90"
       >
         {isPending ? "Menyimpan…" : "Buat Tenant"}
       </Button>
       {state.error && (
-        <p className="w-full rounded-lg bg-tanah-100 px-3 py-2 text-sm text-tanah-500 sm:w-auto">
+        <p className="w-full rounded-lg bg-plat-error-container px-3 py-2 text-sm text-plat-on-error-container sm:w-auto">
           {state.error}
         </p>
       )}

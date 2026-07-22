@@ -29,33 +29,33 @@ export default async function PlatformDashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-heading text-2xl font-semibold text-espresso-950">
+        <h1 className="font-heading text-2xl font-semibold text-plat-on-surface">
           Daftar Tenant
         </h1>
-        <p className="mt-1 text-sm text-espresso-800/60">
+        <p className="mt-1 text-sm text-plat-on-surface-variant">
           Kelola tenant (desa) yang terdaftar di platform.
         </p>
       </div>
 
-      <section className="rounded-xl border border-kakao-200 bg-white p-4">
-        <h2 className="mb-3 font-heading text-sm font-semibold text-espresso-950">
+      <section className="rounded-xl border border-plat-outline-variant bg-plat-surface-container-lowest p-4">
+        <h2 className="mb-3 font-heading text-sm font-semibold text-plat-on-surface">
           Buat Tenant Baru
         </h2>
         <CreateTenantForm />
       </section>
 
       {error && (
-        <p className="rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+        <p className="rounded-lg bg-plat-error-container px-4 py-3 text-sm text-plat-on-error-container">
           Gagal memuat daftar tenant.
         </p>
       )}
 
       {!error && tenants.length === 0 && (
-        <p className="text-sm text-espresso-800/60">Belum ada tenant.</p>
+        <p className="text-sm text-plat-on-surface-variant">Belum ada tenant.</p>
       )}
 
       {!error && tenants.length > 0 && (
-        <div className="rounded-xl border border-kakao-200 bg-white">
+        <div className="rounded-xl border border-plat-outline-variant bg-plat-surface-container-lowest">
           <Table>
             <TableHeader>
               <TableRow>
@@ -69,7 +69,7 @@ export default async function PlatformDashboardPage() {
             <TableBody>
               {tenants.map((tenant) => (
                 <TableRow key={tenant.id}>
-                  <TableCell className="font-medium text-espresso-950">{tenant.nama}</TableCell>
+                  <TableCell className="font-medium text-plat-on-surface">{tenant.nama}</TableCell>
                   <TableCell>{tenant.slug}</TableCell>
                   <TableCell>
                     <Badge variant={tenant.status === "active" ? "secondary" : "destructive"}>
@@ -82,7 +82,7 @@ export default async function PlatformDashboardPage() {
                   <TableCell className="text-right">
                     <Link
                       href={`/platform/dashboard/tenants/${tenant.id}`}
-                      className="text-sm font-medium text-kopi-600 underline underline-offset-4 hover:text-kopi-600/80"
+                      className="text-sm font-medium text-plat-primary underline underline-offset-4 hover:text-plat-primary/80"
                     >
                       Kelola
                     </Link>

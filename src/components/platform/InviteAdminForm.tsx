@@ -24,15 +24,15 @@ export function InviteAdminForm({ tenantId }: { tenantId: string }) {
       <Button
         type="submit"
         disabled={isPending}
-        className="rounded-full bg-kopi-600 text-white hover:bg-kopi-600/90"
+        className="rounded-full bg-plat-primary text-plat-on-primary hover:bg-plat-primary/90"
       >
         {isPending ? "Mengirim…" : "Undang Admin"}
       </Button>
       {state.success && (
-        <p className="w-full text-sm text-sawah-700 sm:w-auto">Berhasil ditambahkan.</p>
+        <p className="w-full text-sm text-plat-secondary sm:w-auto">Berhasil ditambahkan.</p>
       )}
       {state.error && (
-        <p className="w-full rounded-lg bg-tanah-100 px-3 py-2 text-sm text-tanah-500 sm:w-auto">
+        <p className="w-full rounded-lg bg-plat-error-container px-3 py-2 text-sm text-plat-on-error-container sm:w-auto">
           {state.error}
         </p>
       )}

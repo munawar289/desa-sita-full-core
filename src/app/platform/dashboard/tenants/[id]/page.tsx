@@ -32,21 +32,21 @@ export default async function PlatformTenantDetailPage({
     <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-heading text-2xl font-semibold text-espresso-950">
+          <h1 className="font-heading text-2xl font-semibold text-plat-on-surface">
             {tenant.nama}
           </h1>
-          <p className="mt-1 text-sm text-espresso-800/60">Slug: {tenant.slug}</p>
+          <p className="mt-1 text-sm text-plat-on-surface-variant">Slug: {tenant.slug}</p>
         </div>
         <Badge variant={tenant.status === "active" ? "secondary" : "destructive"}>
           {tenant.status === "active" ? "Aktif" : "Suspended"}
         </Badge>
       </div>
 
-      <section className="rounded-xl border border-kakao-200 bg-white p-4">
-        <h2 className="mb-1 font-heading text-sm font-semibold text-espresso-950">
+      <section className="rounded-xl border border-plat-outline-variant bg-plat-surface-container-lowest p-4">
+        <h2 className="mb-1 font-heading text-sm font-semibold text-plat-on-surface">
           Status Tenant
         </h2>
-        <p className="mb-3 text-sm text-espresso-800/60">
+        <p className="mb-3 text-sm text-plat-on-surface-variant">
           Suspend memblokir akses dashboard admin tenant ini; situs publiknya tetap tampil
           normal.
         </p>
@@ -61,11 +61,11 @@ export default async function PlatformTenantDetailPage({
         </form>
       </section>
 
-      <section className="rounded-xl border border-kakao-200 bg-white p-4">
-        <h2 className="mb-1 font-heading text-sm font-semibold text-espresso-950">
+      <section className="rounded-xl border border-plat-outline-variant bg-plat-surface-container-lowest p-4">
+        <h2 className="mb-1 font-heading text-sm font-semibold text-plat-on-surface">
           Undang Admin Pertama
         </h2>
-        <p className="mb-3 text-sm text-espresso-800/60">
+        <p className="mb-3 text-sm text-plat-on-surface-variant">
           Email yang belum terdaftar akan menerima undangan set kata sandi; email yang sudah
           terdaftar langsung ditambahkan sebagai admin tenant ini.
         </p>
