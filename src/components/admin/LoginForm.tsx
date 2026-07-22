@@ -37,16 +37,14 @@ export function LoginForm() {
       </div>
 
       {state.error && (
-        <p className="rounded-lg bg-tanah-100 px-3 py-2 text-sm text-tanah-500">
+        <p className="rounded-lg bg-danger-soft px-3 py-2 text-sm text-on-danger-soft">
           {state.error}
         </p>
       )}
 
-      <Button
-        type="submit"
-        disabled={isPending}
-        className="w-full rounded-full bg-kopi-600 text-white hover:bg-kopi-600/90"
-      >
+      {/* Varian default Button sudah = tombol primer engine (bg-primary +
+          on-primary + state hover/active dari token); tak perlu ditimpa. */}
+      <Button type="submit" disabled={isPending} className="w-full rounded-full">
         {isPending ? "Memproses…" : "Masuk"}
       </Button>
     </form>
