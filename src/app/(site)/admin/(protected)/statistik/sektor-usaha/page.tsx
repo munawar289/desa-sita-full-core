@@ -26,20 +26,20 @@ export default async function AdminStatistikSektorUsahaPage() {
   return (
     <div className="space-y-8">
       <div>
-        <Link href="/admin/statistik" className="text-sm text-kopi-600 hover:underline">
+        <Link href="/admin/statistik" className="text-sm text-link hover:underline">
           ← Kembali ke Statistik
         </Link>
-        <h1 className="mt-2 font-heading text-2xl font-semibold text-espresso-950">
+        <h1 className="mt-2 font-heading text-2xl font-semibold text-text">
           Sektor Usaha
         </h1>
-        <p className="mt-1 text-sm text-espresso-800/60">
+        <p className="mt-1 text-sm text-text-muted">
           17 sektor usaha tetap — hanya nilainya yang bisa diedit. Perubahan langsung tampil di
           situs publik.
         </p>
       </div>
 
       {error && (
-        <p className="rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+        <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-on-danger-soft">
           Gagal memuat data sektor usaha.
         </p>
       )}

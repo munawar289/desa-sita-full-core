@@ -44,20 +44,20 @@ export default async function AdminWilayahPage() {
   return (
     <div className="space-y-10">
       <div>
-        <h1 className="font-heading text-2xl font-semibold text-espresso-950">
+        <h1 className="font-heading text-2xl font-semibold text-text">
           Profil Desa & Wilayah
         </h1>
-        <p className="mt-1 text-sm text-espresso-800/60">
+        <p className="mt-1 text-sm text-text-muted">
           Perubahan langsung tampil di /profil-desa/sejarah dan /profil-desa/wilayah.
         </p>
       </div>
 
       <section className="space-y-3">
-        <h2 className="font-mono text-xs uppercase tracking-wider text-sawah-700">
+        <h2 className="font-mono text-xs uppercase tracking-wider text-text-muted">
           Info Naratif (Sejarah, Batas Wilayah, Iklim, dst)
         </h2>
         {wilayahInfoResult.error ? (
-          <p className="rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+          <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-on-danger-soft">
             Gagal memuat data info wilayah.
           </p>
         ) : (
@@ -81,26 +81,26 @@ export default async function AdminWilayahPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="font-mono text-xs uppercase tracking-wider text-sawah-700">Komoditas</h2>
+        <h2 className="font-mono text-xs uppercase tracking-wider text-text-muted">Komoditas</h2>
         {komoditasResult.error ? (
-          <p className="rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+          <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-on-danger-soft">
             Gagal memuat data komoditas.
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-kakao-200 bg-white">
+          <div className="overflow-x-auto rounded-xl border border-border bg-surface">
             <table className="w-full text-left">
-              <thead className="bg-kakao-100">
+              <thead className="bg-surface-alt">
                 <tr>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                     Nama
                   </th>
-                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-text-muted">
                     Luas (Ha)
                   </th>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                     Hasil Panen
                   </th>
-                  <th className="px-3 py-2 text-center text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-center text-xs font-mono uppercase tracking-wider text-text-muted">
                     Urutan
                   </th>
                   <th className="px-3 py-2" />
@@ -118,26 +118,26 @@ export default async function AdminWilayahPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="font-mono text-xs uppercase tracking-wider text-sawah-700">Peternakan</h2>
+        <h2 className="font-mono text-xs uppercase tracking-wider text-text-muted">Peternakan</h2>
         {peternakanResult.error ? (
-          <p className="rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+          <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-on-danger-soft">
             Gagal memuat data peternakan.
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-kakao-200 bg-white">
+          <div className="overflow-x-auto rounded-xl border border-border bg-surface">
             <table className="w-full text-left">
-              <thead className="bg-kakao-100">
+              <thead className="bg-surface-alt">
                 <tr>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                     Jenis Ternak
                   </th>
-                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-text-muted">
                     Populasi
                   </th>
-                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-text-muted">
                     Jumlah Pemilik
                   </th>
-                  <th className="px-3 py-2 text-center text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-center text-xs font-mono uppercase tracking-wider text-text-muted">
                     Urutan
                   </th>
                   <th className="px-3 py-2" />

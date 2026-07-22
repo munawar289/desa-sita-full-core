@@ -27,21 +27,21 @@ export default async function AdminStatistikPage() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-heading text-2xl font-semibold text-espresso-950">Statistik</h1>
-          <p className="mt-1 text-sm text-espresso-800/60">
+          <h1 className="font-heading text-2xl font-semibold text-text">Statistik</h1>
+          <p className="mt-1 text-sm text-text-muted">
             Perubahan langsung tampil di situs publik (revalidasi otomatis).
           </p>
         </div>
         <div className="flex gap-2 text-sm">
           <Link
             href="/admin/statistik/per-rt"
-            className="rounded-full border border-kakao-200 px-4 py-2 font-medium text-kopi-600 transition-colors duration-200 hover:bg-kopi-100/50"
+            className="rounded-full border border-border px-4 py-2 font-medium text-link transition-colors duration-200 hover:bg-primary-soft/50"
           >
             Statistik per-RT
           </Link>
           <Link
             href="/admin/statistik/sektor-usaha"
-            className="rounded-full border border-kakao-200 px-4 py-2 font-medium text-kopi-600 transition-colors duration-200 hover:bg-kopi-100/50"
+            className="rounded-full border border-border px-4 py-2 font-medium text-link transition-colors duration-200 hover:bg-primary-soft/50"
           >
             Sektor Usaha
           </Link>
@@ -49,13 +49,13 @@ export default async function AdminStatistikPage() {
       </div>
 
       {error && (
-        <p className="rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+        <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-on-danger-soft">
           Gagal memuat data statistik.
         </p>
       )}
 
       {!error && rows.length === 0 && (
-        <p className="text-sm text-espresso-800/60">Belum ada data statistik.</p>
+        <p className="text-sm text-text-muted">Belum ada data statistik.</p>
       )}
 
       {!error && rows.length > 0 && <StatistikGroupedList rows={rows} />}

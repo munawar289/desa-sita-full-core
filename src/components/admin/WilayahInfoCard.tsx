@@ -32,36 +32,36 @@ export function WilayahInfoCard({ item }: { item: WilayahInfo }) {
 
   if (editing) {
     return (
-      <div className="rounded-xl border border-kakao-200 bg-kopi-100/40 p-4">
+      <div className="rounded-xl border border-border bg-surface-alt p-4">
         <form action={formAction} className="space-y-3">
           <input type="hidden" name="id" value={item.id} />
           <div>
-            <label className="text-xs text-espresso-800/60">Section</label>
+            <label className="text-xs text-text-muted">Section</label>
             <Input name="section" defaultValue={item.section} required maxLength={64} />
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
-              <label className="text-xs text-espresso-800/60">Tampil di Halaman</label>
+              <label className="text-xs text-text-muted">Tampil di Halaman</label>
               <select name="page" defaultValue={item.page} className={selectClassName}>
                 <option value="wilayah">Wilayah</option>
                 <option value="sejarah">Sejarah</option>
               </select>
             </div>
             <div>
-              <label className="text-xs text-espresso-800/60">Urutan</label>
+              <label className="text-xs text-text-muted">Urutan</label>
               <Input name="urutan" type="number" defaultValue={item.urutan} required min={0} />
             </div>
           </div>
           <div>
-            <label className="text-xs text-espresso-800/60">Label Kecil (eyebrow)</label>
+            <label className="text-xs text-text-muted">Label Kecil (eyebrow)</label>
             <Input name="eyebrow" defaultValue={item.eyebrow} required maxLength={40} />
           </div>
           <div>
-            <label className="text-xs text-espresso-800/60">Judul</label>
+            <label className="text-xs text-text-muted">Judul</label>
             <Input name="judul" defaultValue={item.judul} required maxLength={80} />
           </div>
           <div>
-            <label className="text-xs text-espresso-800/60">Konten</label>
+            <label className="text-xs text-text-muted">Konten</label>
             <Textarea name="konten" defaultValue={item.konten} required rows={4} />
           </div>
           <div className="flex gap-2">
@@ -69,7 +69,7 @@ export function WilayahInfoCard({ item }: { item: WilayahInfo }) {
               type="submit"
               size="sm"
               disabled={isPending}
-              className="rounded-full bg-kopi-600 hover:bg-kopi-600/90"
+              className="rounded-full"
             >
               {isPending ? "Menyimpan…" : "Simpan"}
             </Button>
@@ -83,24 +83,24 @@ export function WilayahInfoCard({ item }: { item: WilayahInfo }) {
               Batal
             </Button>
           </div>
-          {state.error && <p className="text-sm text-tanah-500">{state.error}</p>}
+          {state.error && <p className="text-sm text-danger">{state.error}</p>}
         </form>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-kakao-200 bg-white p-4">
+    <div className="rounded-xl border border-border bg-surface p-4">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="font-mono text-xs uppercase tracking-wider text-sawah-700">
+          <p className="font-mono text-xs uppercase tracking-wider text-text-muted">
             {item.eyebrow} · {item.judul}
-            <span className="ml-2 rounded-full bg-kakao-100 px-2 py-0.5 normal-case tracking-normal text-espresso-800/60">
+            <span className="ml-2 rounded-full bg-surface-alt px-2 py-0.5 normal-case tracking-normal text-text-muted">
               {item.page === "wilayah" ? "Wilayah" : "Sejarah"}
             </span>
           </p>
-          <p className="mt-1 text-sm text-espresso-800">{item.konten}</p>
-          <p className="mt-2 text-xs text-espresso-800/50">
+          <p className="mt-1 text-sm text-text">{item.konten}</p>
+          <p className="mt-2 text-xs text-text-muted">
             Diperbarui {formatTanggal(item.updated_at)}
           </p>
         </div>
@@ -109,7 +109,7 @@ export function WilayahInfoCard({ item }: { item: WilayahInfo }) {
             type="button"
             onClick={() => setEditing(true)}
             aria-label={`Edit ${item.section}`}
-            className="rounded-md p-1.5 text-kopi-600 transition-colors duration-200 hover:bg-kopi-100"
+            className="rounded-md p-1.5 text-primary transition-colors duration-200 hover:bg-primary-soft"
           >
             <Pencil className="size-4" />
           </button>

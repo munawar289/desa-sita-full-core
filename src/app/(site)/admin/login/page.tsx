@@ -14,16 +14,16 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function AdminLoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-espresso-950 px-4">
-      <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-white p-8 shadow-xl">
+    <div className="flex min-h-screen items-center justify-center bg-panel-strong px-4">
+      <div className="w-full max-w-sm rounded-2xl border border-border bg-surface p-8 shadow-xl">
         <div className="flex flex-col items-center text-center">
-          <span className="flex size-11 items-center justify-center rounded-xl bg-linear-to-br from-gold-500 to-kopi-600 text-espresso-950">
+          <span className="flex size-11 items-center justify-center rounded-xl bg-linear-to-br from-accent-300 to-accent-500 text-neutral-900">
             <Mountain className="size-6" />
           </span>
-          <h1 className="mt-4 font-heading text-xl font-semibold text-espresso-950">
+          <h1 className="mt-4 font-heading text-xl font-semibold text-text">
             Dashboard Admin
           </h1>
-          <p className="mt-1 text-sm text-espresso-800/60">Desa Sita</p>
+          <p className="mt-1 text-sm text-text-muted">Desa Sita</p>
         </div>
 
         {isSupabaseConfigured() ? (
@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
             <LoginForm />
           </div>
         ) : (
-          <div className="mt-8 flex items-start gap-3 rounded-lg border border-tanah-100 bg-tanah-100/60 p-4 text-sm text-tanah-500">
+          <div className="mt-8 flex items-start gap-3 rounded-lg border border-danger-soft bg-danger-soft/60 p-4 text-sm text-on-danger-soft">
             <TriangleAlert className="mt-0.5 size-4 shrink-0" />
             <p>
               Supabase belum dikonfigurasi. Isi <code>NEXT_PUBLIC_SUPABASE_URL</code>{" "}

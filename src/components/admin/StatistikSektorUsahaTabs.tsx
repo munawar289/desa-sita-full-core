@@ -25,8 +25,8 @@ export function StatistikSektorUsahaTabs({ rows }: { rows: StatistikSektorUsaha[
             className={cn(
               "rounded-full px-4 py-1.5 text-sm font-medium transition-colors duration-200",
               active === tab.key
-                ? "bg-kopi-600 text-white"
-                : "border border-kakao-200 text-espresso-800/70 hover:bg-kakao-100",
+                ? "bg-primary text-on-primary"
+                : "border border-border text-text-muted hover:bg-surface-alt",
             )}
           >
             {tab.label}
@@ -34,20 +34,20 @@ export function StatistikSektorUsahaTabs({ rows }: { rows: StatistikSektorUsaha[
         ))}
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-kakao-200 bg-white">
+      <div className="overflow-hidden rounded-xl border border-border bg-surface">
         <table className="w-full text-left">
-          <thead className="bg-kakao-100">
+          <thead className="bg-surface-alt">
             <tr>
-              <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+              <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                 Kode
               </th>
-              <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+              <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                 Sektor Usaha
               </th>
-              <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-sawah-700">
+              <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-text-muted">
                 Nilai (Ribu Rupiah)
               </th>
-              <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+              <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                 Diperbarui
               </th>
               <th className="px-3 py-2" />

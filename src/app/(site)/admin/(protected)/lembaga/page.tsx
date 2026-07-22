@@ -39,42 +39,42 @@ export default async function AdminLembagaPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="font-heading text-2xl font-semibold text-espresso-950">Lembaga Desa</h1>
-        <p className="mt-1 text-sm text-espresso-800/60">
+        <h1 className="font-heading text-2xl font-semibold text-text">Lembaga Desa</h1>
+        <p className="mt-1 text-sm text-text-muted">
           Perubahan langsung tampil di halaman publik /lembaga-desa.
         </p>
       </div>
 
       {error && (
-        <p className="rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+        <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-on-danger-soft">
           Gagal memuat data lembaga.
         </p>
       )}
 
       {grouped.size === 0 && !error && (
-        <p className="text-sm text-espresso-800/60">Belum ada data lembaga.</p>
+        <p className="text-sm text-text-muted">Belum ada data lembaga.</p>
       )}
 
       {[...grouped.entries()].map(([kategori, items]) => (
         <section key={kategori} className="space-y-3">
-          <h2 className="font-mono text-xs uppercase tracking-wider text-sawah-700">{kategori}</h2>
-          <div className="overflow-x-auto rounded-xl border border-kakao-200 bg-white">
+          <h2 className="font-mono text-xs uppercase tracking-wider text-text-muted">{kategori}</h2>
+          <div className="overflow-x-auto rounded-xl border border-border bg-surface">
             <table className="w-full text-left">
-              <thead className="bg-kakao-100">
+              <thead className="bg-surface-alt">
                 <tr>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                     Nama
                   </th>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                     Dasar Hukum
                   </th>
-                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-text-muted">
                     Pengurus
                   </th>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                     Keterangan
                   </th>
-                  <th className="px-3 py-2 text-center text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-center text-xs font-mono uppercase tracking-wider text-text-muted">
                     Urutan
                   </th>
                   <th className="px-3 py-2" />

@@ -49,15 +49,15 @@ export default async function AdminProtectedLayout({
           : "Akun ini belum terdaftar sebagai anggota pengelola situs desa ini.";
 
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-krem-50 px-4">
-        <div className="flex max-w-sm items-start gap-3 rounded-lg border border-tanah-100 bg-tanah-100/60 p-4 text-sm text-tanah-500">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-surface-alt px-4">
+        <div className="flex max-w-sm items-start gap-3 rounded-lg border border-danger-soft bg-danger-soft/60 p-4 text-sm text-on-danger-soft">
           <TriangleAlert className="mt-0.5 size-4 shrink-0" />
           <p>{message}</p>
         </div>
         <form action={signOutAction}>
           <button
             type="submit"
-            className="text-sm font-medium text-espresso-800 underline underline-offset-4 hover:text-tanah-500"
+            className="text-sm font-medium text-text underline underline-offset-4 hover:text-danger"
           >
             Keluar
           </button>
@@ -67,7 +67,7 @@ export default async function AdminProtectedLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-krem-50">
+    <div className="flex min-h-screen bg-surface-alt">
       <AdminSidebar role={profile.role} />
       <div className="flex min-w-0 flex-1 flex-col">
         <AdminTopbar profile={profile} />
