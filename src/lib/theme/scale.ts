@@ -37,21 +37,26 @@ const BRAND_RAMP: readonly RampEntry[] = [
 ];
 
 /**
- * Amplop netral — lightness untuk surface/border/teks, dengan chroma nyaris
- * nol. Angkanya absolut (bukan pengali) karena netral harus konsisten antar
- * tenant; tint hue-nya diatur terpisah di buildNeutralScale().
+ * Amplop netral — lightness untuk surface/border/teks, dengan chroma tipis.
+ *
+ * `chromaFactor` di sini MEMUNCAK DI UJUNG TERANG, kebalikan dari BRAND_RAMP.
+ * Alasannya perseptual: pada lightness tinggi, chroma yang sama jauh lebih
+ * tidak terlihat. Tanpa bobot ini surface dan border kehilangan kehangatan
+ * "kertas" dan situs jatuh jadi abu-abu template generik — persis yang bikin
+ * palet lama (`krem-50` #f5efe2, chroma 0.0184) terasa lebih bernyawa daripada
+ * netral versi pertama engine ini (chroma 0.0051).
  */
 const NEUTRAL_RAMP: readonly RampEntry[] = [
-  { step: 50, l: 0.99, chromaFactor: 0.32 },
-  { step: 100, l: 0.972, chromaFactor: 0.46 },
-  { step: 200, l: 0.928, chromaFactor: 0.62 },
-  { step: 300, l: 0.874, chromaFactor: 0.74 },
-  { step: 400, l: 0.73, chromaFactor: 0.88 },
-  { step: 500, l: 0.612, chromaFactor: 1.0 },
-  { step: 600, l: 0.508, chromaFactor: 1.0 },
-  { step: 700, l: 0.412, chromaFactor: 0.94 },
-  { step: 800, l: 0.318, chromaFactor: 0.86 },
-  { step: 900, l: 0.236, chromaFactor: 0.76 },
+  { step: 50, l: 0.982, chromaFactor: 0.85 },
+  { step: 100, l: 0.958, chromaFactor: 1.0 },
+  { step: 200, l: 0.912, chromaFactor: 1.1 },
+  { step: 300, l: 0.86, chromaFactor: 1.0 },
+  { step: 400, l: 0.722, chromaFactor: 0.8 },
+  { step: 500, l: 0.604, chromaFactor: 0.66 },
+  { step: 600, l: 0.502, chromaFactor: 0.58 },
+  { step: 700, l: 0.408, chromaFactor: 0.52 },
+  { step: 800, l: 0.314, chromaFactor: 0.46 },
+  { step: 900, l: 0.232, chromaFactor: 0.4 },
 ];
 
 /**
@@ -64,15 +69,16 @@ export const MAX_BRAND_CHROMA = 0.17;
 
 /**
  * Batas chroma netral: tint hue tenant yang boleh menempel di surface/border/
- * teks. 0.012 setara "terasa hangat/dingin" tanpa terbaca sebagai berwarna.
+ * teks. 0.020 setara kehangatan `krem-50` palet lama (chroma 0.0184) — terasa
+ * sebagai kertas hangat, belum terbaca sebagai warna.
  */
-const MAX_NEUTRAL_CHROMA = 0.012;
+export const MAX_NEUTRAL_CHROMA = 0.02;
 
 /**
  * Netral ikut kalem kalau warna tenant kalem. Tanpa pengali ini, input abu-abu
  * murni (chroma 0) tetap akan diberi tint dari hue 0 (merah) — salah.
  */
-const NEUTRAL_TINT_FROM_BRAND = 0.09;
+const NEUTRAL_TINT_FROM_BRAND = 0.16;
 
 function buildFromRamp(hue: number, chroma: number, ramp: readonly RampEntry[]): ColorScale {
   const scale = {} as ColorScale;

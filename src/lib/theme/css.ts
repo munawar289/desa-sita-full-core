@@ -10,7 +10,7 @@
 
 import { oklchToHex } from "./oklch";
 import { SCALE_STEPS, type ColorScale } from "./scale";
-import { deriveTheme, type DerivedTheme, type ThemeSlots } from "./tokens";
+import { deriveTheme, STATUS_NAMES, type DerivedTheme, type ThemeSlots } from "./tokens";
 
 export type ThemeCssVariables = Record<string, string>;
 
@@ -72,6 +72,18 @@ export function themeToCssVariables(theme: DerivedTheme): ThemeCssVariables {
   for (const [name, value] of semantic) {
     vars[name] = value;
   }
+
+  for (const name of STATUS_NAMES) {
+    const token = s.status[name];
+    vars[`--color-${name}`] = oklchToHex(token.base);
+    vars[`--color-${name}-soft`] = oklchToHex(token.soft);
+    vars[`--color-on-${name}`] = oklchToHex(token.on);
+    vars[`--color-on-${name}-soft`] = oklchToHex(token.onSoft);
+  }
+
+  s.chart.forEach((color, index) => {
+    vars[`--color-chart-${index + 1}`] = oklchToHex(color);
+  });
 
   return vars;
 }

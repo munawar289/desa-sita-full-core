@@ -53,6 +53,31 @@ export const DEFAULT_THEME_SLOTS: ThemeSlots = {
   warna_aksen: "#d9a441",
 };
 
+/**
+ * Warna status TIDAK diturunkan dari tenant — merah/kuning/hijau/biru adalah
+ * makna universal, dan desa berprimer hijau tidak boleh punya pesan galat
+ * hijau. Hue-nya dipatok di sini; lightness & chroma-nya tetap melewati
+ * guardrail yang sama dengan warna brand, jadi kontrasnya tetap dijamin.
+ *
+ * Catatan soal `warning`: tidak ada kuning terang yang sanggup memenuhi 3:1
+ * terhadap surface putih, jadi G2 pasti memekatkannya jadi amber tua. Kuning
+ * cerahnya tetap hidup di `--color-warning-soft` — itu memang tempat yang
+ * benar untuk kuning: latar, bukan permukaan bertulisan.
+ */
+const STATUS_BASES = {
+  danger: { l: 0.55, c: 0.17, h: 25 },
+  warning: { l: 0.76, c: 0.16, h: 85 },
+  success: { l: 0.58, c: 0.14, h: 145 },
+  info: { l: 0.52, c: 0.16, h: 250 },
+} as const satisfies Record<string, Oklch>;
+
+export type StatusName = keyof typeof STATUS_BASES;
+
+export const STATUS_NAMES = Object.keys(STATUS_BASES) as readonly StatusName[];
+
+/** Redaman chroma panel gelap (Navbar/Footer) — lihat catatan di deriveTheme(). */
+const PANEL_CHROMA_DAMPING = 0.75;
+
 /** Batas lightness untuk warna yang dipakai sebagai permukaan komponen interaktif. */
 const INTERACTIVE_MAX_L = 0.7;
 
@@ -66,6 +91,14 @@ const ACTIVE_DELTA = 0.105;
  * disentuh.
  */
 const HOVER_INVERT_BELOW_L = 0.42;
+
+/** Satu warna status beserta latar lembut dan pasangan teksnya. */
+export type StatusTokens = {
+  base: Oklch;
+  soft: Oklch;
+  on: Oklch;
+  onSoft: Oklch;
+};
 
 export type SemanticTokens = {
   primary: Oklch;
@@ -105,6 +138,16 @@ export type SemanticTokens = {
   link: Oklch;
   linkHover: Oklch;
   focusRing: Oklch;
+
+  status: Record<StatusName, StatusTokens>;
+
+  /**
+   * Lima seri chart, diambil dari step scale yang SUDAH ada — bukan hue baru.
+   * Dengan begitu grafik tidak pernah memunculkan warna yang tak pernah dipilih
+   * admin. Urutannya sengaja selang-seling gelap/terang supaya seri berdekatan
+   * tetap terbedakan pada tema yang hue ketiga slotnya berdekatan.
+   */
+  chart: readonly [Oklch, Oklch, Oklch, Oklch, Oklch];
 };
 
 export type SlotDiagnostic = {
@@ -138,6 +181,8 @@ export type ThemeDiagnostics = {
     onPanel: number;
     linkOnSurface: number;
   };
+  /** Kontras tiap warna status terhadap pasangan teksnya masing-masing. */
+  status: Record<StatusName, { on: number; onSoft: number }>;
 };
 
 export type DerivedTheme = {
@@ -258,6 +303,25 @@ function buildSlotDiagnostic(
   };
 }
 
+/**
+ * Satu warna status lewat pipeline yang sama persis dengan warna brand:
+ * permukaannya dicari lewat pickInteractive() sehingga dijamin 3:1 terhadap
+ * surface dan sanggup menampung label, teksnya dipilih lewat rasio kontras.
+ * `paper`/`ink` tetap netral TENANT supaya badge status menyatu dengan halaman.
+ */
+function buildStatus(base: Oklch, surface: Oklch, paper: Oklch, ink: Oklch): StatusTokens {
+  const scale = buildBrandScale(base);
+  const { color } = pickInteractive(base, scale, surface, paper, ink);
+  const soft = scale[100];
+
+  return {
+    base: color,
+    soft,
+    on: pickReadableForeground(color, paper, ink),
+    onSoft: pickAgainst(soft, scale, TEXT_ON_LIGHT_ORDER, CONTRAST_TEXT_AA),
+  };
+}
+
 export function deriveTheme(slots: ThemeSlots): DerivedTheme {
   const basePrimer = parseSlot(slots.warna_primer, DEFAULT_THEME_SLOTS.warna_primer);
   const baseSekunder = parseSlot(slots.warna_sekunder, DEFAULT_THEME_SLOTS.warna_sekunder);
@@ -286,7 +350,11 @@ export function deriveTheme(slots: ThemeSlots): DerivedTheme {
   // Guardrail 4 (S6): panel gelap Navbar/Footer/Hero adalah shade gelap dari
   // warna PRIMER, bukan netral — supaya identitas desa tetap terasa di area
   // paling menonjol halaman. Kontras teksnya dijamin lewat pickAgainst().
-  const panel = primary[900];
+  //
+  // Chroma-nya diredam: shade 900 apa adanya 2,4× lebih berwarna daripada panel
+  // palet lama, dan untuk desa berwarna jenuh hasilnya Navbar yang menyala
+  // sepanjang halaman. 75% cukup untuk tetap terbaca sebagai warna desa.
+  const panel = clampToGamut({ ...primary[900], c: primary[900].c * PANEL_CHROMA_DAMPING });
   const panelStrong = clampToGamut({
     l: 0.208,
     c: clampBrandChroma(basePrimer.c) * 0.6,
@@ -341,6 +409,15 @@ export function deriveTheme(slots: ThemeSlots): DerivedTheme {
     link,
     linkHover: shiftLightness(link, HOVER_DELTA),
     focusRing: primaryPick.color,
+
+    status: {
+      danger: buildStatus(STATUS_BASES.danger, surface, paper, ink),
+      warning: buildStatus(STATUS_BASES.warning, surface, paper, ink),
+      success: buildStatus(STATUS_BASES.success, surface, paper, ink),
+      info: buildStatus(STATUS_BASES.info, surface, paper, ink),
+    },
+
+    chart: [primary[600], secondary[600], accent[600], primary[300], secondary[300]],
   };
 
   const diagnostics: ThemeDiagnostics = {
@@ -360,6 +437,18 @@ export function deriveTheme(slots: ThemeSlots): DerivedTheme {
       onPanel: contrastRatio(semantic.panel, semantic.onPanel),
       linkOnSurface: contrastRatio(semantic.link, semantic.surface),
     },
+    status: Object.fromEntries(
+      STATUS_NAMES.map((name) => {
+        const token = semantic.status[name];
+        return [
+          name,
+          {
+            on: contrastRatio(token.base, token.on),
+            onSoft: contrastRatio(token.soft, token.onSoft),
+          },
+        ];
+      }),
+    ) as ThemeDiagnostics["status"],
   };
 
   return { scales: { primary, secondary, accent, neutral }, semantic, diagnostics };
