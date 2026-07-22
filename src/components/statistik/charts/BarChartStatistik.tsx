@@ -9,6 +9,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import {
+  CHART_AXIS_STROKE,
+  CHART_CURSOR_FILL,
+  CHART_GRID_STROKE,
+  CHART_TOOLTIP_ITEM_STYLE,
+  CHART_TOOLTIP_LABEL_STYLE,
+  CHART_TOOLTIP_STYLE,
+  chartSeriesColor,
+} from "./chart-theme";
 
 export type BarChartStatistikDatum = { label: string; value: number };
 
@@ -20,20 +29,16 @@ export function BarChartStatistik({ data }: { data: BarChartStatistikDatum[] }) 
     <div className="h-55 sm:h-65 lg:h-75">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={sorted}>
-          <defs>
-            <linearGradient id="gradientKopi" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#D07B3F" />
-              <stop offset="100%" stopColor="#C1602A" />
-            </linearGradient>
-          </defs>
-          <CartesianGrid strokeDasharray="3 3" stroke="#E2D8C3" vertical={false} />
-          <XAxis dataKey="label" stroke="#5C4F3F" fontSize={12} />
-          <YAxis stroke="#5C4F3F" fontSize={12} />
+          <CartesianGrid strokeDasharray="3 3" stroke={CHART_GRID_STROKE} vertical={false} />
+          <XAxis dataKey="label" stroke={CHART_AXIS_STROKE} fontSize={12} />
+          <YAxis stroke={CHART_AXIS_STROKE} fontSize={12} />
           <Tooltip
-            contentStyle={{ borderColor: "#E2D8C3", borderRadius: 8 }}
-            cursor={{ fill: "#F0EADA" }}
+            contentStyle={CHART_TOOLTIP_STYLE}
+            itemStyle={CHART_TOOLTIP_ITEM_STYLE}
+            labelStyle={CHART_TOOLTIP_LABEL_STYLE}
+            cursor={CHART_CURSOR_FILL}
           />
-          <Bar dataKey="value" fill="url(#gradientKopi)" radius={[6, 6, 0, 0]} />
+          <Bar dataKey="value" fill={chartSeriesColor(0)} radius={[6, 6, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

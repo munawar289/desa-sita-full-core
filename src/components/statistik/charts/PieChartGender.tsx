@@ -1,8 +1,13 @@
 "use client";
 
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
-
-const COLORS = ["#C1602A", "#5B7A41"]; // terracotta (kopi-600), olive (sawah-400)
+import {
+  CHART_TOOLTIP_ITEM_STYLE,
+  CHART_TOOLTIP_LABEL_STYLE,
+  CHART_TOOLTIP_STYLE,
+  chartSeriesColor,
+  renderLegendLabel,
+} from "./chart-theme";
 
 export function PieChartGender({
   data,
@@ -22,11 +27,15 @@ export function PieChartGender({
             paddingAngle={2}
           >
             {data.map((entry, index) => (
-              <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
+              <Cell key={entry.name} fill={chartSeriesColor(index)} />
             ))}
           </Pie>
-          <Tooltip contentStyle={{ borderColor: "#E2D8C3", borderRadius: 8 }} />
-          <Legend />
+          <Tooltip
+            contentStyle={CHART_TOOLTIP_STYLE}
+            itemStyle={CHART_TOOLTIP_ITEM_STYLE}
+            labelStyle={CHART_TOOLTIP_LABEL_STYLE}
+          />
+          <Legend formatter={renderLegendLabel} />
         </PieChart>
       </ResponsiveContainer>
     </div>

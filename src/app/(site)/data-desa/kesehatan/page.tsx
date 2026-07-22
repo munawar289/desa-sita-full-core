@@ -89,8 +89,8 @@ export default async function KesehatanPage() {
                 <BarChartRtGrouped
                   data={airBersihChartData}
                   series={[
-                    { key: "pdam", label: "PDAM", color: "#C1602A" },
-                    { key: "ledeng", label: "Air Ledeng", color: "#5B7A41" },
+                    { key: "pdam", label: "PDAM" },
+                    { key: "ledeng", label: "Air Ledeng" },
                   ]}
                 />
               </div>

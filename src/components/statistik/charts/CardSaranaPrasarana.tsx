@@ -13,16 +13,18 @@ export function CardSaranaPrasarana({ data }: { data: SaranaPrasarana[] }) {
       {Object.entries(grouped).map(([kategori, items]) => (
         <div
           key={kategori}
-          className="rounded-xl border border-kakao-200 bg-white p-5 shadow-sm"
+          className="rounded-xl border border-border bg-surface p-5 shadow-sm"
         >
-          <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-kopi-600">
+          {/* Judul kategori adalah teks berwarna brand — `link` yang dijamin
+              4.5:1, bukan `primary` yang hanya dijamin 3:1 (DESIGN.md E9). */}
+          <h3 className="font-heading text-sm font-semibold uppercase tracking-wide text-link">
             {kategori}
           </h3>
           <ul className="mt-3 space-y-2">
             {items.map((item) => (
               <li key={item.id} className="flex items-center justify-between text-sm">
-                <span className="text-espresso-800">{item.nama}</span>
-                <span className="font-semibold text-espresso-950">
+                <span className="text-text-muted">{item.nama}</span>
+                <span className="font-semibold text-text">
                   {item.jumlah ?? "—"}
                 </span>
               </li>
