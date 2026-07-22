@@ -546,11 +546,19 @@ Keputusan yang diambil di 5c:
 | **E20** | Ikon edit (pensil) → `text-primary` dengan `hover:bg-primary-soft`, bukan `text-kopi-600`/`hover:bg-kopi-100` | Ikon adalah objek grafis non-teks; `--color-primary` dijamin 3:1 terhadap surface — cukup untuk itu (WCAG 1.4.11), sesuai konvensi E9 |
 | **E21** | Tombol hapus: idle `text-muted`, hover `bg-danger-soft`/`text-danger` | Warna danger hanya muncul saat hover pada ikon (non-teks, 3:1 cukup); aksi destruktif tidak menyala terus-menerus tapi tetap terbaca merah saat disentuh. Tiga tingkat alpha espresso lama (`/70`, `/60`, `/50`) dilebur ke satu `text-muted` — gradasi itu faux-muted yang tidak ikut warna desa |
 
-### `[ ]` Fase 6 — Platform & set-password → **AC3, AC8**
+### `[x]` Fase 6 — Platform & set-password *(selesai 2026-07-23)* → **AC3, AC8**
 
-- [ ] `/platform` → palet `plat-*` (K14)
-- [ ] `/set-password` → token baru dengan default
-- [ ] Verifikasi: `/platform` tidak berubah warna saat diakses dari host desa manapun
+- [x] `/platform` → palet `plat-*` (K14) — hanya 6 berkas (dashboard + 2 form + root layout) yang masih memakai palet tenant lama; landing/hero sudah `plat-*`
+- [x] `/set-password` → token engine default (K14)
+- [x] Verifikasi: AC8 lolos (`grep getDesaProfil/getCurrentTenant` di `src/app/platform` = 0 kecuali komentar), `tsc`/`lint` bersih, `build` 42/42
+
+Keputusan yang diambil di Fase 6:
+
+| | Keputusan | Alasan |
+|---|---|---|
+| **E25** | Glass putih di landing (`bg-white/10`, `text-white`, `border-white/30`) **dibiarkan** | Bukan palet lama (tak kena AC3) dan bukan hex (tak kena AC4); ini state-layer Material 3 di atas hero `plat-primary` gelap — mengubahnya ke token justru menghilangkan efek yang disengaja |
+| **E26** | Dashboard landlord & 2 form → `plat-*` (bukan token tenant): kartu `plat-surface-container-lowest`, teks `plat-on-surface`, banner galat `plat-error-container`, tombol `plat-primary` | Landlord tidak boleh berganti warna mengikuti desa yang kebetulan diakses (S5); `plat-*` adalah sistem tetapnya |
+| **E27** | `/set-password` pakai token **engine default** (bukan `plat-*`), meniru halaman `/admin/login` (E23) | Ia bukan panel landlord dan bukan situs tenant; token engine dengan nilai default `@theme` adalah yang paling netral & sudah terjamin kontrasnya. Sukses → `success-soft`/`on-success-soft` |
 
 ### `[ ]` Fase 7 — Pembersihan → **AC7, AC9**
 
