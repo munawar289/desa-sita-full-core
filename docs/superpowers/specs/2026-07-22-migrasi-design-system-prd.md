@@ -560,12 +560,19 @@ Keputusan yang diambil di Fase 6:
 | **E26** | Dashboard landlord & 2 form → `plat-*` (bukan token tenant): kartu `plat-surface-container-lowest`, teks `plat-on-surface`, banner galat `plat-error-container`, tombol `plat-primary` | Landlord tidak boleh berganti warna mengikuti desa yang kebetulan diakses (S5); `plat-*` adalah sistem tetapnya |
 | **E27** | `/set-password` pakai token **engine default** (bukan `plat-*`), meniru halaman `/admin/login` (E23) | Ia bukan panel landlord dan bukan situs tenant; token engine dengan nilai default `@theme` adalah yang paling netral & sudah terjamin kontrasnya. Sukses → `success-soft`/`on-success-soft` |
 
-### `[ ]` Fase 7 — Pembersihan → **AC7, AC9**
+### `[x]` Fase 7 — Pembersihan *(selesai 2026-07-23)* → **AC3, AC4, AC7, AC9**
 
-- [ ] Hapus blok `@theme` palet lama
-- [ ] Hapus blok `.dark` (K15)
-- [ ] Hapus `::selection` hex & utility warna sisa
-- [ ] Verifikasi: `grep` untuk `espresso-|kopi-|kakao-|krem-|sawah-|tanah-|gold-|panel-` menghasilkan **0** di `src/`
+- [x] Hapus blok `@theme` palet lama (espresso/kopi/kakao/krem/sawah/tanah/gold/panel-800/950)
+- [x] Hapus blok `.dark` (K15) — `@custom-variant dark` dipertahankan (E28)
+- [x] `::selection` hex → `primary`/`on-primary`; `.text-gradient-kopi` sudah jadi `.text-gradient-brand` sejak E5
+- [x] Reword komentar historis `scale.ts` agar lepas dari literal `krem-50`
+- [x] Verifikasi: AC3 `grep` palet lama di `src/` = **0**; AC4 `grep` hex di `src/components`+`src/app` (luar `dev/`, `globals.css`) = **0**; `tsc`/`lint` bersih, `theme:check` 93 sinkron, `build` 42/42
+
+Catatan AC3: pola `panel-` di AC3 terlalu luas — token engine `panel-strong`/`panel-border`/`on-panel-muted` dan kelas demo `.panel-deep` di `/dev/tema` juga cocok. Yang dihapus adalah token palet lama `panel-800`/`panel-950`; sisa `panel-*` seluruhnya milik engine. Verifikasi memakai `panel-[0-9]`.
+
+| | Keputusan | Alasan |
+|---|---|---|
+| **E28** | `@custom-variant dark (&:is(.dark *))` **dipertahankan** meski blok `.dark` dibuang | Komponen shadcn masih memuat utility `dark:*`. Custom-variant ini mengikatnya ke `.dark` yang tak pernah ada, jadi semuanya tetap dorman — persis perilaku sekarang. Membuangnya justru mengembalikan `dark:` ke `@media (prefers-color-scheme)` dan menyalakan sebagian gaya gelap parsial (S6: dark mode tidak dibangun) |
 
 ### `[ ]` Fase 8 — Drop kolom → **AC10**
 
