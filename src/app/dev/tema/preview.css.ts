@@ -93,6 +93,28 @@ input:focus-visible, .btn:focus-visible, a:focus-visible {
 .badge-accent { background: var(--color-accent-soft); color: var(--color-on-accent-soft); }
 .badge-solid { background: var(--color-primary); color: var(--color-on-primary); }
 
+/* ── Warna status ──────────────────────────────────────────────── */
+.badge[data-status="danger"] { background: var(--color-danger-soft); color: var(--color-on-danger-soft); }
+.badge[data-status="warning"] { background: var(--color-warning-soft); color: var(--color-on-warning-soft); }
+.badge[data-status="success"] { background: var(--color-success-soft); color: var(--color-on-success-soft); }
+.badge[data-status="info"] { background: var(--color-info-soft); color: var(--color-on-info-soft); }
+.btn[data-status-solid="danger"] { background: var(--color-danger); color: var(--color-on-danger); }
+.btn[data-status-solid="warning"] { background: var(--color-warning); color: var(--color-on-warning); }
+.btn[data-status-solid="success"] { background: var(--color-success); color: var(--color-on-success); }
+.btn[data-status-solid="info"] { background: var(--color-info); color: var(--color-on-info); }
+.alert {
+  border-radius: 10px; padding: 12px 14px; font-size: 0.85rem; max-inline-size: 560px;
+}
+.alert[data-status="danger"] {
+  background: var(--color-danger-soft); color: var(--color-on-danger-soft);
+  border-inline-start: 3px solid var(--color-danger);
+}
+
+/* ── Seri chart ────────────────────────────────────────────────── */
+.chart-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; }
+.chart-series { display: flex; flex-direction: column; gap: 6px; }
+.chart-bar { display: block; inline-size: 76px; block-size: 76px; border-radius: 8px; }
+
 .tema a.inline-link { color: var(--color-link); text-underline-offset: 3px; }
 .tema a.inline-link:hover { color: var(--color-link-hover); }
 

@@ -3,6 +3,7 @@ import {
   CONTRAST_UI_AA,
   oklchToHex,
   SCALE_STEPS,
+  STATUS_NAMES,
   type ColorScale,
   type ThemeCssVariables,
   type ThemeDiagnostics,
@@ -67,8 +68,28 @@ export function GuardrailTable({ diagnostics }: { diagnostics: ThemeDiagnostics 
   );
 }
 
+/** Label Bahasa Indonesia untuk tiap warna status. */
+const STATUS_LABEL: Record<(typeof STATUS_NAMES)[number], string> = {
+  danger: "Galat",
+  warning: "Peringatan",
+  success: "Berhasil",
+  info: "Informasi",
+};
+
 export function ContrastTable({ diagnostics }: { diagnostics: ThemeDiagnostics }) {
   const { contrast } = diagnostics;
+  const statusRows = STATUS_NAMES.flatMap((name) => [
+    {
+      label: `on-${name} di atas ${name}`,
+      value: diagnostics.status[name].on,
+      min: CONTRAST_TEXT_AA,
+    },
+    {
+      label: `on-${name}-soft di atas ${name}-soft`,
+      value: diagnostics.status[name].onSoft,
+      min: CONTRAST_TEXT_AA,
+    },
+  ]);
   const rows: ReadonlyArray<{ label: string; value: number; min: number }> = [
     { label: "on-primary di atas primary", value: contrast.onPrimary, min: CONTRAST_TEXT_AA },
     { label: "on-secondary di atas secondary", value: contrast.onSecondary, min: CONTRAST_TEXT_AA },
@@ -96,6 +117,7 @@ export function ContrastTable({ diagnostics }: { diagnostics: ThemeDiagnostics }
       value: contrast.borderStrongOnSurface,
       min: CONTRAST_UI_AA,
     },
+    ...statusRows,
   ];
 
   return (
@@ -151,6 +173,55 @@ export function ScaleSection({
         </div>
       ))}
     </>
+  );
+}
+
+/**
+ * Warna status. Hue-nya dipatok, jadi bagian ini harus tetap terbaca sebagai
+ * merah/kuning/hijau/biru pada preset seekstrem apa pun — itu yang diuji.
+ * Tiap contoh selalu punya teks, tidak pernah warna sendirian (WCAG 1.4.1).
+ */
+export function StatusSection() {
+  return (
+    <>
+      <div className="btn-row">
+        {STATUS_NAMES.map((name) => (
+          <span key={name} className="badge" data-status={name}>
+            {STATUS_LABEL[name]}
+          </span>
+        ))}
+      </div>
+      <div className="btn-row" style={{ marginTop: 10 }}>
+        {STATUS_NAMES.map((name) => (
+          <button key={name} type="button" className="btn" data-status-solid={name}>
+            {STATUS_LABEL[name]}
+          </button>
+        ))}
+      </div>
+      <div className="alert" data-status="danger" style={{ marginTop: 14 }}>
+        <strong>Nomor Induk Kependudukan belum diisi.</strong> Isi 16 digit NIK sesuai kartu
+        keluarga sebelum mengirim permohonan.
+      </div>
+    </>
+  );
+}
+
+/** Lima seri chart, diambil dari step scale yang sudah ada (bukan hue baru). */
+export function ChartSection({ vars }: { vars: ThemeCssVariables }) {
+  return (
+    <div className="chart-row">
+      {[1, 2, 3, 4, 5].map((index) => {
+        const name = `--color-chart-${index}`;
+        return (
+          <div key={name} className="chart-series">
+            <span className="chart-bar" style={{ background: vars[name] }} />
+            <span className="swatch-value">
+              chart-{index} · {vars[name]}
+            </span>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 

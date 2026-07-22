@@ -7,7 +7,14 @@ import {
   type ThemeSlots,
 } from "@/lib/theme";
 import { previewCss } from "./preview.css";
-import { ContrastTable, GuardrailTable, ScaleSection, TokenGrid } from "./sections";
+import {
+  ChartSection,
+  ContrastTable,
+  GuardrailTable,
+  ScaleSection,
+  StatusSection,
+  TokenGrid,
+} from "./sections";
 
 /**
  * Preview color derivation engine — DEV ONLY.
@@ -17,9 +24,9 @@ import { ContrastTable, GuardrailTable, ScaleSection, TokenGrid } from "./sectio
  * pemilih di atas halaman, lewat preset ekstrem, atau langsung lewat query
  * string: /dev/tema?primer=%23ffd400&sekunder=%235b7a41&aksen=%23d9a441
  *
- * Halaman ini mendeklarasikan ulang semua token pada wrapper-nya sendiri,
- * sehingga TIDAK terpengaruh shim transisi `body { ... }` di globals.css dan
- * benar-benar menampilkan keluaran engine apa adanya.
+ * Halaman ini mendeklarasikan ulang semua token pada wrapper-nya sendiri, jadi
+ * yang tampil adalah keluaran engine untuk warna di query string — bukan tema
+ * tenant yang kebetulan sedang diinjeksikan di <html>.
  */
 
 type PageProps = {
@@ -187,6 +194,9 @@ export default async function PreviewTemaPage({ searchParams }: PageProps) {
             <span className="badge badge-solid">Prioritas</span>
           </div>
 
+          <h3>Warna status</h3>
+          <StatusSection />
+
           <h3>Card &amp; teks</h3>
           <div className="card" style={{ maxWidth: 560 }}>
             <h4 style={{ margin: "0 0 6px", fontSize: "1rem", fontWeight: 650 }}>
@@ -245,6 +255,9 @@ export default async function PreviewTemaPage({ searchParams }: PageProps) {
           </div>
 
           {/* ── Token ─────────────────────────────────────────── */}
+          <h2>Seri chart</h2>
+          <ChartSection vars={vars} />
+
           <h2>Scale</h2>
           <ScaleSection scales={theme.scales} />
 
