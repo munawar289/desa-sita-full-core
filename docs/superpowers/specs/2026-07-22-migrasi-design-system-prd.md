@@ -425,10 +425,13 @@ Tiga keputusan yang diambil saat eksekusi:
 Dipecah jadi 3 PR agar tiap PR bisa direview dengan mata:
 
 - [x] **3a** — Beranda (`beranda/` + `app/(site)/page.tsx` + `app/(site)/layout.tsx`) *(selesai 2026-07-22)*
-- [ ] 3b — Data desa (`data-desa/` + 12 halaman `app/(site)/data-desa/**`)
-- [ ] 3c — Profil, pemerintahan, lembaga, layanan, rencana
+- [x] **3b** — Data desa (`data-desa/` + 13 halaman `app/(site)/data-desa/**`) *(selesai 2026-07-22)*
+- [x] **3c** — Profil, pemerintahan, lembaga, layanan, rencana *(selesai 2026-07-22)*
 
-Keputusan tambahan di 3a:
+Setelah Fase 3, satu-satunya sisa palet lama di halaman publik ada di
+`src/components/statistik/**` (Fase 4) dan `SetPasswordForm` (Fase 6).
+
+Keputusan tambahan di 3a–3c:
 
 | | Keputusan | Alasan |
 |---|---|---|
@@ -436,6 +439,14 @@ Keputusan tambahan di 3a:
 | **E5** | `.text-gradient-kopi` → `.text-gradient-brand`, kedua ujungnya dari step **300** | Judul Hero dipakai di atas panel gelap. Step 300 sama-sama terang untuk hue apa pun, jadi teksnya terbaca berapa pun warna desa. Rencana semula membuang utility ini di Fase 7; ternyata masih terpakai |
 | **E6** | Pita ajakan di beranda jadi `bg-secondary` rata, bukan gradient `sawah-700 → panel-800` | Sama seperti E2 — `on-secondary` dipilih engine lewat kontras terhadap `secondary` saja |
 | **E7** | Ubin ikon `PotensSection` pakai gradient `primary → primary-active` | Keduanya sisi gelap warna yang sama, jadi `on-primary` tetap terbaca di seluruh sapuan gradient. Ini pengganti yang aman untuk gradient lintas-skala `kopi-600 → kopi-400` |
+| **E8** | Utility `.prose-desa` baru di `globals.css`, menggantikan `prose-stone` | Kelas tema bawaan `@tailwindcss/typography` memasang palet abu-abu Tailwind yang tidak pernah ikut warna desa — pelanggaran DESIGN.md §7.6 yang lolos karena tersembunyi di balik satu nama kelas |
+| **E9** | Konvensi warna ikon dibakukan: ikon dekoratif → `text-primary`, teks/judul tautan → `text-link` | `--color-primary` dijamin 3:1 terhadap surface (cukup untuk elemen non-teks), `--color-link` dijamin 4.5:1 (dibutuhkan untuk teks) |
+| **E10** | 2 hex seri chart di `data-desa/kesehatan/page.tsx` **sengaja ditinggal** | Cara mengoper warna ke Recharts adalah keputusan Fase 4; menyentuhnya lebih dulu berarti memutuskannya tanpa menguji |
+
+**Celah yang ditemukan.** Tidak ada token untuk *teks berwarna brand yang bukan tautan* (mis. label
+peran aparatur, tahun di lini masa). `--color-primary` hanya dijamin 3:1, jadi tidak boleh jadi teks.
+Untuk sekarang pemakaiannya diarahkan ke `--color-link`, yang dijamin 4.5:1 tapi namanya menyesatkan.
+Kandidat perbaikan: token `--color-primary-text`. Di luar lingkup PRD ini.
 
 ### `[ ]` Fase 4 — Chart → **AC4, AC6**
 
