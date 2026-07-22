@@ -87,6 +87,125 @@
   --color-plat-inverse-on-surface: #f1f0f5;
 }
 
+/* ── Token engine — nilai DEFAULT ────────────────────────────────────────
+   Blok ini mendaftarkan seluruh token semantik ke Tailwind sehingga tersedia
+   sebagai utility biasa (`bg-primary`, `text-text-muted`, `border-border-strong`).
+
+   Nilainya adalah keluaran `deriveTheme(DEFAULT_THEME_SLOTS)` untuk tema bawaan.
+   RootLayout `(site)` menimpanya per tenant lewat inline style di <html>, tapi
+   default-nya WAJIB ada: `/platform` dan `/set-password` sengaja tidak memanggil
+   resolusi tenant, dan tanpa baris-baris ini kedua halaman itu kehilangan
+   seluruh warnanya.
+
+   `static` dipakai supaya Tailwind memancarkan SEMUA token, bukan hanya yang
+   kebetulan terpakai sebagai utility — sebagian dibaca lewat `var()` langsung
+   (mis. resep bayangan & tekstur di DESIGN.md) yang tak terdeteksi pemindai.
+
+   Isinya dihasilkan mesin. Jangan edit tangan:
+     npm run theme:sync    perbarui dari engine
+     npm run theme:check   gagal kalau menyimpang dari engine */
+@theme static {
+  /* theme-default:start — DIHASILKAN scripts/theme-defaults.ts, jangan edit tangan */
+  --color-primary-50: #fff4ef;
+  --color-primary-100: #ffe6da;
+  --color-primary-200: #ffd1bb;
+  --color-primary-300: #fcb592;
+  --color-primary-400: #ef9569;
+  --color-primary-500: #db7844;
+  --color-primary-600: #bf5f28;
+  --color-primary-700: #9e4814;
+  --color-primary-800: #7a3203;
+  --color-primary-900: #4f1d00;
+  --color-secondary-50: #f3f8f0;
+  --color-secondary-100: #e6f0de;
+  --color-secondary-200: #d2e3c5;
+  --color-secondary-300: #b9d1a8;
+  --color-secondary-400: #9dba86;
+  --color-secondary-500: #82a268;
+  --color-secondary-600: #6a8950;
+  --color-secondary-700: #536f3b;
+  --color-secondary-800: #3c5328;
+  --color-secondary-900: #233413;
+  --color-accent-50: #fdf5e9;
+  --color-accent-100: #f9ead1;
+  --color-accent-200: #f2d8ae;
+  --color-accent-300: #e6c285;
+  --color-accent-400: #d5a755;
+  --color-accent-500: #c08c22;
+  --color-accent-600: #a47400;
+  --color-accent-700: #845d00;
+  --color-accent-800: #634500;
+  --color-accent-900: #3f2a00;
+  --color-neutral-50: #fff7f4;
+  --color-neutral-100: #fdede6;
+  --color-neutral-200: #efded6;
+  --color-neutral-300: #ddcdc6;
+  --color-neutral-400: #aea29d;
+  --color-neutral-500: #897f7b;
+  --color-neutral-600: #6a625e;
+  --color-neutral-700: #4f4845;
+  --color-neutral-800: #35302d;
+  --color-neutral-900: #211c1a;
+  --color-primary: #9e4814;
+  --color-primary-hover: #8b3900;
+  --color-primary-active: #763000;
+  --color-primary-soft: #ffe6da;
+  --color-on-primary: #fff7f4;
+  --color-on-primary-soft: #9e4814;
+  --color-secondary: #5b7a41;
+  --color-secondary-hover: #4c6a31;
+  --color-secondary-active: #3e5c23;
+  --color-secondary-soft: #e6f0de;
+  --color-on-secondary: #fff7f4;
+  --color-on-secondary-soft: #536f3b;
+  --color-accent: #845d00;
+  --color-accent-hover: #704e00;
+  --color-accent-active: #5f4200;
+  --color-accent-soft: #f9ead1;
+  --color-on-accent: #fff7f4;
+  --color-on-accent-soft: #845d00;
+  --color-surface: #fff7f4;
+  --color-surface-alt: #fdede6;
+  --color-border: #efded6;
+  --color-border-strong: #897f7b;
+  --color-text: #211c1a;
+  --color-text-muted: #6a625e;
+  --color-panel: #472310;
+  --color-panel-strong: #2c0d00;
+  --color-panel-border: #5b301a;
+  --color-on-panel: #fff7f4;
+  --color-on-panel-muted: #aea29d;
+  --color-link: #9e4814;
+  --color-link-hover: #8b3900;
+  --color-focus-ring: #9e4814;
+  --color-danger: #c13c3b;
+  --color-danger-soft: #ffe5e2;
+  --color-on-danger: #fff7f4;
+  --color-on-danger-soft: #ac3434;
+  --color-warning: #805f00;
+  --color-warning-soft: #faeacb;
+  --color-on-warning: #fff7f4;
+  --color-on-warning-soft: #805f00;
+  --color-success: #2a7732;
+  --color-success-soft: #dcf3dc;
+  --color-on-success: #fff7f4;
+  --color-on-success-soft: #2a7732;
+  --color-info: #006bb9;
+  --color-info-soft: #deeeff;
+  --color-on-info: #fff7f4;
+  --color-on-info-soft: #0067b2;
+  --color-chart-1: #bf5f28;
+  --color-chart-2: #6a8950;
+  --color-chart-3: #a47400;
+  --color-chart-4: #fcb592;
+  --color-chart-5: #b9d1a8;
+  /* theme-default:end */
+}
+
+/* Jembatan nama shadcn → token engine. Hanya nama yang TIDAK bertabrakan dengan
+   namespace `--color-*` milik engine yang boleh ada di sini; yang bertabrakan
+   (`primary`, `secondary`, `accent`, `border`, `chart-*`) dimiliki engine dan
+   dijembatani ke arah sebaliknya di blok `:root` di bawah. */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -101,23 +220,13 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
   --color-ring: var(--ring);
   --color-input: var(--input);
-  --color-border: var(--border);
   --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -141,70 +250,51 @@
   --warna-latar-gelap: #3d2a1d;
   --warna-latar: #f5efe2;
 
-  --background: var(--warna-latar);
-  --foreground: #2a2118;
-  --card: #ffffff;
-  --card-foreground: #2a2118;
-  --popover: #ffffff;
-  --popover-foreground: #2a2118;
-  --primary: var(--warna-primer);
-  --primary-foreground: #ffffff;
-  --secondary: #f0eada;
-  --secondary-foreground: #3d2a1d;
-  --muted: #fbf7ec;
-  --muted-foreground: #5c4f3f;
-  --accent: #f0eada;
-  --accent-foreground: #3d2a1d;
-  --destructive: #9c4a1e;
-  --border: #e2d8c3;
-  --input: #e2d8c3;
-  --ring: var(--warna-primer);
-  --chart-1: var(--warna-primer);
-  --chart-2: var(--warna-sekunder);
-  --chart-3: var(--warna-aksen);
-  --chart-4: #9c4a1e;
-  --chart-5: color-mix(in srgb, var(--warna-sekunder) 70%, black);
+  /* Nama-nama shadcn dipetakan ke token engine. Arahnya sengaja dari nama
+     shadcn KE token engine, bukan sebaliknya: engine-lah yang memiliki
+     namespace `--color-*`, dan nilainya di-override per tenant lewat inline
+     style di <html>. Membalik arahnya akan membekukan seluruh situs di nilai
+     default apa pun warna yang dipilih desa. */
+  --background: var(--color-surface-alt);
+  --foreground: var(--color-text);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-text);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-text);
+  --primary: var(--color-primary);
+  --primary-foreground: var(--color-on-primary);
+  /* Varian `secondary` shadcn (Button & Badge) = tombol sekunder DESIGN.md §6.1,
+     yaitu warna sekunder TENANT — bukan permukaan redam bawaan shadcn. */
+  --secondary: var(--color-secondary);
+  --secondary-foreground: var(--color-on-secondary);
+  --muted: var(--color-surface-alt);
+  --muted-foreground: var(--color-text-muted);
+  --destructive: var(--color-danger);
+  --border: var(--color-border);
+  /* Naik ke border-strong: garis input adalah satu-satunya penanda bahwa
+     kontrolnya ada, jadi WCAG 1.4.11 menuntut 3:1 — bukan garis dekoratif. */
+  --input: var(--color-border-strong);
+  --ring: var(--color-focus-ring);
+  --chart-1: var(--color-chart-1);
+  --chart-2: var(--color-chart-2);
+  --chart-3: var(--color-chart-3);
+  --chart-4: var(--color-chart-4);
+  --chart-5: var(--color-chart-5);
   --radius: 0.875rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: var(--color-surface);
+  --sidebar-foreground: var(--color-text);
+  --sidebar-primary: var(--color-primary);
+  --sidebar-primary-foreground: var(--color-on-primary);
+  --sidebar-accent: var(--color-primary-soft);
+  --sidebar-accent-foreground: var(--color-on-primary-soft);
+  --sidebar-border: var(--color-border);
+  --sidebar-ring: var(--color-focus-ring);
 }
 
-/* ── Shim transisi Fase 1 — HAPUS saat palet lama dibuang ────────────────
-   Color derivation engine (src/lib/theme) menginjeksikan token semantik ke
-   inline style <html>. Empat nama di bawah ini kebetulan sudah dipakai bridge
-   shadcn di `@theme inline` dengan ARTI YANG BERBEDA:
-
-     --color-primary    lama: var(--primary)   = warna tenant mentah
-     --color-secondary  lama: var(--secondary) = #f0eada (krem pucat)
-     --color-accent     lama: var(--accent)    = #f0eada (krem pucat)
-     --color-border     lama: var(--border)    = #e2d8c3, dipakai `* { @apply
-                        border-border }` jadi menyetir SEMUA border di situs
-
-   Tanpa shim ini, utility bg-primary/bg-secondary/bg-accent/border-border
-   langsung berubah makna dan tampilan seluruh situs bergeser — padahal Fase 1
-   tidak boleh mengubah tampilan apa pun.
-
-   Deklarasi LANGSUNG pada `body` mengalahkan nilai yang diwariskan dari inline
-   style <html> (pewarisan hanya berlaku kalau elemen tidak punya deklarasi
-   sendiri), jadi seluruh isi halaman tetap melihat arti lama. Sementara itu
-   <html> tetap memegang nilai baru, dan halaman preview /dev/tema
-   mendeklarasikan ulang token pada wrapper-nya sendiri sehingga tidak terkena
-   shim ini.
-
-   Cara membuang: hapus blok ini bersamaan dengan penghapusan palet lama, dalam
-   satu commit dengan migrasi komponen ke token semantik baru. */
-body {
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
-  --color-accent: var(--accent);
-  --color-border: var(--border);
-}
+/* Shim transisi Fase 0 sudah DIBUANG di sini (PRD Fase 1). Ia dulu memaksa
+   `body` melihat arti LAMA dari --color-primary/-secondary/-accent/-border;
+   selama ia ada, komponen yang dimigrasi ke token engine akan diam-diam
+   mendapat nilai palet lama. Jangan hidupkan kembali. */
 
 .dark {
   --background: oklch(0.145 0 0);
