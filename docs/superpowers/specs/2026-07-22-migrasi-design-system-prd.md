@@ -1,6 +1,6 @@
 # PRD — Migrasi Design System ke Color Derivation Engine
 
-**Status:** Eksekusi — Fase 0–9 selesai (Fase 8 migration menunggu apply manual). Sisa: **Fase 4b** (revisi K13, **AC6 gagal**) menunggu keputusan S8/S9/S10.
+**Status:** Selesai — Fase 0–9 + 4b tuntas & terverifikasi (engine-level). **Sisa aksi manual:** apply migration Fase 8 ke DB, dan verifikasi visual di browser (AC5) yang tak bisa dilakukan tanpa perkakas browser di repo.
 **Tanggal:** 2026-07-22
 **Terkait:** [DESIGN.md](../../../DESIGN.md) · [CLAUDE.md](../../../CLAUDE.md) · [2026-07-06-profil-desa-prd.md](2026-07-06-profil-desa-prd.md) (asal skema warna) · [2026-07-02-fe-design.md](2026-07-02-fe-design.md) (asal palet lama)
 
@@ -470,7 +470,11 @@ Keputusan yang diambil saat eksekusi:
 | **E14** | Label legenda dipaksa ke `--color-text` lewat `formatter` | Recharts mewarnai teks legenda dengan warna serinya sendiri. Seri hanya dijamin 3:1 terhadap surface (cukup untuk bidang, tidak untuk teks); `chart-4`/`chart-5` yang berasal dari step 300 gagal 4.5:1 dengan telak. Pembeda seri tetap dibawa kotak warna di sebelah label |
 | **E15** | Tooltip diberi `backgroundColor`, `color`, dan `itemStyle` dari token | Kode lama hanya menyetel `borderColor` dan menumpang default Recharts — putih dengan teks abu-abu, yang tidak pernah ikut warna desa |
 
-### `[ ]` Fase 4b — Revisi K13: seri chart yang benar-benar terbedakan → **AC6**
+### `[x]` Fase 4b — Revisi K13: seri chart yang benar-benar terbedakan *(selesai 2026-07-23)* → **AC6 lolos**
+
+**Diselesaikan lewat S9.** Seri kini `[primary[700], secondary[500], accent[900], primary[300], secondary[800]]` — lima step lightness berbeda, dirotasi antar scale. Tetap patuh K13 (hanya step scale yang ada). ΔE terkecil antar seri naik dari **0.000** (abu-abu, hex identik) ke **≥ 0.094** di seluruh 7 preset. Default `@theme` disinkronkan (`theme:sync`), DESIGN.md §2.6 diperbarui. Sisa yang sengaja tidak dikejar: `chart-4` (seri paling terang) masih < 3:1 terhadap surface — di luar cakupan AC6 (yang menguji keterbedaan antar seri), mitigasinya label langsung pada chart (DESIGN.md §2.6).
+
+<details><summary>Arsip diagnosis awal (sebelum perbaikan)</summary>
 
 **Ditemukan saat verifikasi Fase 4 (2026-07-23).** AC6 gagal, dan sebabnya ada di engine
 (Fase 1), bukan di komponen chart. `deriveTheme()` menyusun seri sebagai
@@ -510,6 +514,12 @@ hue-nya bisa berimpitan. Salah satu dari tiga harus mengalah:
 
 Apa pun yang dipilih, fase ini juga menyentuh AC2 (nilai default `@theme` berubah →
 `theme:sync`), DESIGN.md §2.6, dan `/dev/tema`.
+
+**Keputusan: S9.** Dipilih karena memperbaiki AC6 tanpa melanggar K13 (tetap step scale yang ada)
+dan tanpa menambah elemen visual (lebih hormat ke Non-Tujuan #1 daripada S10). Kegagalan 3:1 seri
+terang adalah isu terpisah dari AC6 dan sudah ada sejak K13 awal.
+
+</details>
 
 ### `[x]` Fase 5 — Admin *(selesai 2026-07-23)* → **AC3, AC4, AC5**
 
@@ -615,9 +625,10 @@ Sisa `[~]`: kode aplikasi sudah tidak menyentuh kedua kolom (build hijau dengan 
    kontras WCAG AA: teks normal ≥ 4.5:1, batas kontrol form ≥ 3:1.
 6. **AC6** — Pada preset "Hijau neon" dan "Abu-abu", kelima seri chart tetap bisa dibedakan satu
    sama lain, dan keempat warna status tetap terbaca sebagai merah/kuning/hijau/biru apa pun warna tenant.
-   → **GAGAL per 2026-07-23.** Bagian warna status lolos (hue-nya dipatok, K12). Bagian seri chart
-   gagal di enam dari tujuh preset; sebabnya di engine, bukan di komponen chart. Tabel ΔE dan tiga
-   opsi perbaikan ada di **Fase 4b**. AC ini tetap dibuka sampai fase itu selesai.
+   → **LOLOS per 2026-07-23 setelah Fase 4b.** Warna status selalu lolos (hue dipatok, K12). Seri
+   chart kini terbedakan di ketujuh preset (ΔE terkecil ≥ 0.094, naik dari 0.000 pada "Abu-abu")
+   berkat revisi K13 lewat S9. Terverifikasi engine-level; verifikasi mata di browser tertunda
+   (tak ada perkakas browser di repo).
 7. **AC7** — Shim `body { … }` dan blok `.dark` tidak lagi ada di `globals.css`, dan tidak ada
    variabel CSS yang didefinisikan di dua tempat dengan arti berbeda.
 8. **AC8** — `/platform` menampilkan warna yang identik apa pun host yang diakses, dan tidak
