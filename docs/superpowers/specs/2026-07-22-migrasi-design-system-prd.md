@@ -403,13 +403,22 @@ kedua nama itu sebagai warna tenant dan 94 berkas berikutnya akan memakainya.
 Konsekuensi lain: Fase 1 menyentuh **satu** berkas komponen (`ui/select.tsx`, 1 baris), bukan nol
 seperti yang direncanakan.
 
-### `[ ]` Fase 2 — Layout & shared → **AC3, AC4, AC5**
+### `[x]` Fase 2 — Layout & shared *(selesai 2026-07-22)* → **AC3, AC4, AC5**
 
-Satu PR. Komponen yang muncul di setiap halaman, jadi hasilnya langsung terlihat menyeluruh.
+- [x] `layout/` — Navbar, Footer, PageHeader
+- [x] `shared/` — 7 berkas
+- [x] Penanda nav aktif tidak lagi bergantung warna saja: garis bawah `accent-400` di desktop,
+      bilah kiri + `font-semibold` di mobile, plus `aria-current="page"`
+- [x] Verifikasi: `grep` palet lama di `layout/` & `shared/` = 0, `tsc`/`lint` bersih,
+      `build` 42/42, utility baru terkonfirmasi ada di CSS terkompilasi
 
-- [ ] `layout/` — Navbar, Footer, PageHeader
-- [ ] `shared/` — 7 berkas
-- [ ] Verifikasi manual: tiap halaman publik masih terbaca, penanda nav aktif tidak bergantung warna saja
+Tiga keputusan yang diambil saat eksekusi:
+
+| | Keputusan | Alasan |
+|---|---|---|
+| **E1** | `BadgeKategori` ganti nama varian: `kopi/sawah/tanah` → `primer/sekunder/aksen`, tambah `solid` | Nama varian ikut palet lama; setelah palet dibuang namanya jadi omong kosong. Ikut DESIGN.md §6.3. Menyentuh 2 pemanggil di luar lingkup fase (`rencana-pengembangan/page.tsx`, `statistik/StatTable.tsx`) — 1 kata per berkas, tak terhindarkan supaya kode tetap kompilasi |
+| **E2** | `PageHeader` jadi latar **rata** `--color-panel`, bukan gradient `kopi-600 → panel-800` | `--color-on-panel` dipilih engine berdasarkan kontras terhadap `--color-panel`; begitu latarnya menyapu ke shade lain, kontras teksnya tidak lagi dijamin untuk warna desa apa pun |
+| **E3** | Tombol "Coba Lagi" di `ErrorState` jadi varian **netral** (§6.1 outline), bukan berwarna danger | `--color-danger` dijamin 3:1 terhadap surface (batas komponen), bukan 4.5:1 (teks). Makna galat sudah dibawa ikon + kalimatnya |
 
 ### `[ ]` Fase 3 — Halaman & komponen publik → **AC3, AC4, AC5**
 
