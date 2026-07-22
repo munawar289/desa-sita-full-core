@@ -175,6 +175,37 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* ── Shim transisi Fase 1 — HAPUS saat palet lama dibuang ────────────────
+   Color derivation engine (src/lib/theme) menginjeksikan token semantik ke
+   inline style <html>. Empat nama di bawah ini kebetulan sudah dipakai bridge
+   shadcn di `@theme inline` dengan ARTI YANG BERBEDA:
+
+     --color-primary    lama: var(--primary)   = warna tenant mentah
+     --color-secondary  lama: var(--secondary) = #f0eada (krem pucat)
+     --color-accent     lama: var(--accent)    = #f0eada (krem pucat)
+     --color-border     lama: var(--border)    = #e2d8c3, dipakai `* { @apply
+                        border-border }` jadi menyetir SEMUA border di situs
+
+   Tanpa shim ini, utility bg-primary/bg-secondary/bg-accent/border-border
+   langsung berubah makna dan tampilan seluruh situs bergeser — padahal Fase 1
+   tidak boleh mengubah tampilan apa pun.
+
+   Deklarasi LANGSUNG pada `body` mengalahkan nilai yang diwariskan dari inline
+   style <html> (pewarisan hanya berlaku kalau elemen tidak punya deklarasi
+   sendiri), jadi seluruh isi halaman tetap melihat arti lama. Sementara itu
+   <html> tetap memegang nilai baru, dan halaman preview /dev/tema
+   mendeklarasikan ulang token pada wrapper-nya sendiri sehingga tidak terkena
+   shim ini.
+
+   Cara membuang: hapus blok ini bersamaan dengan penghapusan palet lama, dalam
+   satu commit dengan migrasi komponen ke token semantik baru. */
+body {
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
