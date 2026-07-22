@@ -98,6 +98,11 @@ export function DesaProfilForm({ profil }: { profil: DesaProfil }) {
             Kembalikan Semua ke Default
           </button>
         </div>
+        <p className="text-xs text-text-muted">
+          Pilih warna apa pun — sistem otomatis menyesuaikan tingkat gelap-terang
+          dan warna teks di atasnya supaya tetap nyaman dibaca. Tidak perlu
+          khawatir memilih warna yang terlalu terang atau terlalu mencolok.
+        </p>
         <div className="grid gap-4 sm:grid-cols-3">
           {WARNA_SLOTS.map(({ key, label, hint }) => (
             <div key={key}>

@@ -2,28 +2,17 @@ import { z } from "zod";
 
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 
-// Relative luminance (WCAG) — dipakai sebagai guard kontras karena warna
-// primer/sekunder/aksen selalu dipasangkan dengan teks putih/krem
-// (--primary-foreground, tombol CTA, badge). Ambang 0.75 usulan PRD §3.3/§8:
-// warna di atasnya dianggap terlalu terang untuk teks putih tetap terbaca.
-const LUMINANCE_MAX = 0.75;
-
-function relativeLuminance(hex: string): number {
-  const [r, g, b] = [hex.slice(1, 3), hex.slice(3, 5), hex.slice(5, 7)].map((part) => {
-    const channel = parseInt(part, 16) / 255;
-    return channel <= 0.03928 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
-  });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
+// Validasi warna kini HANYA memeriksa format hex. Guard luminance lama
+// (LUMINANCE_MAX = 0.75) yang MENOLAK warna terlalu terang sudah dibuang: color
+// derivation engine (src/lib/theme) kini memperbaiki input alih-alih menolaknya
+// — kalau admin memilih kuning `#ffd400`, `--color-primary` otomatis turun ke
+// shade lebih gelap (`#796300`) dan `--color-on-primary` dipilih lewat kontras
+// WCAG, jadi tombol tetap lolos AA tanpa admin perlu tahu soal luminance.
 function warnaField(label: string) {
   return z
     .string()
     .trim()
-    .regex(HEX_RE, `${label} harus berupa hex 6-digit, mis. #c1602a.`)
-    .refine((hex) => relativeLuminance(hex) <= LUMINANCE_MAX, {
-      message: `${label} terlalu terang, teks putih di atasnya sulit dibaca.`,
-    });
+    .regex(HEX_RE, `${label} harus berupa hex 6-digit, mis. #c1602a.`);
 }
 
 const currentYear = new Date().getFullYear();
