@@ -55,7 +55,7 @@ export default function RencanaPengembanganPage() {
                 {nama}
               </h2>
               <p className="mt-1 text-sm text-espresso-800/70">{deskripsi}</p>
-              <BadgeKategori label="Segera Hadir" tone="tanah" className="mt-3" />
+              <BadgeKategori label="Segera Hadir" tone="aksen" className="mt-3" />
             </div>
           ))}
         </div>

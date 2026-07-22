@@ -26,7 +26,7 @@ export function BreadcrumbNav({
   return (
     <Breadcrumb>
       <BreadcrumbList
-        className={cn("text-sm", onDark ? "text-white/70" : "text-espresso-800/60")}
+        className={cn("text-sm", onDark ? "text-on-panel-muted" : "text-text-muted")}
       >
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
@@ -34,9 +34,7 @@ export function BreadcrumbNav({
             <span key={item.label} className="flex items-center gap-1.5">
               <BreadcrumbItem>
                 {isLast || !item.href ? (
-                  <BreadcrumbPage
-                    className={onDark ? "text-white" : "text-espresso-800"}
-                  >
+                  <BreadcrumbPage className={onDark ? "text-on-panel" : "text-text"}>
                     {item.label}
                   </BreadcrumbPage>
                 ) : (
@@ -45,9 +43,7 @@ export function BreadcrumbNav({
                       href={item.href}
                       className={cn(
                         "transition-all duration-200",
-                        onDark
-                          ? "hover:text-white"
-                          : "hover:text-kopi-600",
+                        onDark ? "hover:text-on-panel" : "hover:text-link",
                       )}
                     >
                       {item.label}
@@ -56,7 +52,7 @@ export function BreadcrumbNav({
                 )}
               </BreadcrumbItem>
               {!isLast && (
-                <BreadcrumbSeparator className={onDark ? "text-white/50" : undefined} />
+                <BreadcrumbSeparator className={onDark ? "text-on-panel-muted" : undefined} />
               )}
             </span>
           );

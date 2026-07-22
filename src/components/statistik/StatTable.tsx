@@ -68,7 +68,7 @@ export function StatTable<T extends { id: string }>({
               >
                 {String(row[column.key] ?? "—")}
                 {highlightKey === column.key && row.id === maxRowId && (
-                  <BadgeKategori label="Tertinggi" tone="sawah" className="ml-2" />
+                  <BadgeKategori label="Tertinggi" tone="sekunder" className="ml-2" />
                 )}
               </TableCell>
             ))}

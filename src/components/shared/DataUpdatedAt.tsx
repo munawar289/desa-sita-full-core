@@ -9,7 +9,7 @@ function hariLalu(updatedAt?: string) {
 
 export function DataUpdatedAt({ updatedAt }: { updatedAt?: string }) {
   return (
-    <p className="text-sm text-espresso-800/50">
+    <p className="text-sm text-text-muted">
       Data terakhir diperbarui: {hariLalu(updatedAt)}
     </p>
   );
