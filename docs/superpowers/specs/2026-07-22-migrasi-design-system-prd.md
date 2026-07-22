@@ -511,14 +511,24 @@ hue-nya bisa berimpitan. Salah satu dari tiga harus mengalah:
 Apa pun yang dipilih, fase ini juga menyentuh AC2 (nilai default `@theme` berubah →
 `theme:sync`), DESIGN.md §2.6, dan `/dev/tema`.
 
-### `[ ]` Fase 5 — Admin → **AC3, AC4, AC5**
+### `[x]` Fase 5 — Admin *(selesai 2026-07-23)* → **AC3, AC4, AC5**
 
 Dipecah jadi 4 PR:
 
 - [x] **5a** — Layout admin (`AdminSidebar`, `AdminTopbar`, `LoginForm`) *(selesai 2026-07-23)*
 - [x] **5b** — Form tambah (`Add*.tsx`, 9 berkas) *(selesai 2026-07-23)* — empat pola identik: tombol pemicu (teks brand → `text-link`), kontainer (`bg-kopi-100/30` → `surface-alt`), galat inline (`tanah-500` → `danger`, ikut FormPengaduan), tombol Simpan (lepas override → varian default `Button`, E19)
 - [x] **5c** — Baris tabel & aksi (`*Row.tsx` ×10, `DeleteEntityButton`, `DeleteStatistikButton`) *(selesai 2026-07-23)* — nilai utama → `text`, label/sel sekunder → `text-muted`, ikon edit → `text-primary` (E20), tombol hapus idle `text-muted` → hover `danger-soft`/`danger` (E21)
-- [ ] 5d — Halaman admin (11 berkas) + `DesaProfilForm`, `WilayahInfoCard`, dkk
+- [x] **5d** — Halaman admin (11 berkas) + `DesaProfilForm`, `WilayahInfoCard`, `EmptyWilayahInfoCard`, `StatistikGroupedList`, `StatistikSektorUsahaTabs` *(selesai 2026-07-23)* — banner galat → `danger-soft`/`on-danger-soft` (E22), login gelap → `panel-strong` + logo aksen (E23), tile dashboard "usang" tetap merah via `text-danger`
+
+Seluruh `src/components/admin` dan `src/app/(site)/admin` bersih dari palet lama (verifikasi grep = 0).
+
+Keputusan yang diambil di 5d:
+
+| | Keputusan | Alasan |
+|---|---|---|
+| **E22** | Banner galat/peringatan (`bg-tanah-100 ... text-tanah-500`) → `bg-danger-soft`/`text-on-danger-soft` | Latar berwarna menuntut pasangan teks yang dijamin 4.5:1; `on-danger-soft` itu tepat, `danger` mentah hanya 3:1 |
+| **E23** | Halaman `/admin/login`: latar `espresso-950` → `panel-strong`, kartu → `surface`, logo gradient → `accent-300→accent-500`/`neutral-900` | Konsisten dengan shell admin (E16); latar login membawa shade gelap warna desa (K4), bukan cokelat mati |
+| **E24** | Tile dashboard "Statistik Usang" tetap merah (`text-danger`), dua tile lain → `text-link` & `text-muted` | Hanya tile peringatan yang butuh kode warna; danger di sini menyertai ikon `AlertTriangle` + angka, jadi warna bukan satu-satunya pembawa makna (WCAG 1.4.1) |
 
 Keputusan yang diambil di 5a:
 
