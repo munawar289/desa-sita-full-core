@@ -516,7 +516,7 @@ Apa pun yang dipilih, fase ini juga menyentuh AC2 (nilai default `@theme` beruba
 Dipecah jadi 4 PR:
 
 - [x] **5a** — Layout admin (`AdminSidebar`, `AdminTopbar`, `LoginForm`) *(selesai 2026-07-23)*
-- [ ] 5b — Form tambah (`Add*.tsx`, 9 berkas)
+- [x] **5b** — Form tambah (`Add*.tsx`, 9 berkas) *(selesai 2026-07-23)* — empat pola identik: tombol pemicu (teks brand → `text-link`), kontainer (`bg-kopi-100/30` → `surface-alt`), galat inline (`tanah-500` → `danger`, ikut FormPengaduan), tombol Simpan (lepas override → varian default `Button`, E19)
 - [ ] 5c — Baris tabel & aksi (`*Row.tsx`, tombol hapus, 12 berkas)
 - [ ] 5d — Halaman admin (11 berkas) + `DesaProfilForm`, `WilayahInfoCard`, dkk
 
