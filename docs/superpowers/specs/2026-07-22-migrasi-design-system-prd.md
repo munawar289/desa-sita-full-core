@@ -424,9 +424,18 @@ Tiga keputusan yang diambil saat eksekusi:
 
 Dipecah jadi 3 PR agar tiap PR bisa direview dengan mata:
 
-- [ ] 3a — Beranda (`beranda/` + `app/(site)/page.tsx`)
+- [x] **3a** — Beranda (`beranda/` + `app/(site)/page.tsx` + `app/(site)/layout.tsx`) *(selesai 2026-07-22)*
 - [ ] 3b — Data desa (`data-desa/` + 12 halaman `app/(site)/data-desa/**`)
 - [ ] 3c — Profil, pemerintahan, lembaga, layanan, rencana
+
+Keputusan tambahan di 3a:
+
+| | Keputusan | Alasan |
+|---|---|---|
+| **E4** | Varian `Button` diperbaiki di `ui/button.tsx`: `hover:bg-primary/80` → `hover:bg-primary-hover`, `destructive` → `bg-danger-soft`/`text-on-danger-soft`, `link` → `text-link` | `bg-primary/80` menerangkan tombol dengan mencampurnya ke latar halaman, sehingga `on-primary` bisa jatuh di bawah AA justru saat tombol disentuh. Primitif adalah lapisan yang benar untuk memperbaikinya — kalau tidak, tiap pemanggil harus menambalnya sendiri |
+| **E5** | `.text-gradient-kopi` → `.text-gradient-brand`, kedua ujungnya dari step **300** | Judul Hero dipakai di atas panel gelap. Step 300 sama-sama terang untuk hue apa pun, jadi teksnya terbaca berapa pun warna desa. Rencana semula membuang utility ini di Fase 7; ternyata masih terpakai |
+| **E6** | Pita ajakan di beranda jadi `bg-secondary` rata, bukan gradient `sawah-700 → panel-800` | Sama seperti E2 — `on-secondary` dipilih engine lewat kontras terhadap `secondary` saja |
+| **E7** | Ubin ikon `PotensSection` pakai gradient `primary → primary-active` | Keduanya sisi gelap warna yang sama, jadi `on-primary` tetap terbaca di seluruh sapuan gradient. Ini pengganti yang aman untuk gradient lintas-skala `kopi-600 → kopi-400` |
 
 ### `[ ]` Fase 4 — Chart → **AC4, AC6**
 
