@@ -435,8 +435,6 @@ export interface Database {
           warna_primer: string;
           warna_sekunder: string;
           warna_aksen: string;
-          warna_latar_gelap: string;
-          warna_latar: string;
           updated_by: string | null;
           updated_at: string;
         };
@@ -455,8 +453,6 @@ export interface Database {
           warna_primer?: string;
           warna_sekunder?: string;
           warna_aksen?: string;
-          warna_latar_gelap?: string;
-          warna_latar?: string;
           updated_by?: string | null;
           updated_at?: string;
         };

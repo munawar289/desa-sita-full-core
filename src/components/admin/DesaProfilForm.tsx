@@ -10,11 +10,9 @@ import { desaProfilMock, type DesaProfil } from "@/lib/data/desa-profil";
 const initialState: DesaProfilActionState = { error: null };
 
 const WARNA_SLOTS = [
-  { key: "warna_primer", label: "Warna Utama", hint: "CTA, link, ring focus, highlight hero" },
+  { key: "warna_primer", label: "Warna Utama", hint: "CTA, link, ring focus, highlight hero, panel Navbar/Footer/Hero" },
   { key: "warna_sekunder", label: "Warna Sekunder", hint: "Label section, badge hijau, aksen statistik" },
   { key: "warna_aksen", label: "Warna Aksen", hint: "Eyebrow dot, avatar, gradient teks brand" },
-  { key: "warna_latar_gelap", label: "Warna Latar Gelap", hint: "Panel Navbar, Footer, background Hero" },
-  { key: "warna_latar", label: "Warna Latar Halaman", hint: "Background utama seluruh halaman publik" },
 ] as const;
 
 export function DesaProfilForm({ profil }: { profil: DesaProfil }) {
@@ -23,8 +21,6 @@ export function DesaProfilForm({ profil }: { profil: DesaProfil }) {
     warna_primer: profil.warna_primer,
     warna_sekunder: profil.warna_sekunder,
     warna_aksen: profil.warna_aksen,
-    warna_latar_gelap: profil.warna_latar_gelap,
-    warna_latar: profil.warna_latar,
   });
 
   function resetWarna(key: keyof typeof warna) {
@@ -36,8 +32,6 @@ export function DesaProfilForm({ profil }: { profil: DesaProfil }) {
       warna_primer: desaProfilMock.warna_primer,
       warna_sekunder: desaProfilMock.warna_sekunder,
       warna_aksen: desaProfilMock.warna_aksen,
-      warna_latar_gelap: desaProfilMock.warna_latar_gelap,
-      warna_latar: desaProfilMock.warna_latar,
     });
   }
 

@@ -7,7 +7,7 @@
 
 @theme {
   /* Palet "plat-*" — Material 3 biru BPS, khusus landing page /platform (landlord).
-     Fixed hex literal (bukan var(--warna-primer) dkk) karena /platform TIDAK memanggil
+     Fixed hex literal (bukan token tema tenant) karena /platform TIDAK memanggil
      getDesaProfil()/tema tenant — lihat catatan di src/app/platform/layout.tsx.
      Nilai persis mengikuti tailwind.config referensi desain yang diberikan user. */
   --color-plat-primary: #002454;
@@ -213,15 +213,6 @@
 }
 
 :root {
-  /* Default tema warna — identik nilai seed desa_profil (profil-desa PRD §3.2).
-     RootLayout meng-override baris ini lewat inline style di <html> dengan
-     nilai dari database; spesifisitas inline > :root berlaku di light & dark. */
-  --warna-primer: #c1602a;
-  --warna-sekunder: #5b7a41;
-  --warna-aksen: #d9a441;
-  --warna-latar-gelap: #3d2a1d;
-  --warna-latar: #f5efe2;
-
   /* Nama-nama shadcn dipetakan ke token engine. Arahnya sengaja dari nama
      shadcn KE token engine, bukan sebaliknya: engine-lah yang memiliki
      namespace `--color-*`, dan nilainya di-override per tenant lewat inline

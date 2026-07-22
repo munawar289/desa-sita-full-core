@@ -3,15 +3,10 @@ import { z } from "zod";
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 
 // Relative luminance (WCAG) — dipakai sebagai guard kontras karena warna
-// primer/sekunder/aksen/latar-gelap selalu dipasangkan dengan teks putih/krem
-// (--primary-foreground, tombol CTA, badge, Navbar/Footer/Hero). Ambang 0.75
-// usulan PRD §3.3/§8: warna di atasnya dianggap terlalu terang untuk teks
-// putih tetap terbaca.
+// primer/sekunder/aksen selalu dipasangkan dengan teks putih/krem
+// (--primary-foreground, tombol CTA, badge). Ambang 0.75 usulan PRD §3.3/§8:
+// warna di atasnya dianggap terlalu terang untuk teks putih tetap terbaca.
 const LUMINANCE_MAX = 0.75;
-// Kebalikannya untuk warna_latar (background halaman, dipasangkan dengan teks
-// gelap espresso) — kalau admin pilih warna yang terlalu gelap, teks ink di
-// atasnya jadi sulit dibaca.
-const LUMINANCE_MIN = 0.4;
 
 function relativeLuminance(hex: string): number {
   const [r, g, b] = [hex.slice(1, 3), hex.slice(3, 5), hex.slice(5, 7)].map((part) => {
@@ -28,16 +23,6 @@ function warnaField(label: string) {
     .regex(HEX_RE, `${label} harus berupa hex 6-digit, mis. #c1602a.`)
     .refine((hex) => relativeLuminance(hex) <= LUMINANCE_MAX, {
       message: `${label} terlalu terang, teks putih di atasnya sulit dibaca.`,
-    });
-}
-
-function warnaLatarField(label: string) {
-  return z
-    .string()
-    .trim()
-    .regex(HEX_RE, `${label} harus berupa hex 6-digit, mis. #f5efe2.`)
-    .refine((hex) => relativeLuminance(hex) >= LUMINANCE_MIN, {
-      message: `${label} terlalu gelap, teks di atasnya sulit dibaca.`,
     });
 }
 
@@ -88,8 +73,6 @@ export const desaProfilFormSchema = z.object({
   warna_primer: warnaField("Warna utama"),
   warna_sekunder: warnaField("Warna sekunder"),
   warna_aksen: warnaField("Warna aksen"),
-  warna_latar_gelap: warnaField("Warna latar gelap"),
-  warna_latar: warnaLatarField("Warna latar halaman"),
 });
 
 export type DesaProfilFormValues = z.infer<typeof desaProfilFormSchema>;

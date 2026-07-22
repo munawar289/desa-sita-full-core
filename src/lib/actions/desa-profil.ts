@@ -26,8 +26,6 @@ export async function updateDesaProfilAction(
     warna_primer: formData.get("warna_primer"),
     warna_sekunder: formData.get("warna_sekunder"),
     warna_aksen: formData.get("warna_aksen"),
-    warna_latar_gelap: formData.get("warna_latar_gelap"),
-    warna_latar: formData.get("warna_latar"),
   });
   if (!id) return { error: "ID tidak valid." };
   if (!parsed.success) {
