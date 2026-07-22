@@ -74,12 +74,12 @@ export function FormPengaduan() {
 
   if (state === "success") {
     return (
-      <div className="flex flex-col items-center gap-3 rounded-xl border border-sawah-100 bg-white p-8 text-center shadow-sm">
-        <CheckCircle2 className="size-12 text-sawah-700" />
-        <h2 className="font-heading text-xl font-semibold text-sawah-700">
+      <div className="flex flex-col items-center gap-3 rounded-xl border border-success-soft bg-surface p-8 text-center shadow-sm">
+        <CheckCircle2 className="size-12 text-success" aria-hidden />
+        <h2 className="font-heading text-xl font-semibold text-text">
           Terima kasih atas pengaduan Anda
         </h2>
-        <p className="text-sm text-espresso-800/70">
+        <p className="text-sm text-text-muted">
           Pengaduan Anda telah kami terima dan akan segera ditindaklanjuti.
         </p>
       </div>
@@ -89,7 +89,7 @@ export function FormPengaduan() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-5 rounded-xl border border-kakao-200 bg-white p-6 shadow-sm sm:p-8"
+      className="space-y-5 rounded-xl border border-border bg-surface p-6 shadow-sm sm:p-8"
     >
       <div className="space-y-2">
         <Label htmlFor="nama">Nama</Label>
@@ -125,7 +125,7 @@ export function FormPengaduan() {
             ))}
           </SelectContent>
         </Select>
-        {errors.kategori && <p className="text-sm text-tanah-500">{errors.kategori}</p>}
+        {errors.kategori && <p className="text-sm text-danger">{errors.kategori}</p>}
       </div>
 
       <div className="space-y-2">
@@ -138,14 +138,14 @@ export function FormPengaduan() {
           placeholder="Sampaikan pengaduan atau masukan Anda&hellip;"
         />
         <div className="flex items-center justify-between text-xs">
-          <span className={errors.isi ? "text-tanah-500" : "text-espresso-800/50"}>
+          <span className={errors.isi ? "text-danger" : "text-text-muted"}>
             {errors.isi ?? `Minimal 20 karakter`}
           </span>
-          <span className="text-espresso-800/50">{isi.length}/20</span>
+          <span className="text-text-muted">{isi.length}/20</span>
         </div>
       </div>
 
-      <div className="flex items-start gap-2 text-xs text-espresso-800/50">
+      <div className="flex items-start gap-2 text-xs text-text-muted">
         <Lock className="mt-0.5 size-3.5 shrink-0" />
         <p>
           Data pribadi Anda (nama, kontak) hanya digunakan untuk menindaklanjuti
@@ -154,7 +154,7 @@ export function FormPengaduan() {
       </div>
 
       {state === "error" && (
-        <div className="flex items-center gap-2 rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+        <div className="flex items-center gap-2 rounded-lg bg-danger-soft px-4 py-3 text-sm text-on-danger-soft">
           <XCircle className="size-4 shrink-0" />
           Gagal mengirim pengaduan. Silakan coba lagi.
         </div>
@@ -163,7 +163,7 @@ export function FormPengaduan() {
       <Button
         type="submit"
         disabled={state === "loading"}
-        className="w-full rounded-lg bg-kopi-600 text-white hover:bg-kopi-600/90"
+        className="w-full rounded-lg"
       >
         {state === "loading" ? (
           <>

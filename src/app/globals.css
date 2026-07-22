@@ -407,6 +407,28 @@
     color: transparent;
   }
 
+  /* Warna @tailwindcss/typography diarahkan ke token engine. Tanpa ini, kelas
+     tema bawaannya (`prose-stone`, `prose-gray`, …) memasang palet abu-abu
+     Tailwind yang tidak pernah ikut warna desa dan melanggar DESIGN.md §7.6. */
+  .prose-desa {
+    --tw-prose-body: var(--color-text-muted);
+    --tw-prose-headings: var(--color-text);
+    --tw-prose-lead: var(--color-text-muted);
+    --tw-prose-links: var(--color-link);
+    --tw-prose-bold: var(--color-text);
+    --tw-prose-counters: var(--color-text-muted);
+    --tw-prose-bullets: var(--color-border-strong);
+    --tw-prose-hr: var(--color-border);
+    --tw-prose-quotes: var(--color-text);
+    --tw-prose-quote-borders: var(--color-border);
+    --tw-prose-captions: var(--color-text-muted);
+    --tw-prose-code: var(--color-text);
+    --tw-prose-pre-code: var(--color-on-panel);
+    --tw-prose-pre-bg: var(--color-panel-strong);
+    --tw-prose-th-borders: var(--color-border-strong);
+    --tw-prose-td-borders: var(--color-border);
+  }
+
   /* Pola titik halus untuk background section gelap */
   .bg-dot-grid {
     background-image: radial-gradient(

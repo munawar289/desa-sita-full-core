@@ -167,7 +167,7 @@ function KartuHalaman({
       href={href}
       className="group rounded-xl border border-border bg-surface p-6 shadow-sm transition-all duration-200 hover:border-border-strong hover:shadow-md hover:shadow-neutral-900/10"
     >
-      <Icon className="size-8 text-link" aria-hidden />
+      <Icon className="size-8 text-primary" aria-hidden />
       <h3 className="mt-4 font-heading text-lg font-semibold text-text group-hover:text-link">
         {judul}
       </h3>

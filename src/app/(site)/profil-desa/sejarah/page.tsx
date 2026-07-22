@@ -42,7 +42,7 @@ export default async function SejarahPage() {
         {narrativeSections.map((item) => (
           <section key={item.id}>
             <SectionHeader eyebrow={item.eyebrow} title={item.judul} />
-            <div className="prose prose-stone mt-6 max-w-none text-espresso-800">
+            <div className="prose prose-desa mt-6 max-w-none">
               <p>{item.konten}</p>
             </div>
           </section>
@@ -54,18 +54,18 @@ export default async function SejarahPage() {
             {riwayat.length === 0 ? (
               <EmptyState icon={<FileQuestion />} message="Belum ada data tersedia" />
             ) : (
-              <ol className="relative space-y-8 border-l border-kakao-200 pl-6">
+              <ol className="relative space-y-8 border-l border-border pl-6">
                 {riwayat.map((item) => (
                   <li key={item.id} className="relative">
-                    <span className="absolute -left-[1.65rem] top-1 size-3 rounded-full bg-kopi-600" />
-                    <p className="text-sm font-semibold text-kopi-600">
+                    <span className="absolute -left-[1.65rem] top-1 size-3 rounded-full bg-primary" />
+                    <p className="text-sm font-semibold text-link">
                       {item.periode_mulai} &ndash; {item.periode_selesai ?? "Sekarang"}
                     </p>
-                    <p className="font-heading text-lg font-semibold text-espresso-950">
+                    <p className="font-heading text-lg font-semibold text-text">
                       {item.nama}
                     </p>
                     {item.keterangan && (
-                      <p className="text-sm text-espresso-800/60">{item.keterangan}</p>
+                      <p className="text-sm text-text-muted">{item.keterangan}</p>
                     )}
                   </li>
                 ))}
