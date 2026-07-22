@@ -6,34 +6,6 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Desa Sita — palet editorial agraris (cream · terracotta · olive · gold · brown) */
-  --color-espresso-950: #2a2118; /* ink tetap fixed — teks utama & heading di seluruh situs (termasuk admin) */
-  --color-espresso-800: #3d2a1d; /* ink sekunder tetap fixed — teks body, dan background admin (sidebar/login) */
-  /* panel-950/800: keluarga BARU (bukan alias espresso) khusus untuk background gelap
-     publik (Navbar/Footer/Hero/PageHeader) yang dikustomisasi lewat --warna-latar-gelap.
-     Dipisah dari espresso-950/800 supaya teks ink & background admin tetap aman/fixed
-     walau admin memilih warna latar gelap yang ekstrem. */
-  --color-panel-800: var(--warna-latar-gelap);
-  --color-panel-950: color-mix(in srgb, var(--warna-latar-gelap) 75%, black);
-  /* kopi/sawah/gold: shade turunan dihitung dari --warna-primer/--warna-sekunder/--warna-aksen
-     (diinjeksi RootLayout dari desa_profil, default di :root di bawah) — profil-desa PRD §3.5.
-     Tint/shade dihitung via color-mix(), bukan hex literal, supaya admin cukup pilih 1 warna/slot. */
-  --color-kopi-600: var(--warna-primer); /* terracotta — primary CTA / aksen utama */
-  --color-kopi-400: color-mix(in srgb, var(--warna-primer) 75%, white); /* terracotta terang — hover / link */
-  --color-kopi-100: color-mix(in srgb, var(--warna-primer) 15%, white); /* panel hangat lembut */
-  --color-kakao-200: #e2d8c3; /* border / divider */
-  --color-kakao-100: #fbf7ec; /* bg-soft / stripe tabel */
-  --color-krem-50: #f5efe2; /* background halaman */
-  --color-sawah-700: color-mix(in srgb, var(--warna-sekunder) 70%, black); /* olive gelap — label section */
-  --color-sawah-400: var(--warna-sekunder); /* olive — aksen hijau */
-  --color-sawah-100: color-mix(in srgb, var(--warna-sekunder) 15%, white); /* bg badge hijau */
-  --color-tanah-500: #9c4a1e; /* terracotta gelap — alert / badge soon */
-  --color-tanah-100: #fbe9dc; /* bg badge terracotta */
-  --color-gold-500: var(--warna-aksen); /* gold — eyebrow dot / avatar / aksen */
-  --color-gold-400: color-mix(in srgb, var(--warna-aksen) 75%, white); /* gold terang */
-}
-
-@theme {
   /* Palet "plat-*" — Material 3 biru BPS, khusus landing page /platform (landlord).
      Fixed hex literal (bukan var(--warna-primer) dkk) karena /platform TIDAK memanggil
      getDesaProfil()/tema tenant — lihat catatan di src/app/platform/layout.tsx.
@@ -296,40 +268,6 @@
    selama ia ada, komponen yang dimigrasi ke token engine akan diam-diam
    mendapat nilai palet lama. Jangan hidupkan kembali. */
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -342,8 +280,8 @@
     scroll-behavior: smooth;
   }
   ::selection {
-    background-color: var(--color-kopi-600);
-    color: #fff;
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
   }
 }
 

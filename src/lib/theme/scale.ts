@@ -43,7 +43,7 @@ const BRAND_RAMP: readonly RampEntry[] = [
  * Alasannya perseptual: pada lightness tinggi, chroma yang sama jauh lebih
  * tidak terlihat. Tanpa bobot ini surface dan border kehilangan kehangatan
  * "kertas" dan situs jatuh jadi abu-abu template generik — persis yang bikin
- * palet lama (`krem-50` #f5efe2, chroma 0.0184) terasa lebih bernyawa daripada
+ * latar palet lama (#f5efe2, chroma 0.0184) terasa lebih bernyawa daripada
  * netral versi pertama engine ini (chroma 0.0051).
  */
 const NEUTRAL_RAMP: readonly RampEntry[] = [
@@ -69,7 +69,7 @@ export const MAX_BRAND_CHROMA = 0.17;
 
 /**
  * Batas chroma netral: tint hue tenant yang boleh menempel di surface/border/
- * teks. 0.020 setara kehangatan `krem-50` palet lama (chroma 0.0184) — terasa
+ * teks. 0.020 setara kehangatan latar palet lama (chroma 0.0184) — terasa
  * sebagai kertas hangat, belum terbaca sebagai warna.
  */
 export const MAX_NEUTRAL_CHROMA = 0.02;
