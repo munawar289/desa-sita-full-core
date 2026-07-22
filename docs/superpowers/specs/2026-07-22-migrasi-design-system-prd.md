@@ -574,12 +574,22 @@ Catatan AC3: pola `panel-` di AC3 terlalu luas — token engine `panel-strong`/`
 |---|---|---|
 | **E28** | `@custom-variant dark (&:is(.dark *))` **dipertahankan** meski blok `.dark` dibuang | Komponen shadcn masih memuat utility `dark:*`. Custom-variant ini mengikatnya ke `.dark` yang tak pernah ada, jadi semuanya tetap dorman — persis perilaku sekarang. Membuangnya justru mengembalikan `dark:` ke `@media (prefers-color-scheme)` dan menyalakan sebagian gaya gelap parsial (S6: dark mode tidak dibangun) |
 
-### `[ ]` Fase 8 — Drop kolom → **AC10**
+### `[~]` Fase 8 — Drop kolom *(kode selesai 2026-07-23; migration BELUM di-apply)* → **AC10**
 
-- [ ] Migration arsip `0015_arsip_warna_latar.sql` (K16)
-- [ ] Migration `drop column` dengan `down()` terisi
-- [ ] Bersihkan type, query, validation, action, form admin, seed, layout
-- [ ] Verifikasi: buat tenant baru dari `/platform`, pastikan profil tersimpan tanpa 2 kolom itu
+- [x] Migration arsip `0015_arsip_warna_latar.sql` (K16) — tabel `desa_profil_warna_arsip` + RLS baca platform-admin (E29)
+- [x] Migration `drop column` `0016` dengan SQL pembalikan (down) terdokumentasi sebagai komentar (E30)
+- [x] Bersihkan type, query, validation (+ `warnaLatarField`, `LUMINANCE_MIN` yatim), action, form admin, layout, `:root` globals; seed tak menyentuh kolom ini (tak berubah)
+- [x] Audit tambahan: 5 var `--warna-*` mentah (termasuk primer/sekunder/aksen) sudah mati sejak Fase 7 → dibuang dari injeksi & `:root`
+- [ ] **BELUM di-apply ke DB** — perlu dijalankan manual saat siap
+- [ ] Verifikasi akhir (setelah apply): buat tenant baru dari `/platform`, pastikan profil tersimpan tanpa 2 kolom itu; uji `down()`
+
+Sisa `[~]`: kode aplikasi sudah tidak menyentuh kedua kolom (build hijau dengan kolom masih ada di DB — Supabase mengabaikan kolom yang tak di-select). Migration menunggu eksekusi manual.
+
+| | Keputusan | Alasan |
+|---|---|---|
+| **E29** | Tabel arsip diberi RLS (`select` platform-admin saja), bukan dibiarkan tanpa RLS | Repo menegakkan RLS di setiap tabel; tabel arsip berisi preferensi tenant, tak boleh terbaca lintas-tenant. Tak ada policy tulis — hanya diisi sekali oleh migrasi (server-side) |
+| **E30** | `down()` ditulis sebagai komentar SQL di `0016`, bukan file/mekanisme terpisah | Supabase memakai migrasi maju; repo tak punya konvensi down. Komentar berisi SQL lengkap (re-add kolom + default + restore dari arsip) memenuhi maksud AC10 tanpa mengarang framework |
+| **E31** | Tabel `desa_profil_warna_arsip` **tidak** ditambahkan ke `database.types.ts` | Aplikasi tak pernah query tabel ini (platform-admin/manual saja); types hanya memuat yang dikonsumsi klien |
 
 ### `[ ]` Fase 9 — Longgarkan validasi → **AC11**
 
