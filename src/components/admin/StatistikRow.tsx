@@ -24,22 +24,22 @@ export function StatistikRow({ item }: { item: Statistik }) {
 
   if (editing) {
     return (
-      <tr className="bg-kopi-100/40">
+      <tr className="bg-surface-alt">
         <td colSpan={5} className="px-3 py-3">
           <form action={formAction} className="flex flex-wrap items-end gap-3">
             <input type="hidden" name="id" value={item.id} />
             <input type="hidden" name="category" value={item.category} />
             <input type="hidden" name="key" value={item.key} />
             <div className="min-w-[160px] flex-1">
-              <label className="text-xs text-espresso-800/60">Label</label>
+              <label className="text-xs text-text-muted">Label</label>
               <Input name="label" defaultValue={item.label} required maxLength={120} />
             </div>
             <div className="min-w-[120px] flex-1">
-              <label className="text-xs text-espresso-800/60">Nilai</label>
+              <label className="text-xs text-text-muted">Nilai</label>
               <Input name="value" defaultValue={item.value} required maxLength={120} />
             </div>
             <div className="flex gap-2">
-              <Button type="submit" size="sm" disabled={isPending} className="rounded-full bg-kopi-600 hover:bg-kopi-600/90">
+              <Button type="submit" size="sm" disabled={isPending} className="rounded-full">
                 {isPending ? "Menyimpan…" : "Simpan"}
               </Button>
               <Button
@@ -53,20 +53,20 @@ export function StatistikRow({ item }: { item: Statistik }) {
               </Button>
             </div>
           </form>
-          {state.error && <p className="mt-2 text-sm text-tanah-500">{state.error}</p>}
+          {state.error && <p className="mt-2 text-sm text-danger">{state.error}</p>}
         </td>
       </tr>
     );
   }
 
   return (
-    <tr className="border-b border-kakao-200 last:border-0">
-      <td className="px-3 py-2.5 text-sm text-espresso-950">{item.label}</td>
-      <td className="px-3 py-2.5 font-mono text-xs text-espresso-800/60">{item.key}</td>
-      <td className="px-3 py-2.5 font-mono text-sm font-semibold text-espresso-950">
+    <tr className="border-b border-border last:border-0">
+      <td className="px-3 py-2.5 text-sm text-text">{item.label}</td>
+      <td className="px-3 py-2.5 font-mono text-xs text-text-muted">{item.key}</td>
+      <td className="px-3 py-2.5 font-mono text-sm font-semibold text-text">
         {item.value}
       </td>
-      <td className="px-3 py-2.5 text-xs text-espresso-800/50">
+      <td className="px-3 py-2.5 text-xs text-text-muted">
         {formatTanggal(item.updated_at)}
       </td>
       <td className="px-3 py-2.5">
@@ -75,7 +75,7 @@ export function StatistikRow({ item }: { item: Statistik }) {
             type="button"
             onClick={() => setEditing(true)}
             aria-label={`Edit ${item.label}`}
-            className="rounded-md p-1.5 text-kopi-600 transition-colors duration-200 hover:bg-kopi-100"
+            className="rounded-md p-1.5 text-primary transition-colors duration-200 hover:bg-primary-soft"
           >
             <Pencil className="size-4" />
           </button>
