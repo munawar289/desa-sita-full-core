@@ -517,7 +517,7 @@ Dipecah jadi 4 PR:
 
 - [x] **5a** — Layout admin (`AdminSidebar`, `AdminTopbar`, `LoginForm`) *(selesai 2026-07-23)*
 - [x] **5b** — Form tambah (`Add*.tsx`, 9 berkas) *(selesai 2026-07-23)* — empat pola identik: tombol pemicu (teks brand → `text-link`), kontainer (`bg-kopi-100/30` → `surface-alt`), galat inline (`tanah-500` → `danger`, ikut FormPengaduan), tombol Simpan (lepas override → varian default `Button`, E19)
-- [ ] 5c — Baris tabel & aksi (`*Row.tsx`, tombol hapus, 12 berkas)
+- [x] **5c** — Baris tabel & aksi (`*Row.tsx` ×10, `DeleteEntityButton`, `DeleteStatistikButton`) *(selesai 2026-07-23)* — nilai utama → `text`, label/sel sekunder → `text-muted`, ikon edit → `text-primary` (E20), tombol hapus idle `text-muted` → hover `danger-soft`/`danger` (E21)
 - [ ] 5d — Halaman admin (11 berkas) + `DesaProfilForm`, `WilayahInfoCard`, dkk
 
 Keputusan yang diambil di 5a:
@@ -528,6 +528,13 @@ Keputusan yang diambil di 5a:
 | **E17** | Penanda item aktif sidebar: bilah kiri `accent-400` + `font-semibold`, bukan `text-gold-400` saja | Warna tidak boleh jadi satu-satunya pembeda (WCAG 1.4.1). Meniru pola nav mobile Navbar dari Fase 2 |
 | **E18** | Tombol "Keluar" jadi netral (border → hover `border-strong`), bukan berwarna `tanah-500` | `--color-danger` hanya dijamin 3:1 terhadap surface, tidak cukup untuk teks — sama seperti E3 (ErrorState) |
 | **E19** | Tombol "Masuk" di `LoginForm` melepas override `bg-kopi-600`; pakai varian default `Button` apa adanya | Varian default sudah = tombol primer engine lengkap dengan state hover/active dari token (E4). Override manual justru melewati perbaikan itu |
+
+Keputusan yang diambil di 5c:
+
+| | Keputusan | Alasan |
+|---|---|---|
+| **E20** | Ikon edit (pensil) → `text-primary` dengan `hover:bg-primary-soft`, bukan `text-kopi-600`/`hover:bg-kopi-100` | Ikon adalah objek grafis non-teks; `--color-primary` dijamin 3:1 terhadap surface — cukup untuk itu (WCAG 1.4.11), sesuai konvensi E9 |
+| **E21** | Tombol hapus: idle `text-muted`, hover `bg-danger-soft`/`text-danger` | Warna danger hanya muncul saat hover pada ikon (non-teks, 3:1 cukup); aksi destruktif tidak menyala terus-menerus tapi tetap terbaca merah saat disentuh. Tiga tingkat alpha espresso lama (`/70`, `/60`, `/50`) dilebur ke satu `text-muted` — gradasi itu faux-muted yang tidak ikut warna desa |
 
 ### `[ ]` Fase 6 — Platform & set-password → **AC3, AC8**
 
