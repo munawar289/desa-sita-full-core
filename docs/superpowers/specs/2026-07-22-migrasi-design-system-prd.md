@@ -1,6 +1,6 @@
 # PRD — Migrasi Design System ke Color Derivation Engine
 
-**Status:** Eksekusi — Fase 0–4 selesai, Fase 5 (admin) berikutnya. **AC6 gagal** — lihat Fase 4b.
+**Status:** Eksekusi — Fase 0–9 selesai (Fase 8 migration menunggu apply manual). Sisa: **Fase 4b** (revisi K13, **AC6 gagal**) menunggu keputusan S8/S9/S10.
 **Tanggal:** 2026-07-22
 **Terkait:** [DESIGN.md](../../../DESIGN.md) · [CLAUDE.md](../../../CLAUDE.md) · [2026-07-06-profil-desa-prd.md](2026-07-06-profil-desa-prd.md) (asal skema warna) · [2026-07-02-fe-design.md](2026-07-02-fe-design.md) (asal palet lama)
 
@@ -591,11 +591,11 @@ Sisa `[~]`: kode aplikasi sudah tidak menyentuh kedua kolom (build hijau dengan 
 | **E30** | `down()` ditulis sebagai komentar SQL di `0016`, bukan file/mekanisme terpisah | Supabase memakai migrasi maju; repo tak punya konvensi down. Komentar berisi SQL lengkap (re-add kolom + default + restore dari arsip) memenuhi maksud AC10 tanpa mengarang framework |
 | **E31** | Tabel `desa_profil_warna_arsip` **tidak** ditambahkan ke `database.types.ts` | Aplikasi tak pernah query tabel ini (platform-admin/manual saja); types hanya memuat yang dikonsumsi klien |
 
-### `[ ]` Fase 9 — Longgarkan validasi → **AC11**
+### `[x]` Fase 9 — Longgarkan validasi *(selesai 2026-07-23)* → **AC11**
 
-- [ ] Hapus `LUMINANCE_MAX` & `relativeLuminance` dari validasi
-- [ ] Perbarui teks bantuan slot warna di form admin
-- [ ] Verifikasi: admin bisa menyimpan `#ffd400`, dan tombol utama tetap lolos AA
+- [x] Hapus `LUMINANCE_MAX` & `relativeLuminance` dari validasi; sisakan format hex
+- [x] Perbarui teks bantuan slot warna + tambah keterangan "warna apa pun diterima & disesuaikan otomatis"
+- [x] Verifikasi (AC11): `#ffd400` lolos validasi; engine → `--color-primary #796300`, `--color-on-primary #fdf9ed`, kontras **5.56** (lolos AA)
 
 ---
 
