@@ -1,6 +1,6 @@
 # PRD — Migrasi Design System ke Color Derivation Engine
 
-**Status:** Eksekusi — Fase 0 & 1 selesai, Fase 2 berikutnya
+**Status:** Eksekusi — Fase 0–4 selesai, Fase 5 (admin) berikutnya. **AC6 gagal** — lihat Fase 4b.
 **Tanggal:** 2026-07-22
 **Terkait:** [DESIGN.md](../../../DESIGN.md) · [CLAUDE.md](../../../CLAUDE.md) · [2026-07-06-profil-desa-prd.md](2026-07-06-profil-desa-prd.md) (asal skema warna) · [2026-07-02-fe-design.md](2026-07-02-fe-design.md) (asal palet lama)
 
@@ -278,18 +278,20 @@ jembatan `:root`.
 
 | Berkas | Yang berubah |
 |---|---|
-| `charts/BarChartStatistik.tsx` | 7 hex → `--color-chart-*` |
-| `charts/BarChartPendidikan.tsx` | 7 hex → `--color-chart-*` |
-| `charts/BarChartKelompokUmur.tsx` | 6 hex → `--color-chart-*` |
-| `charts/BarChartRt.tsx` | 6 hex → `--color-chart-*` |
-| `charts/BarChartRtGrouped.tsx` | 5 hex → `--color-chart-*` |
+| `charts/chart-theme.tsx` | **Baru** — sumber tunggal warna seri, sumbu, grid, tooltip, dan `formatter` legenda |
+| `charts/BarChartStatistik.tsx` | 7 hex → token; gradient dibuang (E12) |
+| `charts/BarChartPendidikan.tsx` | 7 hex → token; gradient dibuang (E12) |
+| `charts/BarChartKelompokUmur.tsx` | 6 hex → token |
+| `charts/BarChartRt.tsx` | 6 hex → token |
+| `charts/BarChartRtGrouped.tsx` | 5 hex → token; prop `color` per seri dihapus (E13) |
 | `charts/PieChartGender.tsx` | 3 hex + 2 token |
 | `charts/CardSaranaPrasarana.tsx` | 4 token → card |
 | `statistik/StatTable.tsx` | 7 token → stripe & border tabel |
-| `statistik/StatCardGrid.tsx` | wrapper grid, cek ulang |
+| `statistik/StatCardGrid.tsx` | Tidak berubah — hanya wrapper grid, tidak memuat warna |
+| `app/(site)/data-desa/kesehatan/page.tsx` | 2 hex seri yang ditinggal E10, ikut hilang lewat E13 |
 
 Recharts menerima warna lewat prop JS, bukan kelas CSS — nilainya harus dibaca dari CSS variable
-di runtime atau dioper dari server. Perlu keputusan implementasi saat fase ini dikerjakan.
+di runtime atau dioper dari server. Diputuskan di E11.
 
 ### Fase 5 — Admin (40 berkas, 481 pemakaian)
 
@@ -448,11 +450,66 @@ peran aparatur, tahun di lini masa). `--color-primary` hanya dijamin 3:1, jadi t
 Untuk sekarang pemakaiannya diarahkan ke `--color-link`, yang dijamin 4.5:1 tapi namanya menyesatkan.
 Kandidat perbaikan: token `--color-primary-text`. Di luar lingkup PRD ini.
 
-### `[ ]` Fase 4 — Chart → **AC4, AC6**
+### `[x]` Fase 4 — Chart *(selesai 2026-07-23)* → **AC4 lolos, AC6 GAGAL**
 
-- [ ] Putuskan cara mengoper warna ke Recharts (baca CSS var di runtime vs oper dari server) — satu-satunya keputusan implementasi yang tersisa
-- [ ] 6 berkas chart + `StatTable` + `StatCardGrid` + `CardSaranaPrasarana`
-- [ ] Verifikasi: seri masih bisa dibedakan pada preset "Hijau neon" dan "Abu-abu"
+- [x] Putuskan cara mengoper warna ke Recharts → E11
+- [x] 6 berkas chart + `StatTable` + `CardSaranaPrasarana` + berkas baru `charts/chart-theme.tsx`
+- [x] `StatCardGrid` dicek ulang — hanya wrapper grid, tidak memuat warna sama sekali
+- [x] 2 hex sisa dari E10 di `data-desa/kesehatan/page.tsx` dibuang → E13
+- [x] Verifikasi: `grep` palet lama & hex di `src/components/statistik/` = 0, `tsc` bersih,
+      `lint` bersih, `build` 42/42, `theme:check` 93 token sinkron
+- [ ] **Belum diverifikasi dengan mata di browser** — lihat catatan E11
+
+Keputusan yang diambil saat eksekusi:
+
+| | Keputusan | Alasan |
+|---|---|---|
+| **E11** | Warna dioper ke Recharts sebagai `var(--color-chart-*)` langsung di prop `fill`/`stroke`, bukan dibaca dari CSS variable saat runtime dan bukan dioper hex dari server | Presentation attribute SVG diurai sebagai nilai CSS, jadi `var()` resolve di sana; pola yang sama dipakai komponen chart shadcn/ui. Membaca CSS var di runtime menuntut `useEffect` + satu render tanpa warna; mengoper hex dari server menyentuh 13 halaman pemanggil. **Catatan:** perilaku ini belum diverifikasi di browser dalam sesi ini — tidak ada perkakas browser di repo |
+| **E12** | Gradient `gradientKopi` dibuang; bar jadi warna rata `--color-chart-1` | DESIGN.md §2.4 melarang menyusun seri chart dari step scale, dan gradient dua-step adalah persis itu. Bonus: id `gradientKopi` kembar di `BarChartStatistik` & `BarChartPendidikan`, jadi bertabrakan diam-diam kalau keduanya muncul di satu halaman |
+| **E13** | Prop `color` dihapus dari `BarChartRtGrouped`; warna seri diambil berurutan lewat `chartSeriesColor(index)` | Selama pemanggil boleh mengoper hex, palet lama bisa masuk kembali lewat pintu itu — dan memang itu asal 2 hex terakhir yang sengaja ditinggal E10 |
+| **E14** | Label legenda dipaksa ke `--color-text` lewat `formatter` | Recharts mewarnai teks legenda dengan warna serinya sendiri. Seri hanya dijamin 3:1 terhadap surface (cukup untuk bidang, tidak untuk teks); `chart-4`/`chart-5` yang berasal dari step 300 gagal 4.5:1 dengan telak. Pembeda seri tetap dibawa kotak warna di sebelah label |
+| **E15** | Tooltip diberi `backgroundColor`, `color`, dan `itemStyle` dari token | Kode lama hanya menyetel `borderColor` dan menumpang default Recharts — putih dengan teks abu-abu, yang tidak pernah ikut warna desa |
+
+### `[ ]` Fase 4b — Revisi K13: seri chart yang benar-benar terbedakan → **AC6**
+
+**Ditemukan saat verifikasi Fase 4 (2026-07-23).** AC6 gagal, dan sebabnya ada di engine
+(Fase 1), bukan di komponen chart. `deriveTheme()` menyusun seri sebagai
+`[primary[600], secondary[600], accent[600], primary[300], secondary[300]]` —
+**tiga seri duduk di step lightness yang sama, dua sisanya juga.** Begitu tiga slot warna desa
+berdekatan hue-nya, seri kolaps jadi satu warna. Diukur dengan ΔE Oklab (jarak perseptual;
+rasio kontras adalah metrik yang salah di sini karena ia hanya mengukur beda terang):
+
+| Preset | chart-1 | chart-2 | ΔE terkecil antar seri |
+|---|---|---|---|
+| Default desa Sita | `#bf5f28` | `#6a8950` | 0.077 (1↔3) |
+| Biru pekat | `#487bd5` | `#327dda` | 0.007 |
+| Merah gelap | `#b76259` | `#bd5d57` | 0.010 |
+| Kuning terang | `#967c00` | `#917e00` | 0.009 |
+| Hijau neon | `#31962c` | `#359529` | 0.003 |
+| Magenta neon | `#b252af` | `#b152b0` | 0.001 |
+| **Abu-abu** | `#7e7e7e` | `#7e7e7e` | **0.000 — hex identik** |
+
+Ambang aman untuk seri berdampingan ≈ 0.10. Hanya tema default yang lolos, itu pun tipis.
+Dampak nyatanya terbatas karena situs hari ini tidak punya chart 5 seri — maksimal 2
+(`BarChartRtGrouped` di `data-desa/kesehatan`, `PieChartGender`) — tapi untuk desa berwarna
+netral kedua chart itu tampil dua warna kembar.
+
+Temuan kedua: `chart-4` & `chart-5` hanya 1.5–1.6:1 terhadap surface di **semua** preset,
+jauh di bawah 3:1 yang dituntut WCAG 1.4.11 untuk objek grafis. Ini pun bawaan K13, bukan Fase 4.
+
+Ketegangan yang harus diputuskan di fase ini: menjamin lima seri terbedakan **dan** masing-masing
+≥ 3:1 terhadap surface tidak mungkin dilakukan hanya dengan mendaur step dari tiga scale yang
+hue-nya bisa berimpitan. Salah satu dari tiga harus mengalah:
+
+- **S8** — putar hue (mis. primer +72°, +144°, …). Menjamin keterbedaan untuk semua preset,
+  tapi membatalkan alasan asli K13: chart jadi memunculkan warna yang tak pernah dipilih admin.
+- **S9** — tetap dari scale yang ada tapi lima step lightness berbeda. Patuh K13, terbedakan
+  bahkan di tema abu-abu, tapi seri paling terang tetap gagal 3:1 terhadap surface.
+- **S10** — biarkan warnanya, pikul keterbacaan lewat label langsung pada bar/slice
+  (DESIGN.md §2.6 & WCAG 1.4.1). Tidak menyentuh engine, tapi dua bidang tetap terlihat sewarna.
+
+Apa pun yang dipilih, fase ini juga menyentuh AC2 (nilai default `@theme` berubah →
+`theme:sync`), DESIGN.md §2.6, dan `/dev/tema`.
 
 ### `[ ]` Fase 5 — Admin → **AC3, AC4, AC5**
 
@@ -507,6 +564,9 @@ Dipecah jadi 4 PR:
    kontras WCAG AA: teks normal ≥ 4.5:1, batas kontrol form ≥ 3:1.
 6. **AC6** — Pada preset "Hijau neon" dan "Abu-abu", kelima seri chart tetap bisa dibedakan satu
    sama lain, dan keempat warna status tetap terbaca sebagai merah/kuning/hijau/biru apa pun warna tenant.
+   → **GAGAL per 2026-07-23.** Bagian warna status lolos (hue-nya dipatok, K12). Bagian seri chart
+   gagal di enam dari tujuh preset; sebabnya di engine, bukan di komponen chart. Tabel ΔE dan tiga
+   opsi perbaikan ada di **Fase 4b**. AC ini tetap dibuka sampai fase itu selesai.
 7. **AC7** — Shim `body { … }` dan blok `.dark` tidak lagi ada di `globals.css`, dan tidak ada
    variabel CSS yang didefinisikan di dua tempat dengan arti berbeda.
 8. **AC8** — `/platform` menampilkan warna yang identik apa pun host yang diakses, dan tidak
