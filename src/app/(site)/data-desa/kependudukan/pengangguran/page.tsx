@@ -47,7 +47,7 @@ export default async function PengangguranPage() {
       <div className="mx-auto max-w-6xl space-y-6 px-4 py-12 sm:px-6">
         {adaData ? (
           <>
-            <div className="rounded-xl border border-kakao-200 bg-white p-4 shadow-sm">
+            <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
               <BarChartRt data={chartData} />
             </div>
             <StatTable<BarisRt>

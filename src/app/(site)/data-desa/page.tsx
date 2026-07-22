@@ -165,13 +165,13 @@ function KartuHalaman({
   return (
     <Link
       href={href}
-      className="group rounded-xl border border-kakao-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md"
+      className="group rounded-xl border border-border bg-surface p-6 shadow-sm transition-all duration-200 hover:border-border-strong hover:shadow-md hover:shadow-neutral-900/10"
     >
-      <Icon className="size-8 text-kopi-600" />
-      <h3 className="mt-4 font-heading text-lg font-semibold text-espresso-950 group-hover:text-kopi-600">
+      <Icon className="size-8 text-link" aria-hidden />
+      <h3 className="mt-4 font-heading text-lg font-semibold text-text group-hover:text-link">
         {judul}
       </h3>
-      <p className="mt-1 text-sm text-espresso-800/70">{deskripsi}</p>
+      <p className="mt-1 text-sm text-text-muted">{deskripsi}</p>
     </Link>
   );
 }
@@ -211,7 +211,7 @@ export default async function DataDesaPage() {
 
         {kelompok.map((grup) => (
           <section key={grup.judul} className="space-y-4">
-            <h2 className="font-heading text-xl font-semibold text-espresso-950">{grup.judul}</h2>
+            <h2 className="font-heading text-xl font-semibold text-text">{grup.judul}</h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {grup.halaman.map((halaman) => (
                 <KartuHalaman key={halaman.href} {...halaman} />

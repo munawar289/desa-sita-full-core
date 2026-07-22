@@ -49,7 +49,7 @@ export default async function KeamananKelembagaanPage() {
 
       <div className="mx-auto max-w-6xl space-y-10 px-4 py-12 sm:px-6">
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Keamanan & Ketertiban
           </h2>
           <StatCardGrid
@@ -58,10 +58,10 @@ export default async function KeamananKelembagaanPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Lembaga Kemasyarakatan
           </h2>
-          <div className="rounded-xl border border-kakao-200 bg-white p-4 shadow-sm">
+          <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
             <BarChartStatistik data={lembagaChartData} />
           </div>
           <StatTable<Baris>

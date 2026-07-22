@@ -67,7 +67,7 @@ export default async function KesehatanPage() {
 
       <div className="mx-auto max-w-6xl space-y-10 px-4 py-12 sm:px-6">
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Sarana & Prasarana Kesehatan
           </h2>
           {saranaKesehatan.length > 0 ? (
@@ -80,12 +80,12 @@ export default async function KesehatanPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Cakupan Pemenuhan Air Bersih Menurut RT
           </h2>
           {adaAirBersih ? (
             <>
-              <div className="rounded-xl border border-kakao-200 bg-white p-4 shadow-sm">
+              <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
                 <BarChartRtGrouped
                   data={airBersihChartData}
                   series={[
@@ -102,7 +102,7 @@ export default async function KesehatanPage() {
                 ]}
                 rows={airBersihRows}
               />
-              <p className="text-xs text-espresso-800/50">
+              <p className="text-xs text-text-muted">
                 Setiap RT tercatat memakai satu sumber air bersih (PDAM atau Air Ledeng), sesuai
                 data yang dilaporkan — belum ada RT yang tercatat memakai kedua sumber sekaligus.
               </p>
@@ -113,7 +113,7 @@ export default async function KesehatanPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Data Kesehatan Lainnya
           </h2>
           <EmptyState

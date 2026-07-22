@@ -77,7 +77,7 @@ export default async function PendidikanPage() {
 
       <div className="mx-auto max-w-6xl space-y-10 px-4 py-12 sm:px-6">
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Tingkat Pendidikan
           </h2>
           <StatCardGrid
@@ -92,7 +92,7 @@ export default async function PendidikanPage() {
               },
             ]}
           />
-          <div className="rounded-xl border border-kakao-200 bg-white p-4 shadow-sm">
+          <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
             <BarChartPendidikan data={data} />
           </div>
           <StatTable
@@ -106,7 +106,7 @@ export default async function PendidikanPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Rasio Guru dan Murid
           </h2>
           <StatCardGrid
@@ -116,14 +116,14 @@ export default async function PendidikanPage() {
             ]}
           />
           {!murid && (
-            <p className="text-xs text-espresso-800/50">
+            <p className="text-xs text-text-muted">
               Jumlah murid belum tersedia — rasio belum bisa dihitung.
             </p>
           )}
         </section>
 
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Kelembagaan Pendidikan
           </h2>
           {lembagaRows.length > 0 ? (
