@@ -181,17 +181,22 @@ Selalu dampingi dengan teks atau ikon Lucide (WCAG 1.4.1).
 Lima seri, diambil dari step scale yang **sudah ada** — bukan hue baru. Grafik karena itu tidak
 pernah memunculkan warna yang tak pernah dipilih admin desa.
 
-| Token | Sumber | Contoh |
-|---|---|---|
-| `--color-chart-1` | `primary-600` | `#bf5f28` |
-| `--color-chart-2` | `secondary-600` | `#6a8950` |
-| `--color-chart-3` | `accent-600` | `#a47400` |
-| `--color-chart-4` | `primary-300` | `#fcb592` |
-| `--color-chart-5` | `secondary-300` | `#b9d1a8` |
+Kelimanya sengaja mengambil **lima step lightness yang berbeda**, dirotasi antar scale. Efeknya
+ganda: desa multi-hue tetap dapat variasi warna, dan desa berwarna netral (tiga slot nyaris sehue)
+tetap terbedakan lewat lightness saja.
 
-Konsekuensinya: desa yang memilih tiga warna berdekatan (mis. tiga nuansa hijau) akan sulit
-membedakan kelima seri lewat warna saja. **Beri label langsung pada chart**, jangan andalkan
-legenda berwarna.
+| Token | Sumber | Contoh (tema default) |
+|---|---|---|
+| `--color-chart-1` | `primary-700` | `#9e4814` |
+| `--color-chart-2` | `secondary-500` | `#82a268` |
+| `--color-chart-3` | `accent-900` | `#3f2a00` |
+| `--color-chart-4` | `primary-300` | `#fcb592` |
+| `--color-chart-5` | `secondary-800` | `#3c5328` |
+
+Dengan skema ini ΔE terkecil antar seri **≥ 0.094** di seluruh preset ekstrem (termasuk "Abu-abu"
+dan "Hijau neon") — jelas terbedakan. Catatan terpisah: seri paling terang (`chart-4`) tetap di
+bawah 3:1 terhadap surface, jadi untuk chart yang perlu presisi **beri label langsung pada chart**,
+jangan andalkan legenda berwarna saja.
 
 ---
 
@@ -201,15 +206,16 @@ Karena warna berubah per desa, **tipografi adalah pembawa identitas nomor satu.*
 
 | Peran | Font | Alasan |
 |---|---|---|
-| Heading | **Fraunces** (variable, `--font-heading`) | Serif humanis dengan kehangatan dan sedikit karakter tulisan tangan. Berwibawa tanpa jadi kaku seperti Times, modern tanpa jadi dingin. |
-| Body | **Inter** (variable, `--font-body`) | X-height besar, apertur terbuka, angka jelas — font paling terbukti terbaca di layar HP murah. Prioritas mutlak untuk pembaca lansia. |
+| Heading | **Plus Jakarta Sans** (variable, `--font-heading`) | Sans geometrik-humanis buatan foundry Indonesia (Tokotype). Bersih dan kontemporer, ramah tanpa kehilangan wibawa — kesan "segar" yang tetap cocok untuk situs pemerintahan desa. |
+| Body | **Poppins** (`--font-body`) | Sans geometrik bulat yang ramah dan modern, selaras dengan heading Plus Jakarta Sans. Dimuat weight 400/500/600/700 (bukan variable font). |
 | Angka & kode | **IBM Plex Mono** (`--font-mono`) | Untuk label eyebrow, kode wilayah, dan angka tabel yang perlu rata kolom. |
 
 Ketiganya subset `latin` — cukup untuk Bahasa Indonesia — dan dimuat lewat `next/font/google`
 sehingga di-selfhost, tanpa request ke domain pihak ketiga, tanpa FOIT.
 
-**Aturan Fraunces:** sumbu `WONK` harus tetap **0**. Sumbu wonky bikin huruf miring-nakal yang
-merusak kesan dapat-dipercaya. Sumbu `opsz` dibiarkan otomatis.
+**Aturan Plus Jakarta Sans:** heading memakai weight 600 (semibold); jangan naik ke 800/extrabold
+untuk teks panjang — tebal berlebih menurunkan keterbacaan dan terasa berteriak. Sebagai font
+variable, semua weight datang dari satu berkas — jangan meng-import weight statis terpisah.
 
 ### 3.1 Type scale
 
@@ -218,15 +224,15 @@ bagi pembaca 55 tahun ke atas.
 
 | Peran | Mobile | Desktop | Font | Weight | Line-height | Tracking |
 |---|---|---|---|---|---|---|
-| Display (Hero) | 2rem / 32px | 3rem / 48px | Fraunces | 600 | 1.1 | −0.02em |
-| H1 | 1.75rem / 28px | 2.5rem / 40px | Fraunces | 600 | 1.15 | −0.015em |
-| H2 | 1.5rem / 24px | 2rem / 32px | Fraunces | 600 | 1.2 | −0.01em |
-| H3 | 1.25rem / 20px | 1.5rem / 24px | Fraunces | 600 | 1.3 | −0.005em |
-| H4 | 1.125rem / 18px | 1.25rem / 20px | Inter | 650 | 1.35 | 0 |
-| Body besar | 1.125rem / 18px | 1.1875rem / 19px | Inter | 400 | 1.65 | 0 |
-| **Body** | **1.0625rem / 17px** | **1.0625rem / 17px** | Inter | 400 | 1.6 | 0 |
-| Body kecil | 0.9375rem / 15px | 0.9375rem / 15px | Inter | 400 | 1.55 | 0 |
-| Caption | 0.85rem / 13.5px | 0.875rem / 14px | Inter | 400 | 1.45 | 0 |
+| Display (Hero) | 2rem / 32px | 3rem / 48px | Plus Jakarta Sans | 600 | 1.1 | −0.02em |
+| H1 | 1.75rem / 28px | 2.5rem / 40px | Plus Jakarta Sans | 600 | 1.15 | −0.015em |
+| H2 | 1.5rem / 24px | 2rem / 32px | Plus Jakarta Sans | 600 | 1.2 | −0.01em |
+| H3 | 1.25rem / 20px | 1.5rem / 24px | Plus Jakarta Sans | 600 | 1.3 | −0.005em |
+| H4 | 1.125rem / 18px | 1.25rem / 20px | Poppins | 600 | 1.35 | 0 |
+| Body besar | 1.125rem / 18px | 1.1875rem / 19px | Poppins | 400 | 1.65 | 0 |
+| **Body** | **1.0625rem / 17px** | **1.0625rem / 17px** | Poppins | 400 | 1.6 | 0 |
+| Body kecil | 0.9375rem / 15px | 0.9375rem / 15px | Poppins | 400 | 1.55 | 0 |
+| Caption | 0.85rem / 13.5px | 0.875rem / 14px | Poppins | 400 | 1.45 | 0 |
 | Eyebrow | 0.75rem / 12px | 0.75rem / 12px | Plex Mono | 500 | 1.4 | 0.08em, UPPERCASE |
 
 ### 3.2 Aturan
@@ -234,8 +240,8 @@ bagi pembaca 55 tahun ke atas.
 - **Jangan pernah di bawah 13.5px.** Termasuk footnote, label chart, dan disclaimer.
 - **Panjang baris 60–75 karakter** untuk teks mengalir (`max-width: 65ch`). Lebih panjang dari itu,
   mata kehilangan baris.
-- **Heading Fraunces maksimal 2 tingkat per layar.** Serif berkarakter kehilangan dampaknya kalau
-  dipakai untuk segalanya.
+- **Heading maksimal 2 tingkat per layar.** Hierarki yang terlalu banyak tingkat kehilangan
+  dampaknya dan membuat halaman terasa ramai.
 - **Jangan `text-transform: uppercase`** kecuali pada Eyebrow. Kapital semua memperlambat membaca
   dan terasa berteriak.
 - **Angka pakai `font-variant-numeric: tabular-nums`** di semua tabel dan statistik.

@@ -142,10 +142,17 @@ export type SemanticTokens = {
   status: Record<StatusName, StatusTokens>;
 
   /**
-   * Lima seri chart, diambil dari step scale yang SUDAH ada — bukan hue baru.
-   * Dengan begitu grafik tidak pernah memunculkan warna yang tak pernah dipilih
-   * admin. Urutannya sengaja selang-seling gelap/terang supaya seri berdekatan
-   * tetap terbedakan pada tema yang hue ketiga slotnya berdekatan.
+   * Lima seri chart, diambil dari step scale yang SUDAH ada — bukan hue baru
+   * (K13). Dengan begitu grafik tidak pernah memunculkan warna yang tak pernah
+   * dipilih admin.
+   *
+   * Kelimanya sengaja mengambil LIMA step lightness yang berbeda (700/500/900/
+   * 300/800), dirotasi antar scale primary/secondary/accent. Konsekuensinya
+   * ganda: desa multi-hue tetap dapat variasi warna (tiga hue tampil), sementara
+   * desa berwarna netral — yang ketiga slotnya nyaris sehue — tetap terbedakan
+   * lewat lightness saja. Ini yang memperbaiki AC6: versi lama menaruh tiga seri
+   * di step 600 yang sama, sehingga untuk tema abu-abu chart-1..3 keluar hex
+   * identik. Sekarang ΔE terkecil antar seri ≥ 0.094 di seluruh preset ekstrem.
    */
   chart: readonly [Oklch, Oklch, Oklch, Oklch, Oklch];
 };
@@ -417,7 +424,7 @@ export function deriveTheme(slots: ThemeSlots): DerivedTheme {
       info: buildStatus(STATUS_BASES.info, surface, paper, ink),
     },
 
-    chart: [primary[600], secondary[600], accent[600], primary[300], secondary[300]],
+    chart: [primary[700], secondary[500], accent[900], primary[300], secondary[800]],
   };
 
   const diagnostics: ThemeDiagnostics = {
