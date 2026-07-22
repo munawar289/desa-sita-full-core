@@ -8,6 +8,17 @@ import { navItems } from "@/lib/nav";
 import { cn } from "@/lib/utils";
 import type { DesaProfil } from "@/lib/data/desa-profil";
 
+/**
+ * Item aktif ditandai teks `on-panel` PLUS garis bawah aksen (DESIGN.md §6.5).
+ * Garisnya bukan hiasan: warna tidak boleh jadi satu-satunya pembawa informasi
+ * (WCAG 1.4.1), dan `on-panel` vs `on-panel-muted` saja terlalu tipis bedanya
+ * untuk sebagian warna desa.
+ */
+const NAV_ITEM =
+  "relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-on-panel/10 hover:text-on-panel";
+const NAV_ITEM_ACTIVE =
+  "text-on-panel after:absolute after:inset-x-3 after:bottom-1 after:h-0.5 after:rounded-full after:bg-accent-400";
+
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
@@ -20,17 +31,19 @@ export function Navbar({ profil }: { profil: DesaProfil }) {
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-panel-800/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-panel-border bg-panel/95 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="group flex items-center gap-2.5">
-          <span className="flex size-9 items-center justify-center rounded-[10px] bg-linear-to-br from-gold-500 to-kopi-600 text-espresso-950 shadow-sm shadow-black/20 transition-transform duration-200 group-hover:scale-105">
-            <Mountain className="size-5" />
+          {/* Gradient dekoratif antar dua step scale yang sama (DESIGN.md §7.1);
+              keduanya di ujung terang, jadi ikon neutral-900 selalu lolos AA. */}
+          <span className="flex size-9 items-center justify-center rounded-[10px] bg-linear-to-br from-accent-300 to-accent-500 text-neutral-900 shadow-sm shadow-neutral-900/20 transition-transform duration-200 group-hover:scale-105">
+            <Mountain className="size-5" aria-hidden />
           </span>
           <span className="flex flex-col leading-none">
-            <span className="font-heading text-lg font-semibold tracking-wide text-krem-50">
+            <span className="font-heading text-lg font-semibold tracking-wide text-on-panel">
               Desa {profil.nama_desa}
             </span>
-            <span className="mt-0.5 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-krem-50/50">
+            <span className="mt-0.5 font-mono text-[0.6rem] uppercase tracking-[0.14em] text-on-panel-muted">
               Situs Resmi Desa
             </span>
           </span>
@@ -44,10 +57,8 @@ export function Navbar({ profil }: { profil: DesaProfil }) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={cn(
-                    "rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-white/10 hover:text-white",
-                    active ? "text-gold-400" : "text-krem-50/80",
-                  )}
+                  className={cn(NAV_ITEM, active ? NAV_ITEM_ACTIVE : "text-on-panel-muted")}
+                  aria-current={active ? "page" : undefined}
                 >
                   {item.label}
                 </Link>
@@ -58,24 +69,26 @@ export function Navbar({ profil }: { profil: DesaProfil }) {
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-white/10 hover:text-white",
-                    active ? "text-gold-400" : "text-krem-50/80",
+                    NAV_ITEM,
+                    "flex items-center gap-1",
+                    active ? NAV_ITEM_ACTIVE : "text-on-panel-muted",
                   )}
+                  aria-current={active ? "page" : undefined}
                 >
                   {item.label}
                   <ChevronDown className="size-3.5 transition-transform duration-200 group-hover:rotate-180" />
                 </Link>
                 <div className="invisible absolute left-0 top-full pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-                  <div className="min-w-56 rounded-xl bg-white p-2 shadow-xl shadow-espresso-950/20 ring-1 ring-kakao-200">
+                  <div className="min-w-56 rounded-xl bg-surface p-2 shadow-xl shadow-neutral-900/20 ring-1 ring-border">
                     {item.children.map((child) => (
                       <Link
                         key={child.href}
                         href={child.href}
                         className={cn(
-                          "block rounded-lg px-3 py-2 text-sm transition-all duration-200 hover:bg-kopi-100 hover:text-kopi-600",
+                          "block rounded-lg px-3 py-2 text-sm transition-all duration-200 hover:bg-primary-soft hover:text-on-primary-soft",
                           isActive(pathname, child.href)
-                            ? "font-semibold text-kopi-600"
-                            : "text-espresso-800",
+                            ? "font-semibold text-link"
+                            : "text-text",
                         )}
                       >
                         {child.label}
@@ -90,7 +103,7 @@ export function Navbar({ profil }: { profil: DesaProfil }) {
 
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-lg border border-white/20 p-2 text-krem-50 transition-colors hover:bg-white/10 md:hidden"
+          className="inline-flex items-center justify-center rounded-lg border border-panel-border p-2 text-on-panel transition-colors hover:bg-on-panel/10 md:hidden"
           onClick={() => setMobileOpen((open) => !open)}
           aria-label={mobileOpen ? "Tutup menu" : "Buka menu"}
           aria-expanded={mobileOpen}
@@ -100,7 +113,7 @@ export function Navbar({ profil }: { profil: DesaProfil }) {
       </div>
 
       {mobileOpen && (
-        <div className="w-full border-t border-white/10 bg-panel-800 md:hidden">
+        <div className="w-full border-t border-panel-border bg-panel md:hidden">
           <nav className="flex flex-col gap-1 px-4 py-3">
             {navItems.map((item) => (
               <div key={item.href}>
@@ -110,14 +123,15 @@ export function Navbar({ profil }: { profil: DesaProfil }) {
                   className={cn(
                     "block rounded-lg px-3 py-2 text-sm transition-all duration-200",
                     isActive(pathname, item.href)
-                      ? "font-semibold text-gold-400"
-                      : "text-krem-50/85",
+                      ? "border-l-2 border-accent-400 bg-on-panel/10 font-semibold text-on-panel"
+                      : "text-on-panel-muted",
                   )}
+                  aria-current={isActive(pathname, item.href) ? "page" : undefined}
                 >
                   {item.label}
                 </Link>
                 {item.children && (
-                  <div className="ml-3 flex flex-col gap-1 border-l border-white/15 pl-3">
+                  <div className="ml-3 flex flex-col gap-1 border-l border-panel-border pl-3">
                     {item.children.slice(1).map((child) => (
                       <Link
                         key={child.href}
@@ -126,9 +140,10 @@ export function Navbar({ profil }: { profil: DesaProfil }) {
                         className={cn(
                           "block rounded-lg px-3 py-2 text-sm transition-all duration-200",
                           isActive(pathname, child.href)
-                            ? "font-semibold text-gold-400"
-                            : "text-krem-50/65",
+                            ? "border-l-2 border-accent-400 bg-on-panel/10 font-semibold text-on-panel"
+                            : "text-on-panel-muted",
                         )}
+                        aria-current={isActive(pathname, child.href) ? "page" : undefined}
                       >
                         {child.label}
                       </Link>
