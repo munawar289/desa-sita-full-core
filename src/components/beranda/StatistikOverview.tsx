@@ -69,7 +69,7 @@ export async function StatistikOverview() {
         <Button
           asChild
           variant="outline"
-          className="rounded-lg border-kopi-600 text-kopi-600 hover:bg-kopi-100 hover:text-kopi-600"
+          className="rounded-lg border-border-strong bg-surface text-link hover:bg-primary-soft hover:text-on-primary-soft"
         >
           <Link href="/data-desa">
             Lihat Data Desa Lengkap

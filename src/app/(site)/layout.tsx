@@ -39,12 +39,12 @@ export default async function RootLayout({
   // untuk elemen yang sama, jadi override tema warna berlaku di light & dark
   // mode tanpa menyentuh token struktural (--background, --foreground, dst).
   //
-  // Dua lapis, sengaja:
-  //   1. Lima var --warna-* mentah — dikonsumsi palet lama (kopi/sawah/gold/
-  //      panel) di globals.css. Tetap apa adanya supaya tampilan tidak bergeser.
-  //   2. Token semantik hasil color derivation engine (src/lib/theme) — lapisan
-  //      baru yang belum dikonsumsi komponen manapun. Lihat DESIGN.md.
-  // Lapisan 1 hilang bersama palet lama di fase migrasi berikutnya.
+  // Dua lapis, sementara:
+  //   1. Lima var --warna-* mentah — dikonsumsi sisa palet lama (kopi/sawah/
+  //      gold/panel) di globals.css, yang masih dipakai halaman yang belum
+  //      dimigrasi. Hilang bersama palet lama di Fase 7.
+  //   2. Token semantik hasil color derivation engine (src/lib/theme) — inilah
+  //      yang dikonsumsi komponen yang sudah dimigrasi. Lihat DESIGN.md.
   const temaWarna = {
     "--warna-primer": profil.warna_primer,
     "--warna-sekunder": profil.warna_sekunder,
@@ -60,7 +60,7 @@ export default async function RootLayout({
       className={`${fraunces.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
       style={temaWarna}
     >
-      <body className="min-h-full flex flex-col font-body bg-background text-espresso-800">
+      <body className="min-h-full flex flex-col font-body bg-surface-alt text-text">
         <Navbar profil={profil} />
         <main className="flex-1">{children}</main>
         <Footer profil={profil} />

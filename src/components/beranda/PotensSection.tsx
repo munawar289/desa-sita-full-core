@@ -23,23 +23,25 @@ export async function PotensSection() {
           return (
             <div
               key={id}
-              className="group relative overflow-hidden rounded-2xl border border-kakao-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-kopi-400/50 hover:shadow-xl hover:shadow-kopi-600/10"
+              className="group relative overflow-hidden rounded-2xl border border-border bg-surface p-7 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-border-strong hover:shadow-xl hover:shadow-neutral-900/10"
             >
               {/* Gradient wash saat hover */}
-              <div className="absolute inset-0 bg-linear-to-br from-kopi-100/0 to-kopi-100/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-linear-to-br from-primary-soft/0 to-primary-soft/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-              <div className="relative flex size-14 items-center justify-center rounded-2xl bg-linear-to-br from-kopi-600 to-kopi-400 text-white shadow-md shadow-kopi-600/30 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                <Icon className="size-7" />
+              {/* Gradient primary → primary-active: keduanya sisi gelap dari warna
+                  yang sama, jadi `on-primary` tetap terbaca di seluruh sapuannya. */}
+              <div className="relative flex size-14 items-center justify-center rounded-2xl bg-linear-to-br from-primary to-primary-active text-on-primary shadow-md shadow-neutral-900/20 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                <Icon className="size-7" aria-hidden />
               </div>
-              <h3 className="relative mt-5 font-heading text-xl font-semibold text-espresso-950">
+              <h3 className="relative mt-5 font-heading text-xl font-semibold text-text">
                 {judul}
               </h3>
-              <p className="relative mt-2 text-sm leading-relaxed text-espresso-800/70">
+              <p className="relative mt-2 text-sm leading-relaxed text-text-muted">
                 {deskripsi}
               </p>
               <Link
                 href="/profil-desa/wilayah"
-                className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-kopi-600 transition-all duration-200 hover:text-kopi-400"
+                className="relative mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-link transition-all duration-200 hover:text-link-hover"
               >
                 Lihat Detail
                 <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
