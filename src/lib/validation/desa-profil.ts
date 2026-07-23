@@ -17,6 +17,12 @@ function warnaField(label: string) {
 
 const currentYear = new Date().getFullYear();
 
+// Batas unggah foto hero — dicek juga di server action saat proses upload,
+// dan dipakai untuk `accept` di input file (DESIGN.md §5.2: mobile-first,
+// koneksi lambat, jadi limit sengaja kecil).
+export const HERO_GAMBAR_MAX_BYTES = 5 * 1024 * 1024;
+export const HERO_GAMBAR_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
+
 export const desaProfilFormSchema = z.object({
   nama_desa: z.string().trim().min(1, "Nama desa wajib diisi.").max(80, "Nama desa maksimal 80 karakter."),
   kecamatan: z.string().trim().min(1, "Kecamatan wajib diisi.").max(80, "Kecamatan maksimal 80 karakter."),
@@ -27,6 +33,17 @@ export const desaProfilFormSchema = z.object({
     .trim()
     .min(1, "Deskripsi hero wajib diisi.")
     .max(300, "Deskripsi hero maksimal 300 karakter."),
+  hero_gambar_alt: z
+    .string()
+    .trim()
+    .max(180, "Alt teks foto hero maksimal 180 karakter.")
+    .optional()
+    .or(z.literal(""))
+    .transform((value) => (value ? value : null)),
+  hero_gambar_hapus: z
+    .string()
+    .optional()
+    .transform((value) => value === "1"),
   email: z
     .string()
     .trim()
@@ -62,6 +79,10 @@ export const desaProfilFormSchema = z.object({
   warna_primer: warnaField("Warna utama"),
   warna_sekunder: warnaField("Warna sekunder"),
   warna_aksen: warnaField("Warna aksen"),
+  jumlah_rt: z.coerce
+    .number({ message: "Jumlah RT harus berupa angka." })
+    .int("Jumlah RT harus bilangan bulat.")
+    .min(1, "Jumlah RT minimal 1."),
 });
 
 export type DesaProfilFormValues = z.infer<typeof desaProfilFormSchema>;

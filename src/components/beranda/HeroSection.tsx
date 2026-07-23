@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowRight, ChevronDown, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getDesaProfil } from "@/lib/queries/desa-profil";
-import { heroMedia } from "@/mock/hero";
 
 export async function HeroSection() {
   const profil = await getDesaProfil();
@@ -15,16 +14,21 @@ export async function HeroSection() {
 
   return (
     <section className="relative flex min-h-[88vh] flex-col items-center justify-center overflow-hidden bg-panel-strong px-4 py-24 text-center">
-      {/* Foto asli desa sebagai latar (DESIGN.md §5.2). `priority`: Hero adalah
+      {/* Foto asli desa sebagai latar (DESIGN.md §5.2), kalau admin sudah
+          mengunggahnya. Tanpa foto, section jatuh ke panel gelap bertoken
+          (BACKEND_TODO.md #1) — bukan placeholder ikon, karena ini bukan
+          kartu konten melainkan latar penuh section. `priority`: Hero adalah
           satu-satunya gambar yang tidak lazy-load. */}
-      <Image
-        src={heroMedia.src}
-        alt={heroMedia.alt}
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover"
-      />
+      {profil.hero_gambar_url && (
+        <Image
+          src={profil.hero_gambar_url}
+          alt={profil.hero_gambar_alt ?? ""}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+      )}
 
       {/* Overlay netral & bisa diprediksi dari `panel-strong` saja — tidak ada
           gradient ungu/biru. Lapisan bawah lebih pekat agar location bar &

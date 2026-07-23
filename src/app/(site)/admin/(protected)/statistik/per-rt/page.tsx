@@ -85,8 +85,8 @@ export default async function AdminStatistikPerRtPage() {
           Statistik per-RT
         </h1>
         <p className="mt-1 text-sm text-text-muted">
-          16 RT tetap — hanya nilainya yang bisa diedit. Perubahan langsung tampil di situs
-          publik.
+          {(rtData?.length ?? 0)} RT — jumlahnya diatur dari Identitas Desa, di sini hanya
+          nilainya yang bisa diedit. Perubahan langsung tampil di situs publik.
         </p>
       </div>
 
