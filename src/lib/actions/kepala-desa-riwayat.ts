@@ -97,6 +97,9 @@ export async function updateKepalaDesaRiwayatAction(
     .eq("id", id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang mengubahnya." };
+  }
 
   const { error } = await supabase
     .from("kepala_desa_riwayat")
@@ -134,6 +137,9 @@ export async function deleteKepalaDesaRiwayatAction(id: string): Promise<{ error
     .eq("id", id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang menghapusnya." };
+  }
 
   const { error } = await supabase
     .from("kepala_desa_riwayat")

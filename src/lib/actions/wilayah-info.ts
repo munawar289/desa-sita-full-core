@@ -90,6 +90,9 @@ export async function updateWilayahInfoAction(
     .eq("id", id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang mengubahnya." };
+  }
 
   const { error } = await supabase
     .from("wilayah_info")
@@ -131,6 +134,9 @@ export async function deleteWilayahInfoAction(id: string): Promise<{ error: stri
     .eq("id", id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang menghapusnya." };
+  }
 
   const { error } = await supabase
     .from("wilayah_info")

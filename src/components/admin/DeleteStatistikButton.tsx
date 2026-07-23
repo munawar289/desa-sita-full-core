@@ -12,7 +12,10 @@ export function DeleteStatistikButton({ id, label }: { id: string; label: string
       return;
     }
     startTransition(async () => {
-      await deleteStatistikAction(id);
+      const result = await deleteStatistikAction(id);
+      if (result.error) {
+        window.alert(result.error);
+      }
     });
   }
 

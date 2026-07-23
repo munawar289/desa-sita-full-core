@@ -38,6 +38,9 @@ export async function updateStatistikSektorUsahaAction(
     .eq("id", parsed.data.id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang mengubahnya." };
+  }
 
   const nilai = parsed.data.nilai_ribu_rupiah === "" ? null : Number(parsed.data.nilai_ribu_rupiah);
 

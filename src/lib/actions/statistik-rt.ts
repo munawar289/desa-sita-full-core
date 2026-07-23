@@ -49,6 +49,9 @@ export async function updateStatistikRtValueAction(
     .eq("id", parsed.data.id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang mengubahnya." };
+  }
 
   const { error } = await supabase
     .from("statistik_rt")
@@ -104,6 +107,9 @@ export async function updateStatistikRtDetailAction(
     .eq("id", parsed.data.id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang mengubahnya." };
+  }
 
   const detailValues = Object.fromEntries(
     Object.entries(parsed.data.detail).map(([key, val]) => [key, toNumberOrNull(val)]),

@@ -92,6 +92,9 @@ export async function updateAparaturAction(
     .eq("id", id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang mengubahnya." };
+  }
 
   const { error } = await supabase
     .from("aparatur")
@@ -129,6 +132,9 @@ export async function deleteAparaturAction(id: string): Promise<{ error: string 
     .eq("id", id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang menghapusnya." };
+  }
 
   const { error } = await supabase
     .from("aparatur")

@@ -92,6 +92,9 @@ export async function updateBpdAction(
     .eq("id", id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang mengubahnya." };
+  }
 
   const { error } = await supabase
     .from("bpd_anggota")
@@ -129,6 +132,9 @@ export async function deleteBpdAction(id: string): Promise<{ error: string | nul
     .eq("id", id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang menghapusnya." };
+  }
 
   const { error } = await supabase
     .from("bpd_anggota")
