@@ -1,4 +1,4 @@
-import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Poppins, IBM_Plex_Mono } from "next/font/google";
 import "../globals.css";
 
 /**
@@ -6,15 +6,15 @@ import "../globals.css";
  * (dipakai flow undangan landlord), tidak boleh ikut Navbar/Footer/tema desa.
  */
 
-const fraunces = Fraunces({
+const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-heading",
   subsets: ["latin"],
-  axes: ["opsz"],
 });
 
-const inter = Inter({
+const poppins = Poppins({
   variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -31,9 +31,9 @@ export default function SetPasswordRootLayout({
   return (
     <html
       lang="id"
-      className={`${fraunces.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${plusJakarta.variable} ${poppins.variable} ${plexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-body bg-background text-espresso-800">
+      <body className="min-h-full flex flex-col font-body bg-background text-text">
         {children}
       </body>
     </html>

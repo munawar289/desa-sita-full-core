@@ -18,6 +18,7 @@ export type PlatformTenantFormValues = z.infer<typeof platformTenantFormSchema>;
 
 export const platformInviteAdminFormSchema = z.object({
   email: z.string().trim().email("Email tidak valid."),
+  password: z.string().min(8, "Kata sandi minimal 8 karakter."),
   tenant_id: z.string().uuid("Tenant tidak valid."),
 });
 

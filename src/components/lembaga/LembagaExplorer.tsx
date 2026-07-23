@@ -32,8 +32,8 @@ export function LembagaExplorer({ data }: { data: Lembaga[] }) {
             className={cn(
               "rounded-full border px-4 py-1.5 text-sm font-medium transition-all duration-200",
               active === filter.value
-                ? "border-kopi-600 bg-kopi-600 text-white"
-                : "border-kakao-200 bg-white text-espresso-800 hover:border-kopi-400 hover:text-kopi-600",
+                ? "border-primary bg-primary text-on-primary"
+                : "border-border-strong bg-surface text-text hover:border-primary hover:text-link",
             )}
           >
             {filter.label}
@@ -49,23 +49,23 @@ export function LembagaExplorer({ data }: { data: Lembaga[] }) {
             {filtered.map((item) => (
               <div
                 key={item.id}
-                className="rounded-xl border border-kakao-200 bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md"
+                className="rounded-xl border border-border bg-surface p-5 shadow-sm transition-all duration-200 hover:shadow-md"
               >
-                <h3 className="font-heading text-lg font-semibold text-espresso-950">
+                <h3 className="font-heading text-lg font-semibold text-text">
                   {item.nama}
                 </h3>
                 {item.dasar_hukum && (
-                  <p className="mt-1 text-xs text-espresso-800/60">
+                  <p className="mt-1 text-xs text-text-muted">
                     Dasar hukum: {item.dasar_hukum}
                   </p>
                 )}
                 {item.jumlah_pengurus !== null && (
-                  <p className="mt-1 text-sm text-espresso-800/70">
+                  <p className="mt-1 text-sm text-text-muted">
                     {item.jumlah_pengurus} pengurus
                   </p>
                 )}
                 {item.keterangan && (
-                  <p className="mt-2 text-sm leading-relaxed text-espresso-800/70">
+                  <p className="mt-2 text-sm leading-relaxed text-text-muted">
                     {item.keterangan}
                   </p>
                 )}

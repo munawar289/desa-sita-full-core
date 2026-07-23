@@ -1,4 +1,6 @@
 // Struktur gabungan tabel `statistik_rt` + `wilayah_rt` — PRD statistik-lanjutan §3.2
+import { wilayahRtMock } from "./wilayah-rt";
+
 export type StatistikRt = {
   id: string;
   category: string;
@@ -37,22 +39,25 @@ const AIR_BERSIH: [string, Record<string, number>][] = [
   ["015", { pdam: 0, ledeng: 51 }], ["016", { pdam: 0, ledeng: 64 }],
 ];
 
-const RT_NOMOR = PENDUDUK.map(([nomor]) => nomor);
-
+// Nomor RT diturunkan dari `wilayahRtMock` (yang sendiri diturunkan dari
+// `desaProfilMock.jumlah_rt`) — bukan literal terpisah, supaya RT tambahan
+// di luar 16 data riil di atas otomatis dapat baris kosong (PRD
+// jumlah-rt-dinamis §K6), konsisten dengan kategori yang sudah kosong
+// by default (pengangguran, aset_tanaman).
 function buildRows(
   category: string,
   values: Map<string, number | null>,
   details?: Map<string, Record<string, number>>,
 ): StatistikRt[] {
-  return RT_NOMOR.map((nomor, index) => ({
-    id: `statrt-${category}-${nomor}`,
+  return wilayahRtMock.map((rt) => ({
+    id: `statrt-${category}-${rt.nomor}`,
     category,
-    value: values.get(nomor) ?? null,
-    detail: details?.get(nomor) ?? null,
+    value: values.get(rt.nomor) ?? null,
+    detail: details?.get(rt.nomor) ?? null,
     updated_at: "2026-06-01",
-    rt_nomor: nomor,
-    rt_nama: `RT ${nomor}`,
-    rt_urutan: index + 1,
+    rt_nomor: rt.nomor,
+    rt_nama: rt.nama,
+    rt_urutan: rt.urutan,
   }));
 }
 

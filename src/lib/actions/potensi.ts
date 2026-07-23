@@ -83,6 +83,9 @@ export async function updatePotensiAction(
     .eq("id", id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang mengubahnya." };
+  }
 
   const { error } = await supabase
     .from("potensi_desa")
@@ -120,6 +123,9 @@ export async function deletePotensiAction(id: string): Promise<{ error: string |
     .eq("id", id)
     .eq("tenant_id", tenant.id)
     .single();
+  if (!oldRow) {
+    return { error: "Data tidak ditemukan atau Anda tidak berwenang menghapusnya." };
+  }
 
   const { error } = await supabase
     .from("potensi_desa")

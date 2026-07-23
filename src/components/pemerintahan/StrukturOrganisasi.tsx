@@ -30,14 +30,14 @@ export function StrukturOrganisasi({ data }: { data: Aparatur[] }) {
         </div>
       )}
       {level2.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-6 border-t border-kakao-200 pt-8">
+        <div className="flex flex-wrap justify-center gap-6 border-t border-border pt-8">
           {level2.map((item) => (
             <AparaturCard key={item.id} aparatur={item} />
           ))}
         </div>
       )}
       {level3.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-6 border-t border-kakao-200 pt-8">
+        <div className="flex flex-wrap justify-center gap-6 border-t border-border pt-8">
           {level3.map((item) => (
             <AparaturCard key={item.id} aparatur={item} />
           ))}

@@ -22,7 +22,7 @@ export function AddKomoditasForm() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1.5 rounded-full border border-dashed border-kakao-200 px-4 py-2 text-sm font-medium text-kopi-600 transition-all duration-200 hover:border-kopi-400 hover:bg-kopi-100/50"
+        className="flex items-center gap-1.5 rounded-full border border-dashed border-border px-4 py-2 text-sm font-medium text-link transition-all duration-200 hover:border-border-strong hover:bg-primary-soft/50"
       >
         <Plus className="size-4" />
         Tambah Komoditas
@@ -33,7 +33,7 @@ export function AddKomoditasForm() {
   return (
     <form
       action={formAction}
-      className="grid gap-3 rounded-xl border border-kakao-200 bg-kopi-100/30 p-4 sm:grid-cols-2 lg:grid-cols-4"
+      className="grid gap-3 rounded-xl border border-border bg-surface-alt p-4 sm:grid-cols-2 lg:grid-cols-4"
     >
       <div className="space-y-1">
         <Label htmlFor="new-kom-nama" className="text-xs">
@@ -61,7 +61,7 @@ export function AddKomoditasForm() {
       </div>
 
       {state.error && (
-        <p className="text-sm text-tanah-500 sm:col-span-2 lg:col-span-4">{state.error}</p>
+        <p className="text-sm text-danger sm:col-span-2 lg:col-span-4">{state.error}</p>
       )}
 
       <div className="flex gap-2 sm:col-span-2 lg:col-span-4">
@@ -69,7 +69,7 @@ export function AddKomoditasForm() {
           type="submit"
           size="sm"
           disabled={isPending}
-          className="rounded-full bg-kopi-600 hover:bg-kopi-600/90"
+          className="rounded-full"
         >
           {isPending ? "Menyimpan…" : "Simpan"}
         </Button>

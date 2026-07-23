@@ -26,7 +26,7 @@ export function AddWilayahInfoForm() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1.5 rounded-full border border-dashed border-kakao-200 px-4 py-2 text-sm font-medium text-kopi-600 transition-all duration-200 hover:border-kopi-400 hover:bg-kopi-100/50"
+        className="flex items-center gap-1.5 rounded-full border border-dashed border-border px-4 py-2 text-sm font-medium text-link transition-all duration-200 hover:border-border-strong hover:bg-primary-soft/50"
       >
         <Plus className="size-4" />
         Tambah Section
@@ -35,7 +35,7 @@ export function AddWilayahInfoForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-3 rounded-xl border border-kakao-200 bg-kopi-100/30 p-4">
+    <form action={formAction} className="space-y-3 rounded-xl border border-border bg-surface-alt p-4">
       <div className="space-y-1">
         <Label htmlFor="new-wilinfo-section" className="text-xs">
           Section (key, huruf kecil & underscore)
@@ -78,14 +78,14 @@ export function AddWilayahInfoForm() {
         <Textarea id="new-wilinfo-konten" name="konten" required rows={4} />
       </div>
 
-      {state.error && <p className="text-sm text-tanah-500">{state.error}</p>}
+      {state.error && <p className="text-sm text-danger">{state.error}</p>}
 
       <div className="flex gap-2">
         <Button
           type="submit"
           size="sm"
           disabled={isPending}
-          className="rounded-full bg-kopi-600 hover:bg-kopi-600/90"
+          className="rounded-full"
         >
           {isPending ? "Menyimpan…" : "Simpan"}
         </Button>

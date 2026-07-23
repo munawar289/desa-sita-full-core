@@ -12,7 +12,10 @@ export function DeleteStatistikButton({ id, label }: { id: string; label: string
       return;
     }
     startTransition(async () => {
-      await deleteStatistikAction(id);
+      const result = await deleteStatistikAction(id);
+      if (result.error) {
+        window.alert(result.error);
+      }
     });
   }
 
@@ -22,7 +25,7 @@ export function DeleteStatistikButton({ id, label }: { id: string; label: string
       onClick={handleClick}
       disabled={isPending}
       aria-label={`Hapus ${label}`}
-      className="rounded-md p-1.5 text-espresso-800/40 transition-colors duration-200 hover:bg-tanah-100 hover:text-tanah-500 disabled:opacity-50"
+      className="rounded-md p-1.5 text-text-muted transition-colors duration-200 hover:bg-danger-soft hover:text-danger disabled:opacity-50"
     >
       <Trash2 className="size-4" />
     </button>

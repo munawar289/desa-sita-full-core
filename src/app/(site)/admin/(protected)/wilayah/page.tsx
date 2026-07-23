@@ -7,6 +7,7 @@ import { KomoditasRow } from "@/components/admin/KomoditasRow";
 import { AddPeternakanForm } from "@/components/admin/AddPeternakanForm";
 import { PeternakanRow } from "@/components/admin/PeternakanRow";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import type { WilayahInfo } from "@/lib/data/wilayah-info";
 import { WILAYAH_INFO_PRESETS } from "@/lib/data/wilayah-info-sections";
 import type { Komoditas } from "@/lib/data/komoditas";
@@ -22,16 +23,23 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AdminWilayahPage() {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const [wilayahInfoResult, komoditasResult, peternakanResult] = await Promise.all([
     supabase
       .from("wilayah_info")
       .select("id, section, konten, page, judul, eyebrow, urutan, updated_at")
+      .eq("tenant_id", tenant.id)
       .order("section"),
-    supabase.from("komoditas").select("id, nama, luas_ha, hasil_panen, urutan").order("urutan"),
+    supabase
+      .from("komoditas")
+      .select("id, nama, luas_ha, hasil_panen, urutan")
+      .eq("tenant_id", tenant.id)
+      .order("urutan"),
     supabase
       .from("peternakan")
       .select("id, jenis_ternak, populasi, jumlah_pemilik, urutan")
+      .eq("tenant_id", tenant.id)
       .order("urutan"),
   ]);
 
@@ -44,20 +52,20 @@ export default async function AdminWilayahPage() {
   return (
     <div className="space-y-10">
       <div>
-        <h1 className="font-heading text-2xl font-semibold text-espresso-950">
+        <h1 className="font-heading text-2xl font-semibold text-text">
           Profil Desa & Wilayah
         </h1>
-        <p className="mt-1 text-sm text-espresso-800/60">
+        <p className="mt-1 text-sm text-text-muted">
           Perubahan langsung tampil di /profil-desa/sejarah dan /profil-desa/wilayah.
         </p>
       </div>
 
       <section className="space-y-3">
-        <h2 className="font-mono text-xs uppercase tracking-wider text-sawah-700">
+        <h2 className="font-mono text-xs uppercase tracking-wider text-text-muted">
           Info Naratif (Sejarah, Batas Wilayah, Iklim, dst)
         </h2>
         {wilayahInfoResult.error ? (
-          <p className="rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+          <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-on-danger-soft">
             Gagal memuat data info wilayah.
           </p>
         ) : (
@@ -81,26 +89,26 @@ export default async function AdminWilayahPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="font-mono text-xs uppercase tracking-wider text-sawah-700">Komoditas</h2>
+        <h2 className="font-mono text-xs uppercase tracking-wider text-text-muted">Komoditas</h2>
         {komoditasResult.error ? (
-          <p className="rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+          <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-on-danger-soft">
             Gagal memuat data komoditas.
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-kakao-200 bg-white">
+          <div className="overflow-x-auto rounded-xl border border-border bg-surface">
             <table className="w-full text-left">
-              <thead className="bg-kakao-100">
+              <thead className="bg-surface-alt">
                 <tr>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                     Nama
                   </th>
-                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-text-muted">
                     Luas (Ha)
                   </th>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                     Hasil Panen
                   </th>
-                  <th className="px-3 py-2 text-center text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-center text-xs font-mono uppercase tracking-wider text-text-muted">
                     Urutan
                   </th>
                   <th className="px-3 py-2" />
@@ -118,26 +126,26 @@ export default async function AdminWilayahPage() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="font-mono text-xs uppercase tracking-wider text-sawah-700">Peternakan</h2>
+        <h2 className="font-mono text-xs uppercase tracking-wider text-text-muted">Peternakan</h2>
         {peternakanResult.error ? (
-          <p className="rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+          <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-on-danger-soft">
             Gagal memuat data peternakan.
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-kakao-200 bg-white">
+          <div className="overflow-x-auto rounded-xl border border-border bg-surface">
             <table className="w-full text-left">
-              <thead className="bg-kakao-100">
+              <thead className="bg-surface-alt">
                 <tr>
-                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                     Jenis Ternak
                   </th>
-                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-text-muted">
                     Populasi
                   </th>
-                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-text-muted">
                     Jumlah Pemilik
                   </th>
-                  <th className="px-3 py-2 text-center text-xs font-mono uppercase tracking-wider text-sawah-700">
+                  <th className="px-3 py-2 text-center text-xs font-mono uppercase tracking-wider text-text-muted">
                     Urutan
                   </th>
                   <th className="px-3 py-2" />

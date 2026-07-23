@@ -17,8 +17,8 @@ export default async function AdminProfilDesaPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-heading text-2xl font-semibold text-espresso-950">Identitas Desa</h1>
-        <p className="mt-1 text-sm text-espresso-800/60">
+        <h1 className="font-heading text-2xl font-semibold text-text">Identitas Desa</h1>
+        <p className="mt-1 text-sm text-text-muted">
           Satu sumber kebenaran untuk nama desa, lokasi, kontak, dan tema warna — dipakai di seluruh
           situs publik.
         </p>

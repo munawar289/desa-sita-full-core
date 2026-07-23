@@ -64,12 +64,12 @@ export function SetPasswordForm() {
   }
 
   if (sessionState === "checking") {
-    return <p className="text-sm text-espresso-800/60">Memeriksa tautan…</p>;
+    return <p className="text-sm text-text-muted">Memeriksa tautan…</p>;
   }
 
   if (sessionState === "invalid") {
     return (
-      <p className="rounded-lg bg-tanah-100 px-3 py-2 text-sm text-tanah-500">
+      <p className="rounded-lg bg-danger-soft px-3 py-2 text-sm text-on-danger-soft">
         Tautan tidak valid atau sudah kedaluwarsa. Minta undangan baru ke landlord/admin platform.
       </p>
     );
@@ -77,7 +77,7 @@ export function SetPasswordForm() {
 
   if (success) {
     return (
-      <p className="rounded-lg bg-sawah-100 px-3 py-2 text-sm text-sawah-700">
+      <p className="rounded-lg bg-success-soft px-3 py-2 text-sm text-on-success-soft">
         Kata sandi tersimpan. Mengalihkan ke halaman masuk…
       </p>
     );
@@ -112,13 +112,13 @@ export function SetPasswordForm() {
       </div>
 
       {error && (
-        <p className="rounded-lg bg-tanah-100 px-3 py-2 text-sm text-tanah-500">{error}</p>
+        <p className="rounded-lg bg-danger-soft px-3 py-2 text-sm text-on-danger-soft">{error}</p>
       )}
 
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-full bg-kopi-600 text-white hover:bg-kopi-600/90"
+        className="w-full rounded-full"
       >
         {isSubmitting ? "Menyimpan…" : "Simpan Kata Sandi"}
       </Button>

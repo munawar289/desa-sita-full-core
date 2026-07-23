@@ -1,18 +1,24 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-export type BadgeKategoriTone = "kopi" | "sawah" | "tanah" | "netral";
+/**
+ * Varian badge DESIGN.md §6.3. Tiap varian memasangkan latar `-soft` dengan
+ * teks `on-*-soft` pasangannya, jadi tidak ada kombinasi yang bisa gagal AA
+ * untuk warna desa apa pun.
+ */
+export type BadgeKategoriTone = "primer" | "sekunder" | "aksen" | "netral" | "solid";
 
 const toneClasses: Record<BadgeKategoriTone, string> = {
-  kopi: "bg-kopi-100 text-kopi-600",
-  sawah: "bg-sawah-100 text-sawah-700",
-  tanah: "bg-tanah-100 text-tanah-500",
-  netral: "bg-kakao-100 text-espresso-800",
+  primer: "bg-primary-soft text-on-primary-soft",
+  sekunder: "bg-secondary-soft text-on-secondary-soft",
+  aksen: "bg-accent-soft text-on-accent-soft",
+  netral: "bg-surface-alt text-text-muted",
+  solid: "bg-primary text-on-primary",
 };
 
 export function BadgeKategori({
   label,
-  tone = "kopi",
+  tone = "primer",
   className,
 }: {
   label: string;

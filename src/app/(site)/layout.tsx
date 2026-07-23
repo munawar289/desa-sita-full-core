@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Poppins, IBM_Plex_Mono } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { getDesaProfil } from "@/lib/queries/desa-profil";
 import { buildMetadata } from "@/lib/metadata";
+import { buildThemeCssVariables } from "@/lib/theme";
 import "../globals.css";
 
-const fraunces = Fraunces({
+const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-heading",
   subsets: ["latin"],
-  axes: ["opsz"],
 });
 
-const inter = Inter({
+const poppins = Poppins({
   variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -34,24 +35,19 @@ export default async function RootLayout({
 }>) {
   const profil = await getDesaProfil();
 
-  // Inline style di elemen ini punya spesifisitas lebih tinggi dari :root/.dark
-  // untuk elemen yang sama, jadi override tema warna berlaku di light & dark
-  // mode tanpa menyentuh token struktural (--background, --foreground, dst).
-  const temaWarna = {
-    "--warna-primer": profil.warna_primer,
-    "--warna-sekunder": profil.warna_sekunder,
-    "--warna-aksen": profil.warna_aksen,
-    "--warna-latar-gelap": profil.warna_latar_gelap,
-    "--warna-latar": profil.warna_latar,
-  } as React.CSSProperties;
+  // Inline style di elemen ini punya spesifisitas lebih tinggi dari :root, jadi
+  // override tema warna per tenant berlaku tanpa menyentuh token struktural
+  // (--radius, dst). Nilainya seluruhnya token semantik hasil color derivation
+  // engine (src/lib/theme) dari 3 slot warna profil — lihat DESIGN.md.
+  const temaWarna = buildThemeCssVariables(profil) as React.CSSProperties;
 
   return (
     <html
       lang="id"
-      className={`${fraunces.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${plusJakarta.variable} ${poppins.variable} ${plexMono.variable} h-full antialiased`}
       style={temaWarna}
     >
-      <body className="min-h-full flex flex-col font-body bg-background text-espresso-800">
+      <body className="min-h-full flex flex-col font-body bg-surface-alt text-text">
         <Navbar profil={profil} />
         <main className="flex-1">{children}</main>
         <Footer profil={profil} />

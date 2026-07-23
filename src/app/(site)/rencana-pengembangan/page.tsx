@@ -48,14 +48,14 @@ export default function RencanaPengembanganPage() {
           {rencana.map(({ icon: Icon, nama, deskripsi }) => (
             <div
               key={nama}
-              className="rounded-xl border border-kakao-200 bg-white p-5 shadow-sm"
+              className="rounded-xl border border-border bg-surface p-5 shadow-sm"
             >
-              <Icon className="size-8 text-kopi-600" />
-              <h2 className="mt-3 font-heading text-base font-semibold text-espresso-950">
+              <Icon className="size-8 text-primary" aria-hidden />
+              <h2 className="mt-3 font-heading text-base font-semibold text-text">
                 {nama}
               </h2>
-              <p className="mt-1 text-sm text-espresso-800/70">{deskripsi}</p>
-              <BadgeKategori label="Segera Hadir" tone="tanah" className="mt-3" />
+              <p className="mt-1 text-sm text-text-muted">{deskripsi}</p>
+              <BadgeKategori label="Segera Hadir" tone="aksen" className="mt-3" />
             </div>
           ))}
         </div>

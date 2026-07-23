@@ -40,13 +40,13 @@ export default function ProfilDesaPage() {
             <Link
               key={href}
               href={href}
-              className="group rounded-xl border border-kakao-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md"
+              className="group rounded-xl border border-border bg-surface p-6 shadow-sm transition-all duration-200 hover:shadow-md"
             >
-              <Icon className="size-8 text-kopi-600" />
-              <h2 className="mt-4 font-heading text-lg font-semibold text-espresso-950 group-hover:text-kopi-600">
+              <Icon className="size-8 text-primary" aria-hidden />
+              <h2 className="mt-4 font-heading text-lg font-semibold text-text group-hover:text-link">
                 {judul}
               </h2>
-              <p className="mt-1 text-sm text-espresso-800/70">{deskripsi}</p>
+              <p className="mt-1 text-sm text-text-muted">{deskripsi}</p>
             </Link>
           ))}
         </div>

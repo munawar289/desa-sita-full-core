@@ -18,7 +18,7 @@ export const getDesaProfil = cache(async function getDesaProfil(): Promise<DesaP
       const { data, error } = await client
         .from("desa_profil")
         .select(
-          "id, nama_desa, kecamatan, kabupaten, provinsi, hero_deskripsi, email, jam_layanan, zona_waktu, tahun_berdiri, warna_primer, warna_sekunder, warna_aksen, warna_latar_gelap, warna_latar, updated_at",
+          "id, nama_desa, kecamatan, kabupaten, provinsi, hero_deskripsi, hero_gambar_url, hero_gambar_alt, email, jam_layanan, zona_waktu, tahun_berdiri, warna_primer, warna_sekunder, warna_aksen, jumlah_rt, updated_at",
         )
         .eq("tenant_id", tenant.id)
         .single();

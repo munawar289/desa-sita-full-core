@@ -3,6 +3,7 @@ import Link from "next/link";
 import { StatistikRtRow } from "@/components/admin/StatistikRtRow";
 import { DETAIL_FIELDS } from "@/lib/validation/statistik-rt";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import type { StatistikRt } from "@/lib/data/statistik-rt";
 import { buildMetadata } from "@/lib/metadata";
 
@@ -33,13 +34,19 @@ function groupByCategory(rows: StatistikRt[]) {
 }
 
 export default async function AdminStatistikPerRtPage() {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const [{ data: rtData, error: rtError }, { data: factData, error: factError }] =
     await Promise.all([
-      supabase.from("wilayah_rt").select("id, nomor, nama, urutan").order("urutan"),
+      supabase
+        .from("wilayah_rt")
+        .select("id, nomor, nama, urutan")
+        .eq("tenant_id", tenant.id)
+        .order("urutan"),
       supabase
         .from("statistik_rt")
         .select("id, category, rt_id, value, detail, updated_at")
+        .eq("tenant_id", tenant.id)
         .order("category"),
     ]);
 
@@ -71,20 +78,20 @@ export default async function AdminStatistikPerRtPage() {
   return (
     <div className="space-y-8">
       <div>
-        <Link href="/admin/statistik" className="text-sm text-kopi-600 hover:underline">
+        <Link href="/admin/statistik" className="text-sm text-link hover:underline">
           ← Kembali ke Statistik
         </Link>
-        <h1 className="mt-2 font-heading text-2xl font-semibold text-espresso-950">
+        <h1 className="mt-2 font-heading text-2xl font-semibold text-text">
           Statistik per-RT
         </h1>
-        <p className="mt-1 text-sm text-espresso-800/60">
-          16 RT tetap — hanya nilainya yang bisa diedit. Perubahan langsung tampil di situs
-          publik.
+        <p className="mt-1 text-sm text-text-muted">
+          {(rtData?.length ?? 0)} RT — jumlahnya diatur dari Identitas Desa, di sini hanya
+          nilainya yang bisa diedit. Perubahan langsung tampil di situs publik.
         </p>
       </div>
 
       {error && (
-        <p className="rounded-lg bg-tanah-100 px-4 py-3 text-sm text-tanah-500">
+        <p className="rounded-lg bg-danger-soft px-4 py-3 text-sm text-on-danger-soft">
           Gagal memuat data statistik per-RT.
         </p>
       )}
@@ -93,31 +100,31 @@ export default async function AdminStatistikPerRtPage() {
         const detailFields = DETAIL_FIELDS[category];
         return (
           <section key={category} className="space-y-3">
-            <h2 className="font-mono text-xs uppercase tracking-wider text-sawah-700">
+            <h2 className="font-mono text-xs uppercase tracking-wider text-text-muted">
               {CATEGORY_LABELS[category] ?? category}
             </h2>
-            <div className="overflow-hidden rounded-xl border border-kakao-200 bg-white">
+            <div className="overflow-hidden rounded-xl border border-border bg-surface">
               <table className="w-full text-left">
-                <thead className="bg-kakao-100">
+                <thead className="bg-surface-alt">
                   <tr>
-                    <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+                    <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                       RT
                     </th>
                     {detailFields ? (
                       detailFields.map((field) => (
                         <th
                           key={field.key}
-                          className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-sawah-700"
+                          className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-text-muted"
                         >
                           {field.label}
                         </th>
                       ))
                     ) : (
-                      <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-sawah-700">
+                      <th className="px-3 py-2 text-right text-xs font-mono uppercase tracking-wider text-text-muted">
                         Nilai
                       </th>
                     )}
-                    <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-sawah-700">
+                    <th className="px-3 py-2 text-xs font-mono uppercase tracking-wider text-text-muted">
                       Diperbarui
                     </th>
                     <th className="px-3 py-2" />

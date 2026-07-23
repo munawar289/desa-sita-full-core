@@ -32,7 +32,7 @@ export function StatistikRtRow({ item }: { item: StatistikRt }) {
 
   if (editing) {
     return (
-      <tr className="bg-kopi-100/40">
+      <tr className="bg-surface-alt">
         <td colSpan={colSpan} className="px-3 py-3">
           <form action={formAction} className="flex flex-wrap items-end gap-3">
             <input type="hidden" name="id" value={item.id} />
@@ -40,7 +40,7 @@ export function StatistikRtRow({ item }: { item: StatistikRt }) {
             {detailFields ? (
               detailFields.map((field) => (
                 <div key={field.key} className="w-24">
-                  <label className="text-xs text-espresso-800/60">{field.label}</label>
+                  <label className="text-xs text-text-muted">{field.label}</label>
                   <Input
                     name={`detail_${field.key}`}
                     defaultValue={item.detail?.[field.key] ?? ""}
@@ -50,7 +50,7 @@ export function StatistikRtRow({ item }: { item: StatistikRt }) {
               ))
             ) : (
               <div className="w-32">
-                <label className="text-xs text-espresso-800/60">Nilai</label>
+                <label className="text-xs text-text-muted">Nilai</label>
                 <Input name="value" defaultValue={item.value ?? ""} inputMode="decimal" />
               </div>
             )}
@@ -59,7 +59,7 @@ export function StatistikRtRow({ item }: { item: StatistikRt }) {
                 type="submit"
                 size="sm"
                 disabled={isPending}
-                className="rounded-full bg-kopi-600 hover:bg-kopi-600/90"
+                className="rounded-full"
               >
                 {isPending ? "Menyimpan…" : "Simpan"}
               </Button>
@@ -74,36 +74,36 @@ export function StatistikRtRow({ item }: { item: StatistikRt }) {
               </Button>
             </div>
           </form>
-          {state.error && <p className="mt-2 text-sm text-tanah-500">{state.error}</p>}
+          {state.error && <p className="mt-2 text-sm text-danger">{state.error}</p>}
         </td>
       </tr>
     );
   }
 
   return (
-    <tr className="border-b border-kakao-200 last:border-0">
-      <td className="px-3 py-2.5 text-sm text-espresso-950">{item.rt_nama}</td>
+    <tr className="border-b border-border last:border-0">
+      <td className="px-3 py-2.5 text-sm text-text">{item.rt_nama}</td>
       {detailFields ? (
         detailFields.map((field) => (
           <td
             key={field.key}
-            className="px-3 py-2.5 text-right font-mono text-sm text-espresso-950"
+            className="px-3 py-2.5 text-right font-mono text-sm text-text"
           >
             {item.detail?.[field.key] ?? "—"}
           </td>
         ))
       ) : (
-        <td className="px-3 py-2.5 text-right font-mono text-sm font-semibold text-espresso-950">
+        <td className="px-3 py-2.5 text-right font-mono text-sm font-semibold text-text">
           {item.value ?? "—"}
         </td>
       )}
-      <td className="px-3 py-2.5 text-xs text-espresso-800/50">{formatTanggal(item.updated_at)}</td>
+      <td className="px-3 py-2.5 text-xs text-text-muted">{formatTanggal(item.updated_at)}</td>
       <td className="px-3 py-2.5">
         <button
           type="button"
           onClick={() => setEditing(true)}
           aria-label={`Edit ${item.rt_nama}`}
-          className="rounded-md p-1.5 text-kopi-600 transition-colors duration-200 hover:bg-kopi-100"
+          className="rounded-md p-1.5 text-primary transition-colors duration-200 hover:bg-primary-soft"
         >
           <Pencil className="size-4" />
         </button>

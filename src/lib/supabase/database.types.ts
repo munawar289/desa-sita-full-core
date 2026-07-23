@@ -428,6 +428,8 @@ export interface Database {
           kabupaten: string;
           provinsi: string;
           hero_deskripsi: string;
+          hero_gambar_url: string | null;
+          hero_gambar_alt: string | null;
           email: string | null;
           jam_layanan: string | null;
           zona_waktu: string | null;
@@ -435,8 +437,7 @@ export interface Database {
           warna_primer: string;
           warna_sekunder: string;
           warna_aksen: string;
-          warna_latar_gelap: string;
-          warna_latar: string;
+          jumlah_rt: number;
           updated_by: string | null;
           updated_at: string;
         };
@@ -448,6 +449,8 @@ export interface Database {
           kabupaten: string;
           provinsi: string;
           hero_deskripsi: string;
+          hero_gambar_url?: string | null;
+          hero_gambar_alt?: string | null;
           email?: string | null;
           jam_layanan?: string | null;
           zona_waktu?: string | null;
@@ -455,8 +458,7 @@ export interface Database {
           warna_primer?: string;
           warna_sekunder?: string;
           warna_aksen?: string;
-          warna_latar_gelap?: string;
-          warna_latar?: string;
+          jumlah_rt?: number;
           updated_by?: string | null;
           updated_at?: string;
         };

@@ -2,46 +2,26 @@ import { z } from "zod";
 
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 
-// Relative luminance (WCAG) — dipakai sebagai guard kontras karena warna
-// primer/sekunder/aksen/latar-gelap selalu dipasangkan dengan teks putih/krem
-// (--primary-foreground, tombol CTA, badge, Navbar/Footer/Hero). Ambang 0.75
-// usulan PRD §3.3/§8: warna di atasnya dianggap terlalu terang untuk teks
-// putih tetap terbaca.
-const LUMINANCE_MAX = 0.75;
-// Kebalikannya untuk warna_latar (background halaman, dipasangkan dengan teks
-// gelap espresso) — kalau admin pilih warna yang terlalu gelap, teks ink di
-// atasnya jadi sulit dibaca.
-const LUMINANCE_MIN = 0.4;
-
-function relativeLuminance(hex: string): number {
-  const [r, g, b] = [hex.slice(1, 3), hex.slice(3, 5), hex.slice(5, 7)].map((part) => {
-    const channel = parseInt(part, 16) / 255;
-    return channel <= 0.03928 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
-  });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
+// Validasi warna kini HANYA memeriksa format hex. Guard luminance lama
+// (LUMINANCE_MAX = 0.75) yang MENOLAK warna terlalu terang sudah dibuang: color
+// derivation engine (src/lib/theme) kini memperbaiki input alih-alih menolaknya
+// — kalau admin memilih kuning `#ffd400`, `--color-primary` otomatis turun ke
+// shade lebih gelap (`#796300`) dan `--color-on-primary` dipilih lewat kontras
+// WCAG, jadi tombol tetap lolos AA tanpa admin perlu tahu soal luminance.
 function warnaField(label: string) {
   return z
     .string()
     .trim()
-    .regex(HEX_RE, `${label} harus berupa hex 6-digit, mis. #c1602a.`)
-    .refine((hex) => relativeLuminance(hex) <= LUMINANCE_MAX, {
-      message: `${label} terlalu terang, teks putih di atasnya sulit dibaca.`,
-    });
-}
-
-function warnaLatarField(label: string) {
-  return z
-    .string()
-    .trim()
-    .regex(HEX_RE, `${label} harus berupa hex 6-digit, mis. #f5efe2.`)
-    .refine((hex) => relativeLuminance(hex) >= LUMINANCE_MIN, {
-      message: `${label} terlalu gelap, teks di atasnya sulit dibaca.`,
-    });
+    .regex(HEX_RE, `${label} harus berupa hex 6-digit, mis. #c1602a.`);
 }
 
 const currentYear = new Date().getFullYear();
+
+// Batas unggah foto hero — dicek juga di server action saat proses upload,
+// dan dipakai untuk `accept` di input file (DESIGN.md §5.2: mobile-first,
+// koneksi lambat, jadi limit sengaja kecil).
+export const HERO_GAMBAR_MAX_BYTES = 5 * 1024 * 1024;
+export const HERO_GAMBAR_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
 
 export const desaProfilFormSchema = z.object({
   nama_desa: z.string().trim().min(1, "Nama desa wajib diisi.").max(80, "Nama desa maksimal 80 karakter."),
@@ -53,6 +33,17 @@ export const desaProfilFormSchema = z.object({
     .trim()
     .min(1, "Deskripsi hero wajib diisi.")
     .max(300, "Deskripsi hero maksimal 300 karakter."),
+  hero_gambar_alt: z
+    .string()
+    .trim()
+    .max(180, "Alt teks foto hero maksimal 180 karakter.")
+    .optional()
+    .or(z.literal(""))
+    .transform((value) => (value ? value : null)),
+  hero_gambar_hapus: z
+    .string()
+    .optional()
+    .transform((value) => value === "1"),
   email: z
     .string()
     .trim()
@@ -88,8 +79,10 @@ export const desaProfilFormSchema = z.object({
   warna_primer: warnaField("Warna utama"),
   warna_sekunder: warnaField("Warna sekunder"),
   warna_aksen: warnaField("Warna aksen"),
-  warna_latar_gelap: warnaField("Warna latar gelap"),
-  warna_latar: warnaLatarField("Warna latar halaman"),
+  jumlah_rt: z.coerce
+    .number({ message: "Jumlah RT harus berupa angka." })
+    .int("Jumlah RT harus bilangan bulat.")
+    .min(1, "Jumlah RT minimal 1."),
 });
 
 export type DesaProfilFormValues = z.infer<typeof desaProfilFormSchema>;

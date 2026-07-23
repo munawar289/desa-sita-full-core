@@ -70,7 +70,7 @@ export default async function PendudukPage() {
 
       <div className="mx-auto max-w-6xl space-y-10 px-4 py-12 sm:px-6">
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Menurut Jenis Kelamin
           </h2>
           <StatCardGrid
@@ -79,7 +79,7 @@ export default async function PendudukPage() {
               value: row.jumlah > 0 ? row.jumlah.toLocaleString("id-ID") : "—",
             }))}
           />
-          <div className="rounded-xl border border-kakao-200 bg-white p-4 shadow-sm">
+          <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
             <PieChartGender data={genderChartData} />
           </div>
           <StatTable<BarisGender>
@@ -93,7 +93,7 @@ export default async function PendudukPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Menurut Kelompok Umur
           </h2>
           <StatCardGrid
@@ -104,7 +104,7 @@ export default async function PendudukPage() {
               },
             ]}
           />
-          <div className="rounded-xl border border-kakao-200 bg-white p-4 shadow-sm">
+          <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
             <BarChartKelompokUmur data={umurData} />
           </div>
           <StatTable
@@ -118,8 +118,8 @@ export default async function PendudukPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">Menurut RT</h2>
-          <div className="rounded-xl border border-kakao-200 bg-white p-4 shadow-sm">
+          <h2 className="font-heading text-xl font-semibold text-text">Menurut RT</h2>
+          <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
             <BarChartRt data={rtChartData} />
           </div>
           <StatTable<BarisRt>

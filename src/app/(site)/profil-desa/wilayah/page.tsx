@@ -47,7 +47,7 @@ export default async function WilayahPage() {
         {narrativeSections.map((item) => (
           <section key={item.id}>
             <SectionHeader eyebrow={item.eyebrow} title={item.judul} />
-            <div className="prose prose-stone mt-6 max-w-none text-espresso-800">
+            <div className="prose prose-desa mt-6 max-w-none">
               <p>{item.konten}</p>
             </div>
           </section>

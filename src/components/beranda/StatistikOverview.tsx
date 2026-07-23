@@ -39,10 +39,17 @@ export async function StatistikOverview() {
   const jumlahTersedia = prodeskelResults.filter(Boolean).length;
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-      <SectionHeader eyebrow="Data Desa" title={`Sekilas Statistik Desa ${profil.nama_desa}`} />
+    <section className="border-y border-border bg-surface-alt py-16 sm:py-20">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        <SectionHeader
+          eyebrow="Data Desa"
+          title={`Sekilas Statistik Desa ${profil.nama_desa}`}
+          description="Transparansi data kependudukan untuk perencanaan pembangunan yang berbasis bukti."
+          align="center"
+          className="mx-auto"
+        />
 
-      <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
         <StatCard
           icon={GraduationCap}
           label="Pendidikan Terbanyak"
@@ -65,17 +72,18 @@ export async function StatistikOverview() {
         />
       </div>
 
-      <div className="mt-8 text-center">
-        <Button
-          asChild
-          variant="outline"
-          className="rounded-lg border-kopi-600 text-kopi-600 hover:bg-kopi-100 hover:text-kopi-600"
-        >
-          <Link href="/data-desa">
-            Lihat Data Desa Lengkap
-            <ArrowRight className="ml-1 inline size-4" />
-          </Link>
-        </Button>
+        <div className="mt-10 text-center">
+          <Button
+            asChild
+            variant="outline"
+            className="rounded-lg border-border-strong bg-surface text-link hover:bg-primary-soft hover:text-on-primary-soft"
+          >
+            <Link href="/data-desa">
+              Lihat Data Desa Lengkap
+              <ArrowRight className="ml-1 inline size-4" />
+            </Link>
+          </Button>
+        </div>
       </div>
     </section>
   );

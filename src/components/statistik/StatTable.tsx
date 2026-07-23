@@ -36,14 +36,14 @@ export function StatTable<T extends { id: string }>({
     }, null)?.id;
 
   return (
-    <Table className="overflow-hidden rounded-xl border border-kakao-200">
-      <TableHeader className="bg-kakao-100">
+    <Table className="overflow-hidden rounded-xl border border-border">
+      <TableHeader className="bg-surface-alt">
         <TableRow className="hover:bg-transparent">
           {columns.map((column) => (
             <TableHead
               key={String(column.key)}
               className={cn(
-                "font-mono text-xs uppercase tracking-wider text-sawah-700",
+                "font-mono text-xs uppercase tracking-wider text-text-muted",
                 column.align === "right" && "text-right",
               )}
             >
@@ -56,19 +56,19 @@ export function StatTable<T extends { id: string }>({
         {rows.map((row, index) => (
           <TableRow
             key={row.id}
-            className={cn(index % 2 === 1 && "bg-kakao-100/60", "hover:bg-kopi-100/50")}
+            className={cn(index % 2 === 1 && "bg-surface-alt/60", "hover:bg-primary-soft/50")}
           >
             {columns.map((column) => (
               <TableCell
                 key={String(column.key)}
                 className={cn(
-                  "text-espresso-800",
-                  column.align === "right" && "text-right font-mono text-espresso-950",
+                  "text-text",
+                  column.align === "right" && "text-right font-mono text-text",
                 )}
               >
                 {String(row[column.key] ?? "—")}
                 {highlightKey === column.key && row.id === maxRowId && (
-                  <BadgeKategori label="Tertinggi" tone="sawah" className="ml-2" />
+                  <BadgeKategori label="Tertinggi" tone="sekunder" className="ml-2" />
                 )}
               </TableCell>
             ))}

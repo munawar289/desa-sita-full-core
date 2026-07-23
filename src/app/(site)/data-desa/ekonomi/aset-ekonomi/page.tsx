@@ -42,13 +42,13 @@ export default async function AsetEkonomiPage() {
 
       <div className="mx-auto max-w-6xl space-y-10 px-4 py-12 sm:px-6">
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Penguasaan Aset
           </h2>
           <StatCardGrid
             items={asetEkonomi.map((item) => ({ label: item.label, value: item.value }))}
           />
-          <p className="text-xs text-espresso-800/50">
+          <p className="text-xs text-text-muted">
             Baris Aset Transportasi Umum dan Aset Sarana Produksi masih berupa angka desa-wide
             dari source data (belum dipecah per jenis aset) — menunggu klarifikasi pemerintah
             desa.
@@ -56,11 +56,11 @@ export default async function AsetEkonomiPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="font-heading text-xl font-semibold text-espresso-950">
+          <h2 className="font-heading text-xl font-semibold text-text">
             Aset Tanaman Menurut RT
           </h2>
           {adaDataTanaman ? (
-            <p className="text-sm text-espresso-800/70">Data tersedia — lihat tabel di atas.</p>
+            <p className="text-sm text-text-muted">Data tersedia — lihat tabel di atas.</p>
           ) : (
             <EmptyState icon={<FileQuestion />} message="Data belum tersedia" />
           )}
