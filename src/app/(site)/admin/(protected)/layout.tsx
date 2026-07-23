@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import { TriangleAlert } from "lucide-react";
-import { AdminSidebar } from "@/components/admin/AdminSidebar";
-import { AdminTopbar } from "@/components/admin/AdminTopbar";
+import { AdminShell } from "@/components/admin/AdminShell";
 import { signOutAction } from "@/lib/actions/auth";
 import { getCurrentProfile } from "@/lib/auth/current-profile";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -69,12 +68,8 @@ export default async function AdminProtectedLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-surface-alt">
-      <AdminSidebar role={profile.role} namaDesa={profil.nama_desa} />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <AdminTopbar profile={profile} />
-        <main className="flex-1 px-4 py-8 sm:px-6">{children}</main>
-      </div>
-    </div>
+    <AdminShell role={profile.role} namaDesa={profil.nama_desa} profile={profile}>
+      {children}
+    </AdminShell>
   );
 }

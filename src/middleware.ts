@@ -42,15 +42,19 @@ export async function middleware(request: NextRequest) {
       });
     }
 
-    tenant = resolved.tenant;
-    if (tenant) {
-      requestHeaders.set("x-tenant-id", tenant.id);
-      requestHeaders.set("x-tenant-slug", tenant.slug);
-      requestHeaders.set("x-tenant-status", tenant.status);
+    // Tidak ada fallback ke tenant default — host yang gagal resolusi sama
+    // sekali (bukan mode mock Supabase-belum-dikonfigurasi) berakhir 404.
+    if (!resolved.tenant) {
+      return new NextResponse("Not Found", { status: 404 });
     }
-    // Dibaca getCurrentTenant() (Phase 4 Modul 1) untuk membedakan "resolver
-    // gagal, fallback ke default" vs "memang tenant default" saat membership
-    // check gagal — supaya pesan ke staff tidak generik/membingungkan.
+
+    tenant = resolved.tenant;
+    requestHeaders.set("x-tenant-id", tenant.id);
+    requestHeaders.set("x-tenant-slug", tenant.slug);
+    requestHeaders.set("x-tenant-status", tenant.status);
+    // Dibaca getCurrentTenant() (Phase 4 Modul 1) untuk membedakan sumber
+    // resolusi tenant saat membership check gagal — supaya pesan ke staff
+    // tidak generik/membingungkan.
     requestHeaders.set("x-tenant-source", resolved.source);
   }
 
