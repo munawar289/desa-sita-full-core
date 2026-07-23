@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AddPotensiForm } from "@/components/admin/AddPotensiForm";
 import { PotensiRow } from "@/components/admin/PotensiRow";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import type { Potensi } from "@/lib/data/potensi";
 import { buildMetadata } from "@/lib/metadata";
 
@@ -14,10 +15,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AdminPotensiPage() {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("potensi_desa")
     .select("id, judul, deskripsi, icon, urutan")
+    .eq("tenant_id", tenant.id)
     .order("urutan");
 
   const rows: Potensi[] = error ? [] : (data as Potensi[]);

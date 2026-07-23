@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { AlertTriangle, FileText, MessageSquareWarning } from "lucide-react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import { buildMetadata } from "@/lib/metadata";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -23,6 +24,7 @@ function formatTanggal(iso: string) {
 }
 
 export default async function AdminRingkasanPage() {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const ambangUsang = new Date();
   ambangUsang.setDate(ambangUsang.getDate() - USANG_HARI);
@@ -31,9 +33,16 @@ export default async function AdminRingkasanPage() {
     supabase
       .from("statistik")
       .select("id, label, category, updated_at")
+      .eq("tenant_id", tenant.id)
       .lt("updated_at", ambangUsang.toISOString())
       .order("updated_at"),
-    supabase.from("pengaduan").select("id", { count: "exact", head: true }).eq("status", "baru"),
+    supabase
+      .from("pengaduan")
+      .select("id", { count: "exact", head: true })
+      .eq("tenant_id", tenant.id)
+      .eq("status", "baru"),
+    // `berita` belum tenant-scoped (belum ada kolom tenant_id) — di luar
+    // cakupan audit ini, jangan tambah filter yang bikin query error.
     supabase
       .from("berita")
       .select("id, judul, status, created_at")

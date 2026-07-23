@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { StatistikGroupedList } from "@/components/admin/StatistikGroupedList";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import type { Statistik } from "@/lib/data/statistik";
 import { buildMetadata } from "@/lib/metadata";
 
@@ -14,10 +15,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AdminStatistikPage() {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("statistik")
     .select("id, category, key, label, value, updated_at")
+    .eq("tenant_id", tenant.id)
     .order("category")
     .order("key");
 

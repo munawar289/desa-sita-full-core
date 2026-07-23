@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { StatistikSektorUsahaTabs } from "@/components/admin/StatistikSektorUsahaTabs";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import type { StatistikSektorUsaha } from "@/lib/data/statistik-sektor-usaha";
 import { buildMetadata } from "@/lib/metadata";
 
@@ -14,10 +15,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AdminStatistikSektorUsahaPage() {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("statistik_sektor_usaha")
     .select("id, jenis, kode, nama, nilai_ribu_rupiah, updated_at, urutan")
+    .eq("tenant_id", tenant.id)
     .order("jenis")
     .order("urutan");
 

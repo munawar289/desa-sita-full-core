@@ -7,6 +7,7 @@ import { KomoditasRow } from "@/components/admin/KomoditasRow";
 import { AddPeternakanForm } from "@/components/admin/AddPeternakanForm";
 import { PeternakanRow } from "@/components/admin/PeternakanRow";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import type { WilayahInfo } from "@/lib/data/wilayah-info";
 import { WILAYAH_INFO_PRESETS } from "@/lib/data/wilayah-info-sections";
 import type { Komoditas } from "@/lib/data/komoditas";
@@ -22,16 +23,23 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AdminWilayahPage() {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const [wilayahInfoResult, komoditasResult, peternakanResult] = await Promise.all([
     supabase
       .from("wilayah_info")
       .select("id, section, konten, page, judul, eyebrow, urutan, updated_at")
+      .eq("tenant_id", tenant.id)
       .order("section"),
-    supabase.from("komoditas").select("id, nama, luas_ha, hasil_panen, urutan").order("urutan"),
+    supabase
+      .from("komoditas")
+      .select("id, nama, luas_ha, hasil_panen, urutan")
+      .eq("tenant_id", tenant.id)
+      .order("urutan"),
     supabase
       .from("peternakan")
       .select("id, jenis_ternak, populasi, jumlah_pemilik, urutan")
+      .eq("tenant_id", tenant.id)
       .order("urutan"),
   ]);
 

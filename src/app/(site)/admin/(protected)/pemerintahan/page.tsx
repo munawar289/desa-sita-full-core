@@ -6,6 +6,7 @@ import { BpdRow } from "@/components/admin/BpdRow";
 import { AddKepalaDesaForm } from "@/components/admin/AddKepalaDesaForm";
 import { KepalaDesaRow } from "@/components/admin/KepalaDesaRow";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import type { Aparatur } from "@/lib/data/aparatur";
 import type { BpdAnggota } from "@/lib/data/bpd";
 import type { KepalaDesaRiwayat } from "@/lib/data/kepala-desa-riwayat";
@@ -20,13 +21,23 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AdminPemerintahanPage() {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const [aparaturResult, bpdResult, kepalaDesaResult] = await Promise.all([
-    supabase.from("aparatur").select("id, nama, jabatan, pendidikan, urutan").order("urutan"),
-    supabase.from("bpd_anggota").select("id, nama, jabatan, pendidikan, urutan").order("urutan"),
+    supabase
+      .from("aparatur")
+      .select("id, nama, jabatan, pendidikan, urutan")
+      .eq("tenant_id", tenant.id)
+      .order("urutan"),
+    supabase
+      .from("bpd_anggota")
+      .select("id, nama, jabatan, pendidikan, urutan")
+      .eq("tenant_id", tenant.id)
+      .order("urutan"),
     supabase
       .from("kepala_desa_riwayat")
       .select("id, nama, periode_mulai, periode_selesai, keterangan, urutan")
+      .eq("tenant_id", tenant.id)
       .order("urutan"),
   ]);
 

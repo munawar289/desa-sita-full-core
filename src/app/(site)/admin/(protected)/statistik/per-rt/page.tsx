@@ -3,6 +3,7 @@ import Link from "next/link";
 import { StatistikRtRow } from "@/components/admin/StatistikRtRow";
 import { DETAIL_FIELDS } from "@/lib/validation/statistik-rt";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import type { StatistikRt } from "@/lib/data/statistik-rt";
 import { buildMetadata } from "@/lib/metadata";
 
@@ -33,13 +34,19 @@ function groupByCategory(rows: StatistikRt[]) {
 }
 
 export default async function AdminStatistikPerRtPage() {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const [{ data: rtData, error: rtError }, { data: factData, error: factError }] =
     await Promise.all([
-      supabase.from("wilayah_rt").select("id, nomor, nama, urutan").order("urutan"),
+      supabase
+        .from("wilayah_rt")
+        .select("id, nomor, nama, urutan")
+        .eq("tenant_id", tenant.id)
+        .order("urutan"),
       supabase
         .from("statistik_rt")
         .select("id, category, rt_id, value, detail, updated_at")
+        .eq("tenant_id", tenant.id)
         .order("category"),
     ]);
 

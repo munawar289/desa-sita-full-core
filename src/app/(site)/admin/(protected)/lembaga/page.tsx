@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AddLembagaForm } from "@/components/admin/AddLembagaForm";
 import { LembagaRow } from "@/components/admin/LembagaRow";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getCurrentTenant } from "@/lib/tenant/current-tenant";
 import type { Lembaga } from "@/lib/data/lembaga";
 import { buildMetadata } from "@/lib/metadata";
 
@@ -24,10 +25,12 @@ function groupByKategori(rows: Lembaga[]) {
 }
 
 export default async function AdminLembagaPage() {
+  const tenant = await getCurrentTenant();
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("lembaga")
     .select("id, kategori, nama, dasar_hukum, jumlah_pengurus, keterangan, urutan")
+    .eq("tenant_id", tenant.id)
     .order("kategori")
     .order("urutan");
 
