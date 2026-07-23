@@ -6,6 +6,7 @@ import { signOutAction } from "@/lib/actions/auth";
 import { getCurrentProfile } from "@/lib/auth/current-profile";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { getCurrentTenant } from "@/lib/tenant/current-tenant";
+import { getDesaProfil } from "@/lib/queries/desa-profil";
 
 export default async function AdminProtectedLayout({
   children,
@@ -17,6 +18,7 @@ export default async function AdminProtectedLayout({
   }
 
   const tenant = await getCurrentTenant();
+  const profil = await getDesaProfil();
 
   // Pengecekan sesi + role di Server Component ini adalah lapis UX kedua —
   // middleware sudah menggerbangi /admin/*, RLS di database tetap otoritas
@@ -68,7 +70,7 @@ export default async function AdminProtectedLayout({
 
   return (
     <div className="flex min-h-screen bg-surface-alt">
-      <AdminSidebar role={profile.role} />
+      <AdminSidebar role={profile.role} namaDesa={profil.nama_desa} />
       <div className="flex min-w-0 flex-1 flex-col">
         <AdminTopbar profile={profile} />
         <main className="flex-1 px-4 py-8 sm:px-6">{children}</main>
