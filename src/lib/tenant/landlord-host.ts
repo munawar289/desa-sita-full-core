@@ -6,11 +6,7 @@ import { normalizeHost } from "./normalize";
  * (mis. `lvh.me:3000`, bukan `coba.lvh.me:3000`) — host ini didedikasikan
  * untuk /platform (landlord), bukan tenant manapun. Dipakai src/middleware.ts
  * supaya route tenant (publik maupun /admin) tidak diam-diam fallback ke
- * tenant default di domain landlord.
- *
- * DEFAULT_TENANT_HOSTS (mis. localhost:3000, domain produksi lama) SENGAJA
- * tidak dianggap landlord host di sini — itu tetap fast-path ke tenant
- * default seperti sebelumnya, tidak terpengaruh perubahan ini.
+ * tenant manapun di domain landlord.
  */
 export function isLandlordOnlyHost(rawHost: string): boolean {
   if (process.env.NODE_ENV !== "production" && TENANT_DEV_FORCE_SLUG) return false;
