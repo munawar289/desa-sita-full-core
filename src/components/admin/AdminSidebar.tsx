@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Lock, type LucideIcon, Mountain } from "lucide-react";
+import { Lock, type LucideIcon, Mountain, X } from "lucide-react";
 import { adminNavItems, type AdminNavItem } from "@/lib/admin-nav";
 import { cn } from "@/lib/utils";
 
@@ -39,9 +39,15 @@ function LockedItem({ label, icon: Icon }: { label: string; icon?: LucideIcon })
 export function AdminSidebar({
   role,
   namaDesa,
+  open,
+  onNavigate,
 }: {
   role: "admin" | "operator";
   namaDesa: string;
+  /** Status drawer di viewport mobile (di bawah `md`); diabaikan di desktop. */
+  open: boolean;
+  /** Dipanggil saat item nav diklik, supaya drawer mobile menutup otomatis. */
+  onNavigate: () => void;
 }) {
   const pathname = usePathname();
 
@@ -50,15 +56,33 @@ export function AdminSidebar({
   }
 
   return (
-    <aside className="hidden w-64 shrink-0 flex-col border-r border-panel-border bg-panel px-4 py-6 text-on-panel md:flex">
-      <Link href="/admin" className="flex items-center gap-2.5 px-2">
-        {/* Gradient dekoratif antar dua step scale yang sama (DESIGN.md §7.1);
-            keduanya di ujung terang, jadi ikon neutral-900 selalu lolos AA. */}
-        <span className="flex size-9 items-center justify-center rounded-[10px] bg-linear-to-br from-accent-300 to-accent-500 text-neutral-900">
-          <Mountain className="size-5" aria-hidden />
-        </span>
-        <span className="font-heading text-base font-semibold">Admin Desa {namaDesa}</span>
-      </Link>
+    <aside
+      className={cn(
+        "fixed inset-y-0 left-0 z-50 flex w-72 flex-col overflow-y-auto border-r border-panel-border bg-panel px-4 py-6 text-on-panel transition-transform duration-200 ease-out",
+        open ? "translate-x-0" : "-translate-x-full",
+        "md:static md:z-auto md:w-64 md:shrink-0 md:translate-x-0",
+      )}
+    >
+      <div className="flex items-center justify-between px-2 md:justify-start">
+        <Link href="/admin" onClick={onNavigate} className="flex min-w-0 items-center gap-2.5">
+          {/* Gradient dekoratif antar dua step scale yang sama (DESIGN.md §7.1);
+              keduanya di ujung terang, jadi ikon neutral-900 selalu lolos AA. */}
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-linear-to-br from-accent-300 to-accent-500 text-neutral-900">
+            <Mountain className="size-5" aria-hidden />
+          </span>
+          <span className="truncate font-heading text-base font-semibold">
+            Admin Desa {namaDesa}
+          </span>
+        </Link>
+        <button
+          type="button"
+          onClick={onNavigate}
+          aria-label="Tutup menu"
+          className="flex size-11 shrink-0 items-center justify-center rounded-lg text-on-panel-muted hover:bg-on-panel/10 hover:text-on-panel md:hidden"
+        >
+          <X className="size-5" aria-hidden />
+        </button>
+      </div>
 
       <nav className="mt-8 flex flex-col gap-1">
         {adminNavItems
@@ -80,6 +104,7 @@ export function AdminSidebar({
               <div key={item.href} className="flex flex-col gap-1">
                 <Link
                   href={item.href}
+                  onClick={onNavigate}
                   className={cn(
                     NAV_ITEM,
                     active ? NAV_ITEM_ACTIVE : "text-on-panel-muted",
@@ -98,6 +123,7 @@ export function AdminSidebar({
                         <Link
                           key={child.href}
                           href={child.href}
+                          onClick={onNavigate}
                           className={cn(
                             NAV_ITEM_CHILD,
                             childIsActive ? NAV_ITEM_ACTIVE : "text-on-panel-muted",
